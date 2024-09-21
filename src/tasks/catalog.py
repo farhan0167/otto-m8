@@ -17,6 +17,7 @@ from enum import Enum
 #             raise ValueError(f"Task type {task_type} is not supported.")
 
 class TaskCatalog(Enum):
+    # key = module.file_name.class_name
     hugging_face_model_card = 'tasks.huggingface_model_card.HuggingFaceModelCard'
     ocr = 'tasks.ocr_engine.OCREngine'
     output = 'tasks.output_block.OutputBlock'
