@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
 from db.base import Base
-from db.db_engine import engine, get_session
+from db.db_engine import engine, get_session, get_db
 import db.models
 from db.models.users import Users
 from db.models.workflow_templates import WorkflowTemplates
@@ -182,7 +182,7 @@ app.add_middleware(
 
 
 @app.post("/create_workflow/")
-async def create_workflow(request: Request, db_session: Session = Depends(get_session)):
+async def create_workflow(request: Request, db_session: Session = Depends(get_db)):
     """Main endpoint that creates a new workflow and add a record to the database"""
     data = await request.json()
     default_user_id = 1
@@ -213,7 +213,7 @@ async def create_workflow(request: Request, db_session: Session = Depends(get_se
     }
     
 @app.get("/pause_workflow/{template_id}")
-def pause_workflow(template_id: int, db_session: Session = Depends(get_session)):
+def pause_workflow(template_id: int, db_session: Session = Depends(get_db)):
     """
     Endpoint that pauses a workflow. A workflow is determined based on which template
     the user clicked on.
@@ -235,7 +235,7 @@ def pause_workflow(template_id: int, db_session: Session = Depends(get_session))
         raise HTTPException(status_code=404, detail="Template not found")
 
 @app.get("/resume_workflow/{template_id}")
-def resume_workflow(template_id: int, db_session: Session = Depends(get_session)):
+def resume_workflow(template_id: int, db_session: Session = Depends(get_db)):
     """
     Endpoint that resumes a workflow. A workflow is determined based on which template
     the user clicked on.
@@ -260,7 +260,7 @@ def resume_workflow(template_id: int, db_session: Session = Depends(get_session)
         raise HTTPException(status_code=404, detail="Template not found")
     
 @app.get("/delete_workflow/{template_id}")
-def delete_workflow(template_id: int, db_session: Session = Depends(get_session)):
+def delete_workflow(template_id: int, db_session: Session = Depends(get_db)):
     template = db_session.query(WorkflowTemplates).filter(WorkflowTemplates.id == template_id).first()
     if template:
         stop_docker_container(container_id=template.container_id)
@@ -277,7 +277,7 @@ def delete_workflow(template_id: int, db_session: Session = Depends(get_session)
 
 
 @app.get("/templates")
-def get_templates(db_session: Session = Depends(get_session)):
+def get_templates(db_session: Session = Depends(get_db)):
     templates = db_session.query(WorkflowTemplates).all()
     for template in templates:
         template.backend_template = json.loads(template.backend_template)
@@ -286,7 +286,7 @@ def get_templates(db_session: Session = Depends(get_session)):
     return templates
 
 @app.get("/templates/{template_id}")
-def get_template(template_id: int, db_session: Session = Depends(get_session)):
+def get_template(template_id: int, db_session: Session = Depends(get_db)):
     template = db_session.query(WorkflowTemplates).filter(WorkflowTemplates.id == template_id).first()
     if template:
         template.backend_template = json.loads(template.backend_template)
