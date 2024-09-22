@@ -95,6 +95,19 @@ def start_docker_container(image_id:str, host_port:int=8001):
         )
     return container
 
+def get_dependency_list_paths(payload):
+    dependencies = []
+    dependency_store_path = './tasks/dependencies'
+    requirement_txt_files = os.listdir(dependency_store_path)
+    requirement_txt_files = [f.replace('.txt', '') for f in requirement_txt_files]
+
+    processes = payload['process']
+    for process in processes:
+        task_type = process['process_metadata']['process_type']
+        if task_type in requirement_txt_files:
+            dependencies.append(f'{dependency_store_path}/{task_type}.txt')
+    return dependencies
+
 def create_container_with_in_memory_dockerfile(payload):
     """
     Create a Docker container from the given payload by writing the payload
@@ -113,16 +126,20 @@ def create_container_with_in_memory_dockerfile(payload):
     client = docker.from_env()
     json_payload = json.dumps(payload, indent=4)
     escaped_json_payload = json_payload.replace('"', '\\"').replace('\n', '\\n')
-    
+
     # Create a temporary directory so that we can pass our app files to docker build context
     with tempfile.TemporaryDirectory() as temp_dir:
         # Copy the files from your working directory to the temporary directory for docker build context
         source_dir = os.getcwd()
         shutil.copytree(source_dir, os.path.join(temp_dir, 'app_files'), dirs_exist_ok=True)
+        
+        requirement_text_files = get_dependency_list_paths(payload)
+        requirement_text_files_for_dockerfile = [path.replace(".", "/app", 1) for path in requirement_text_files]
+        requirement_text_file_paths = " ".join([f"-r {path}" for path in requirement_text_files_for_dockerfile])
 
         # Create the Dockerfile content
         dockerfile_content = f"""
-        FROM python:3.9-slim
+        FROM python:3.10-slim
 
         # Set the working directory
         WORKDIR /app
@@ -132,6 +149,7 @@ def create_container_with_in_memory_dockerfile(payload):
 
         # Install FastAPI and Uvicorn
         RUN pip install fastapi uvicorn
+        RUN pip install {requirement_text_file_paths}
 
         # Write the JSON payload directly into the container
         RUN echo '{escaped_json_payload}' > /app/data.json

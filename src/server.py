@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from workflow import RunWorkflow
 from blocks import WorkflowTemplate
@@ -13,7 +13,6 @@ unescaped_json_payload = escaped_json_payload.replace('\\"', '"').replace('\\n',
 
 # Load the JSON as a dictionary
 execution = json.loads(unescaped_json_payload)
-print(execution)
 
 template = WorkflowTemplate(**execution)
 workflow = RunWorkflow(template)
@@ -32,8 +31,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/workflow_run")
-async def root():
-    output = workflow.run_workflow()
-    output = json.dumps(output)
+@app.post("/workflow_run")
+async def root(data: Request):
+    req = await data.json()
+    text = req['text']
+    output = workflow.run_workflow(payload=text)
+    print(output)
+    try:
+        output = json.loads(output)
+    except:
+        for process_name, process_outputs in output.items():
+            for i, process_output in enumerate(process_outputs):
+                for key, value in process_output.items():
+                    if not (isinstance(value, str) or isinstance(value, int) or isinstance(value, float)):
+                        output[process_name][i][key] = str(value)
+        output = json.dumps(output)
+                
+                
+
     return {"message": output}
