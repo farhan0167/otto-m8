@@ -22,9 +22,10 @@ class Implementer:
         # Instead of directly storing the value (which is the class), store the enum instance
         self.task_catalog = {str(task_type).split(".")[-1]: task_type for task_type in TaskCatalog}
     
-    def create_task(self, task_type: TaskCatalog) -> Task:
+    def create_task(self, task_type: TaskCatalog, run_config: dict = None) -> Task:
         # Retrieve the enum instance and use its initialize method to create the task
-        task_enum = self.task_catalog.get(task_type, None)
-        if task_enum is None:
+        Task_Class: TaskCatalog = self.task_catalog.get(task_type, None)
+        if Task_Class is None:
             raise ValueError(f"Task type {task_type} is not supported")
-        return task_enum.initialize()
+        # Go to the Task Catalog to initialize the task of the given type
+        return Task_Class.initialize(run_config=run_config)

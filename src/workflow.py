@@ -1,5 +1,5 @@
-from typing import Any
-from blocks import WorkflowTemplate, execution
+from typing import Any, Union, List
+from blocks import WorkflowTemplate, InputBlock
 from tasks.implementer import Implementer
 
 class RunWorkflow:
@@ -28,11 +28,17 @@ class RunWorkflow:
                 next_hop_index = self.block_name_map['process'][group_block_name]
                 next_hop = processes[next_hop_index]
                 process_metadata = next_hop.process_metadata
-                process = Implementer().create_task(task_type=process_metadata['process_type'])
+                run_config = next_hop.run_config
+                process = Implementer().create_task(
+                    task_type=process_metadata['process_type'],
+                    run_config=run_config
+                )
                 next_hop.implementation = process
 
         
-    def run_workflow(self, *args: Any, **kwds: Any) -> Any:
+    def run_workflow(self, payload=None, *args: Any, **kwds: Any) -> Any:
+        if not payload:
+            raise Exception('No payload provided')
         inputs = self.workflow.input
         processes = self.workflow.process
         self.block_name_map['process'] = {block.name: i for i, block in enumerate(processes)}
@@ -42,13 +48,14 @@ class RunWorkflow:
         output_implementer = self.workflow.output[0].implementation
         
         for client_input in inputs:
+            client_input.payload = payload
             for connection in client_input.connections:
                 workflow_group = connection.split('.')[0]
                 group_block_name = connection.split('.')[1]
                 next_hop_index = self.block_name_map['process'][group_block_name]
                 next_hop = processes[next_hop_index]
-                run_config = next_hop.run_config
-                process_output = next_hop.implementation.run(client_input.payload, run_config)
+                #run_config = next_hop.run_config
+                process_output = next_hop.implementation.run(client_input.payload)
                 for process_connection in next_hop.connections:
                     # TODO: This assumes that the next hop is an output block. This won't be necessarily true.
                     output_implementer.run(process_output, inbound_process_name=group_block_name)
