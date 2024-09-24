@@ -17,6 +17,7 @@ import db.models
 from db.models.users import Users
 from db.models.workflow_templates import WorkflowTemplates
 from blocks import WorkflowTemplate
+from tasks.catalog import TaskRegistry
 
 # TODO Refactor code so that things that do not need to be here, arent here.
 # Need to have their own files, modules and abstraction. This is a hack.
@@ -313,4 +314,10 @@ def get_template(template_id: int, db_session: Session = Depends(get_db)):
         return template
     else:
         raise HTTPException(status_code=404, detail="Template not found")
+
+@app.get("/get_block_types")
+def get_block_types():
+    block_types = TaskRegistry.get_task_registry()
+    # TODO: Standard Server Response: Implement a standard response template
+    return block_types
 
