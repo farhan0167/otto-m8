@@ -1,27 +1,12 @@
 from enum import Enum
-# from tasks.huggingface_model_card import HuggingFaceModelCard
-# from tasks.ocr_engine import OCREngine
-# from tasks.output_block import OutputBlock
 
-# class TaskCatalog(Enum):
-#     hugging_face_model_card = HuggingFaceModelCard
-#     ocr = OCREngine
-#     output = OutputBlock
-
-    
-#     @staticmethod
-#     def from_string(task_type: str):
-#         try:
-#             return TaskCatalog[task_type]
-#         except KeyError:
-#             raise ValueError(f"Task type {task_type} is not supported.")
 
 class TaskCatalog(Enum):
     #### Catalog for Tasks ####
     # key = module.file_name.class_name
-    hugging_face_model_card = 'tasks.hugging_face_model_card.HuggingFaceModelCard'
-    ocr = 'tasks.ocr_engine.OCREngine'
-    output = 'tasks.output_block.OutputBlock'
+    HUGGING_FACE_MODEL_CARD = 'tasks.hugging_face_model_card.HuggingFaceModelCard'
+    OCR = 'tasks.ocr.OCREngine'
+    OUTPUT = 'tasks.output_block.OutputBlock'
     #### Catalog for Tasks ####
 
     def get_class(self):
@@ -68,3 +53,26 @@ class TaskCatalog(Enum):
             return TaskCatalog[task_type]
         except KeyError:
             raise ValueError(f"Task type {task_type} is not supported.")
+        
+class TaskRegistry:
+    vendors = {}
+    
+    @classmethod
+    def add_vendor(cls, vendor: str):
+        if vendor not in cls.vendors:
+            cls.vendors[vendor] = {}
+    
+    @classmethod
+    def add_task_to_registry_by_vendor(cls, vendor: str, task_name: str, task: TaskCatalog):
+        if vendor not in cls.vendors:
+            raise Exception(f"Vendor {vendor} is not supported.")
+        cls.vendors[vendor][task_name] = task.name.lower()
+    
+    @classmethod
+    def get_task_registry(cls):
+        return cls.vendors
+
+# Register Tasks and Vendors
+TaskRegistry.add_vendor("HUGGING FACE")
+TaskRegistry.add_task_to_registry_by_vendor("HUGGING FACE", "MODEL CARD", TaskCatalog.HUGGING_FACE_MODEL_CARD)
+
