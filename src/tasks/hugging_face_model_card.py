@@ -6,15 +6,6 @@ from transformers import (
 from tasks.task import Task
 from utils.hugging_face.hugging_face_api import HuggingFaceApi
 
-# models = api.list_models(search="ahmedrachid/FinancialBERT-Sentiment-Analysis")
-
-
-# for model in models:
-#     print(f"model card: {model.modelId}")
-#     print(f"model downloads", model.downloads)
-#     print(f"model likes", model.likes)
-#     print(f"pipeline", model.pipeline_tag)
-#     print("-"*100)
 
 class HuggingFaceModelCard(Task):
     def __init__(self, run_config:dict) -> None:
