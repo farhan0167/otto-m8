@@ -1,6 +1,6 @@
+import io
+from PIL import Image
 from transformers import (
-    # AutoTokenizer,
-    # AutoModelForSequenceClassification,
     pipeline
 )
 from tasks.task import Task
@@ -11,6 +11,7 @@ class HuggingFaceModelCard(Task):
     def __init__(self, run_config:dict) -> None:
         self.run_config = run_config
         self.model_card = run_config.get('model_card')
+        self.input_type = run_config.get('input_type')
         self.get_huggingface_pipeline_config()
         # self.tokenizer = AutoTokenizer.from_pretrained(self.model_card)
         # self.model = AutoModelForSequenceClassification.from_pretrained(self.model_card, num_labels=3)
@@ -18,7 +19,13 @@ class HuggingFaceModelCard(Task):
         
     
     def run(self, input_=None):
-        results = self.pipeline(input_)
+        if self.input_type == 'text':
+            results = self.pipeline(input_)
+        elif self.input_type == 'image':
+            input_ = self.preprocess_image_input(input_)
+            results = self.pipeline(input_)
+        else:
+            raise Exception(f"Input type {self.input_type} not supported")
         return results
     
     def get_huggingface_pipeline_config(self):
@@ -29,3 +36,9 @@ class HuggingFaceModelCard(Task):
                 return
             else:
                 raise Exception(f"Model card {self.model_card} not found")
+    
+    def preprocess_image_input(self, input_):
+        """Preprocess the image input into PIL Image object"""
+        image_stream = io.BytesIO(input_)
+        pil_image = Image.open(image_stream)
+        return pil_image

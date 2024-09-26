@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, UploadFile, File, HTTPException
+from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 from workflow import RunWorkflow
 from blocks import WorkflowTemplate
@@ -32,11 +33,28 @@ app.add_middleware(
 )
 
 @app.post("/workflow_run")
-async def root(data: Request):
-    req = await data.json()
-    text = req['text']
-    output = workflow.run_workflow(payload=text)
-    print(output)
+async def root(data: Request, file: Optional[UploadFile] = File(None)):
+    payload = None
+    # Check if the content type is JSON, which indicates a text input
+    if data.headers.get('content-type') == 'application/json':
+        try:
+            req = await data.json()
+            payload = req.get('text', None)
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid JSON payload")
+
+    # If a file is available, implicitly it should be an image.
+    if file:
+        # Read the file content
+        payload = await file.read()
+        file_name = file.filename
+        
+    if not payload:
+        #TODO Change this exception
+        raise HTTPException(status_code=400, detail="Invalid JSON payload")
+        
+    output = workflow.run_workflow(payload=payload)
+    
     try:
         output = json.loads(output)
     except:

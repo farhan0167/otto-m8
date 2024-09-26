@@ -29,6 +29,8 @@ class RunWorkflow:
                 next_hop = processes[next_hop_index]
                 process_metadata = next_hop.process_metadata
                 run_config = next_hop.run_config
+                # Add input type to the run configuration
+                run_config['input_type'] = client_input.input_type
                 process = Implementer().create_task(
                     task_type=process_metadata['process_type'],
                     run_config=run_config

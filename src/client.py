@@ -148,8 +148,9 @@ def create_container_with_in_memory_dockerfile(payload):
         # Copy existing FastAPI app code into the container
         COPY app_files /app
 
-        # Install FastAPI and Uvicorn
-        RUN pip install fastapi uvicorn
+        # Install shared dependencies
+        RUN pip install fastapi uvicorn python-multipart pillow
+        # Install task based dependencies dynamically
         RUN pip install {requirement_text_file_paths}
 
         # Write the JSON payload directly into the container
