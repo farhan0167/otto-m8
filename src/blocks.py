@@ -24,6 +24,8 @@ class Block(BaseModel, extra = 'forbid', arbitrary_types_allowed = True):
 class InputBlock(Block):
     block_type: str = 'input'
     payload: Union[str, None] = None
+    # The input type of the block determines the type of the input in the run config that will be passed to a model.
+    input_type: str = 'text'
     
 class OutputBlock(Block):
     block_type: str = 'output'
