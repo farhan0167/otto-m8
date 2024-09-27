@@ -1,0 +1,68 @@
+.navigation-bar {
+  height: 100%;
+  background-color: #020024;
+  padding: 20px 0; /* Adjust padding to avoid shrinking the sidebar */
+  transition: width 0.3s ease;
+  display: flex;
+  flex-direction: column; /* Ensure items are aligned vertically */
+  overflow-y: auto;
+}
+
+.sidebar-expanded {
+  width: 240px;
+}
+
+.sidebar-collapsed {
+  width: 80px;
+}
+
+.toggle-btn {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 0 auto; /* Center toggle button horizontally */
+}
+
+.navbar {
+  flex-grow: 1; /* Makes the Nav component stretch to fill the available space */
+}
+
+.nav-links {
+  width: 100%;
+  flex-grow: 1; /* Fill remaining vertical space */
+}
+
+.nav-links .nav-item {
+  font-size: 18px;
+  padding: 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: background-color 0.2s ease;
+  text-decoration: none; /* Remove underline from links */
+}
+
+.nav-links .nav-item:hover {
+  background-color: #0d0b35;
+  border-radius: 10px;
+}
+
+.nav-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.nav-text {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.nav-item span {
+  display: inline-block;
+  flex-grow: 1; /* Allow the text to fill the remaining space */
+  text-align: left;
+  padding-left: 10px; /* Add padding to create some space between icon and text */
+}

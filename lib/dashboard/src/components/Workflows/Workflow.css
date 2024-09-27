@@ -1,0 +1,8 @@
+.workflow-button-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.workflow-button-container button {
+    margin-left: 10px;
+}
