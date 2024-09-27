@@ -1,0 +1,13 @@
+.process-block {
+        min-height: 80px;
+        overflow: auto;
+        word-wrap: break-word;
+        width: 120px;
+        border: 1px solid #000000;
+        padding: 5px;
+        border-radius: 5px;
+}
+
+.process-block * {
+    font-size: 10px;
+}
