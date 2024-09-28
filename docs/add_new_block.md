@@ -2,7 +2,8 @@
 
 To add a new kind of block which performs a new kind of Task not yet supported, you will need to take the following steps.
 
-1. Start by defining a new Task in the backend in `tasks/`.
+1. Start by defining a new Task in the backend in `tasks/`. Every Task inherits from the `Task` class. It has a `run()` method, which takes `input_` as a param, where the main work for the task happens.
+
 2. Register the Task in the Catalog and Task Registry.
 3. The subsequent steps will involve creating the data components for the Task in the dashboard. The directory structure should look as follows and contain the following files:
     ```
