@@ -54,17 +54,6 @@ async def root(data: Request, file: Optional[UploadFile] = File(None)):
         raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
     output = workflow.run_workflow(payload=payload)
-    
-    try:
-        output = json.loads(output)
-    except:
-        for process_name, process_outputs in output.items():
-            for i, process_output in enumerate(process_outputs):
-                for key, value in process_output.items():
-                    if not (isinstance(value, str) or isinstance(value, int) or isinstance(value, float)):
-                        output[process_name][i][key] = str(value)
-        output = json.dumps(output)
-                
-                
+    output = json.dumps(output)   
 
     return {"message": output}
