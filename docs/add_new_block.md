@@ -10,10 +10,10 @@ To add a new kind of block which performs a new kind of Task not yet supported, 
     - components/
     - Block/
         - Vendor/
-        - TaskName/
-            * initialData.js
-            * runConfig.js
-            * sideBarData.js
+            - TaskName/
+                * initialData.js
+                * runConfig.js
+                * sideBarData.js
     ```
    i. Add the initial data state of the Block in `initialData.js`.
 
