@@ -63,6 +63,19 @@ class RunWorkflow:
                     output_implementer.run(process_output, inbound_process_name=group_block_name)
                     
         return output_implementer.final_output
+    
+class RunWorkflowBFS(RunWorkflow):
+    def __init__(self, workflow: WorkflowTemplate):
+        super().__init__(workflow)
+        self.workflow = workflow
+        self.block_name_map = {
+            'input': {},
+            'process': {},
+            'output': {}
+        }
+    
+    def run_workflow(self, payload=None, *args: Any, **kwds: Any) -> Any:
+        pass
                 
         
         
