@@ -29,6 +29,8 @@ class HuggingFaceModelCard(Task):
             raise Exception(f"Input type {self.input_type} not supported")
         # TODO Post Processing: Perhaps everything should have its own post processing logic.
         try:
+            if not isinstance(results, dict):
+                return {'output': results}
             results = json.loads(results)
         except:
             for process_name, process_outputs in results.items():
