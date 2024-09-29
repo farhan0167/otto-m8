@@ -90,8 +90,8 @@ def start_docker_container(image_id:str, host_port:int=8001):
     client = docker.from_env()
     container = client.containers.run(
             image=image_id,
-            ports={'8000/tcp': host_port},
-            detach=True
+            ports={'8000/tcp': ("0.0.0.0", host_port)},
+            detach=True,
             # TODO add name of the container
         )
     return container
@@ -149,7 +149,7 @@ def create_container_with_in_memory_dockerfile(payload):
         COPY app_files /app
 
         # Install shared dependencies
-        RUN pip install fastapi uvicorn python-multipart pillow
+        RUN pip install fastapi uvicorn python-multipart pillow requests
         # Install task based dependencies dynamically
         RUN pip install {requirement_text_file_paths}
 

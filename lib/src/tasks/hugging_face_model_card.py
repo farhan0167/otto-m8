@@ -1,4 +1,5 @@
 import io
+import json
 from PIL import Image
 from transformers import (
     pipeline
@@ -18,7 +19,7 @@ class HuggingFaceModelCard(Task):
         self.pipeline = pipeline(self.pipeline_tag, model=self.model_card)
         
     
-    def run(self, input_=None):
+    def run(self, input_=None) ->dict:
         if self.input_type == 'text':
             results = self.pipeline(input_)
         elif self.input_type == 'image':
@@ -26,6 +27,16 @@ class HuggingFaceModelCard(Task):
             results = self.pipeline(input_)
         else:
             raise Exception(f"Input type {self.input_type} not supported")
+        # TODO Post Processing: Perhaps everything should have its own post processing logic.
+        try:
+            results = json.loads(results)
+        except:
+            for process_name, process_outputs in results.items():
+                for i, process_output in enumerate(process_outputs):
+                    for key, value in process_output.items():
+                        if not (isinstance(value, str) or isinstance(value, int) or isinstance(value, float)):
+                            results[process_name][i][key] = str(value)
+            results = json.loads(json.dumps(results))
         return results
     
     def get_huggingface_pipeline_config(self):
