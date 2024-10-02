@@ -167,20 +167,27 @@ class RunWorkflowBFS(RunWorkflow):
             else:
                 current_group, current_name = node.block_type, node.name
                 previous_hops = self.block_name_map[current_group][current_name]['reverse_connection']
-                current_name_output = {}
-                for previous_hop in previous_hops:
-                    previous_hop_group, previous_hop_name = previous_hop.split('.')
-                    # previous block's output is current block's input.
-                    if node.block_type == 'process':
-                        current_name_output[previous_hop_name] = node.implementation.run(
+                
+                if node.block_type == 'process':
+                    current_name_output = ''
+                    for previous_hop in previous_hops:
+                        previous_hop_group, previous_hop_name = previous_hop.split('.')
+                        # previous block's output is current block's input.
+                        current_name_output = node.implementation.run(
                             _input=self.block_name_map[previous_hop_group][previous_hop_name]['block_output']
                         )
-                    elif node.block_type == 'output':
+                    self.block_name_map[current_group][current_name]['block_output'] = current_name_output
+                elif node.block_type == 'output':
+                    current_name_output = {}
+                    for previous_hop in previous_hops:
+                        previous_hop_group, previous_hop_name = previous_hop.split('.')
+                        # previous block's output is current block's input.
                         current_name_output[previous_hop_name] = node.implementation.run(
                             output=self.block_name_map[previous_hop_group][previous_hop_name]['block_output'],
                             inbound_process_name=previous_hop_name
                         )
-                self.block_name_map[current_group][current_name]['block_output'] = current_name_output
+                    self.block_name_map[current_group][current_name]['block_output'] = current_name_output
+
             # once a node is processed, add it's children to the queue if they haven't been visited.
             for connection in node.connections:
                 workflow_group, group_block_name = connection.split('.')
@@ -188,10 +195,7 @@ class RunWorkflowBFS(RunWorkflow):
                     visited.add(group_block_name)
                     Queue.append(self.block_name_map[workflow_group][group_block_name]['block'])
         
-        # output_implementer.run(
-        #     output = self.block_name_map['output'][self.workflow.output[0].name]['block_output'],
-        #     inbound_process_name='final_output'
-        #     )
+
         return self.block_name_map['output'][self.workflow.output[0].name]['block_output']
                     
         
