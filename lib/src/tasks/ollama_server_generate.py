@@ -15,8 +15,8 @@ class OllamaServerGenarate(Task):
         )
         self.request_payload = self.create_payload_from_run_config()
 
-    def run(self, _input:str) -> dict:
-        self.request_payload['prompt'] = _input
+    def run(self, input_:str) -> dict:
+        self.request_payload['prompt'] = input_
         headers = {
             'Content-Type': 'application/json'
         }
