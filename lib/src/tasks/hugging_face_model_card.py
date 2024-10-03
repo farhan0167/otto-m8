@@ -30,7 +30,7 @@ class HuggingFaceModelCard(Task):
         # TODO Post Processing: Perhaps everything should have its own post processing logic.
         try:
             if not isinstance(results, dict):
-                return {'output': results}
+                return results
             results = json.loads(results)
         except:
             for process_name, process_outputs in results.items():

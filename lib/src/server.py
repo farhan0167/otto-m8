@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, UploadFile, File, HTTPException
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
-from workflow import RunWorkflow
+from workflow import RunWorkflow, RunWorkflowBFS
 from blocks import WorkflowTemplate
 import json
 
@@ -16,7 +16,7 @@ unescaped_json_payload = escaped_json_payload.replace('\\"', '"').replace('\\n',
 execution = json.loads(unescaped_json_payload)
 
 template = WorkflowTemplate(**execution)
-workflow = RunWorkflow(template)
+workflow = RunWorkflowBFS(template)
 workflow.initialize_resources()
 
 app = FastAPI()

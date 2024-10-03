@@ -6,4 +6,5 @@ class OutputBlock(Task):
         self.final_output = {}
         
     def run(self, output='', inbound_process_name:str=None):
-        self.final_output[inbound_process_name] = output
+        #self.final_output[inbound_process_name] = output
+        return output
