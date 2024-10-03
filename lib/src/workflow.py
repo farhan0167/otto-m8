@@ -153,43 +153,43 @@ class RunWorkflowBFS(RunWorkflow):
         output_implementer = self.workflow.output[0].implementation
         
         visited = set()
-        start_node = self.workflow.input[0]
-        Queue =deque([start_node])
-        visited.add(start_node.name)
+        start_block = self.workflow.input[0]
+        Queue =deque([start_block])
+        visited.add(start_block.name)
         
         while Queue:
-            node = Queue.popleft()
-            # Process node logic.
-            if not node:
+            block = Queue.popleft()
+            # Process block logic.
+            if not block:
                 break
-            if node.block_type == 'input':
+            if block.block_type == 'input':
                 print("")
             else:
-                current_group, current_name = node.block_type, node.name
+                current_group, current_name = block.block_type, block.name
                 previous_hops = self.block_name_map[current_group][current_name]['reverse_connection']
                 
-                if node.block_type == 'process':
+                if block.block_type == 'process':
                     current_name_output = ''
                     for previous_hop in previous_hops:
                         previous_hop_group, previous_hop_name = previous_hop.split('.')
                         # previous block's output is current block's input.
-                        current_name_output = node.implementation.run(
-                            _input=self.block_name_map[previous_hop_group][previous_hop_name]['block_output']
+                        current_name_output = block.implementation.run(
+                            input_=self.block_name_map[previous_hop_group][previous_hop_name]['block_output']
                         )
                     self.block_name_map[current_group][current_name]['block_output'] = current_name_output
-                elif node.block_type == 'output':
+                elif block.block_type == 'output':
                     current_name_output = {}
                     for previous_hop in previous_hops:
                         previous_hop_group, previous_hop_name = previous_hop.split('.')
                         # previous block's output is current block's input.
-                        current_name_output[previous_hop_name] = node.implementation.run(
+                        current_name_output[previous_hop_name] = block.implementation.run(
                             output=self.block_name_map[previous_hop_group][previous_hop_name]['block_output'],
                             inbound_process_name=previous_hop_name
                         )
                     self.block_name_map[current_group][current_name]['block_output'] = current_name_output
 
-            # once a node is processed, add it's children to the queue if they haven't been visited.
-            for connection in node.connections:
+            # once a block is processed, add it's children to the queue if they haven't been visited.
+            for connection in block.connections:
                 workflow_group, group_block_name = connection.split('.')
                 if group_block_name not in visited:
                     visited.add(group_block_name)
