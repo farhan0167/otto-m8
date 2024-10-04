@@ -64,3 +64,4 @@ To add a new kind of block which performs a new kind of Task not yet supported, 
    ```
    For instance, for the `HuggingFaceModelCard` the data point `model_card` is considered a run config since the backend will rely on this to choose which model to run. 
 4. Lastly, you'll need to add the run config function to the `createRunConfigForNode()` function in `/components/Workflows/Utils/CreateRunConfig.js`. This will ensure that we have a way to process the frontend template the backend template.
+5. For reference check the following [commit](https://github.com/farhan0167/no-code-ai/pull/18/commits/a59881d9d585c78ed94731dac652b1914f5a20a3) to see all the steps needed to add a new block.
