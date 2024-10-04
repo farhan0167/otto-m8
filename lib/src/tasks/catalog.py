@@ -6,6 +6,7 @@ class TaskCatalog(Enum):
     # key = module.file_name.class_name
     HUGGING_FACE_MODEL_CARD = 'tasks.hugging_face_model_card.HuggingFaceModelCard'
     OLLAMA_SERVER_GENERATE = 'tasks.ollama_server_generate.OllamaServerGenarate'
+    OLLAMA_SERVER_CHAT = 'tasks.ollama_server_chat.OllamaServerChat'
     OUTPUT = 'tasks.output_block.OutputBlock'
     #### Catalog for Tasks ####
 
@@ -78,3 +79,4 @@ TaskRegistry.add_task_to_registry_by_vendor("HUGGING FACE", "MODEL CARD", TaskCa
 
 TaskRegistry.add_vendor("Ollama")
 TaskRegistry.add_task_to_registry_by_vendor("Ollama", "OLLAMA GENRATE", TaskCatalog.OLLAMA_SERVER_GENERATE)
+TaskRegistry.add_task_to_registry_by_vendor("Ollama", "OLLAMA CHAT", TaskCatalog.OLLAMA_SERVER_CHAT)
