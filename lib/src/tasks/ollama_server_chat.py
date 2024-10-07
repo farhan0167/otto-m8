@@ -1,6 +1,7 @@
 import requests
 import json
 from tasks.task import Task
+from utils.llm_tools.ollama_tool import OllamaTool
 
 
 class OllamaServerChat(Task):
@@ -36,7 +37,7 @@ class OllamaServerChat(Task):
         
     
     def create_payload_from_run_config(self) -> dict:
-        payload = {"stream": False}
+        payload = {"stream": False, "tools": []}
         model = self.run_config.get('model')
         if model is None:
             raise Exception("Model is not specified in the run config")
@@ -48,5 +49,11 @@ class OllamaServerChat(Task):
         if system_message is not None:
             self.messages.append({"role": "system", "content": system_message})
             payload['messages'] = self.messages
+        # Process any tools available
+        tools = self.run_config.get('tools')
+        if tools is not None:
+            for tool in tools:
+                tool = OllamaTool().process_tool(tool)
+                payload['tools'].append(tool)
         return payload
         
