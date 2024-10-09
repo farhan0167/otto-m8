@@ -19,6 +19,8 @@ from db.models.workflow_templates import WorkflowTemplates
 from blocks import WorkflowTemplate
 from tasks.catalog import TaskRegistry
 
+from integrations.catalog import IntegrationRegistry
+
 # TODO Refactor code so that things that do not need to be here, arent here.
 # Need to have their own files, modules and abstraction. This is a hack.
 def create_tables():
@@ -318,7 +320,9 @@ def get_template(template_id: int, db_session: Session = Depends(get_db)):
 
 @app.get("/get_block_types")
 def get_block_types():
-    block_types = TaskRegistry.get_task_registry()
+    task_block_types = TaskRegistry.get_task_registry()
+    integration_block_types = IntegrationRegistry.get_integration_registry()
+    block_types = {**task_block_types, **integration_block_types}
     # TODO: Standard Server Response: Implement a standard response template
     return block_types
 
