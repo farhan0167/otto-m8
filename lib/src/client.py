@@ -326,3 +326,16 @@ def get_block_types():
     # TODO: Standard Server Response: Implement a standard response template
     return block_types
 
+
+@app.get("/get_integration_block_types")
+def get_integration_block_types():
+    integration_block_types = IntegrationRegistry.get_integration_registry()
+    # TODO: Standard Server Response: Implement a standard response template
+    return integration_block_types
+
+@app.post("/test")
+async def test(request: Request):
+    resp = await request.json()
+    print(resp)
+    print(type(resp))
+    return {"message": "Hello World"}
