@@ -138,7 +138,11 @@ def create_container_with_in_memory_dockerfile(payload):
         
         requirement_text_files = get_dependency_list_paths(payload)
         requirement_text_files_for_dockerfile = [path.replace(".", "/app", 1) for path in requirement_text_files]
-        requirement_text_file_paths = " ".join([f"-r {path}" for path in requirement_text_files_for_dockerfile])
+        if requirement_text_files:
+            requirement_text_files_for_dockerfile = [path.replace(".", "/app", 1) for path in requirement_text_files]
+            requirement_text_file_paths = " ".join([f"-r {path}" for path in requirement_text_files_for_dockerfile])
+        else:
+            requirement_text_file_paths = "fastapi"
 
         # Create the Dockerfile content
         dockerfile_content = f"""
