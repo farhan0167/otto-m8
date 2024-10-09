@@ -6,6 +6,8 @@ class HTTPPostRequest(Integration):
         self.run_config = run_config
         self.content_type = 'application/json'
         self.endpoint = self.run_config.get('endpoint')
+        if 'localhost' in self.endpoint:
+            self.endpoint = self.endpoint.replace('localhost', 'host.docker.internal')
         self.method = 'POST'
         
     def run(self, input_ = None):
