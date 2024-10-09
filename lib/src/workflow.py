@@ -2,6 +2,7 @@ from collections import defaultdict, deque
 from typing import Any, Union, List
 from blocks import WorkflowTemplate, InputBlock
 from tasks.implementer import Implementer
+from integrations.implementer import IntegrationImplementer
 
 class RunWorkflow:
     def __init__(self, workflow: WorkflowTemplate):
@@ -35,10 +36,18 @@ class RunWorkflow:
                 run_config = next_hop.run_config
                 # Add input type to the run configuration
                 run_config['input_type'] = client_input.input_type
-                process = Implementer().create_task(
-                    task_type=process_metadata['process_type'],
-                    run_config=run_config
-                )
+                if process_metadata['process_type'] == 'task':
+                    process = Implementer().create_task(
+                        task_type=process_metadata['core_block_type'],
+                        run_config=run_config
+                    )
+                elif process_metadata['process_type'] == 'integration':
+                    process = IntegrationImplementer().create_integration(
+                        integration_type=process_metadata['core_block_type'],
+                        run_config=run_config
+                    )
+                else:
+                    raise ValueError(f"Process type {process_metadata['process_type']} is not supported")
                 next_hop.implementation = process
 
         
@@ -140,10 +149,18 @@ class RunWorkflowBFS(RunWorkflow):
                 run_config = next_hop.run_config
                 # Add input type to the run configuration
                 run_config['input_type'] = client_input.input_type
-                process = Implementer().create_task(
-                    task_type=process_metadata['process_type'],
-                    run_config=run_config
-                )
+                if process_metadata['process_type'] == 'task':
+                    process = Implementer().create_task(
+                        task_type=process_metadata['core_block_type'],
+                        run_config=run_config
+                    )
+                elif process_metadata['process_type'] == 'integration':
+                    process = IntegrationImplementer().create_integration(
+                        integration_type=process_metadata['core_block_type'],
+                        run_config=run_config
+                    )
+                else:
+                    raise ValueError(f"Process type {process_metadata['process_type']} is not supported")
                 next_hop.implementation = process
     
     

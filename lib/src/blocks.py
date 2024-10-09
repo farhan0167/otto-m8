@@ -86,7 +86,7 @@ execution = {
                 "model_card": "huggingface/detr-resnet-50",
             },
             "process_metadata": {
-                "process_type": "hugging_face_model_card",
+                "core_block_type": "hugging_face_model_card",
                 "deep_learning_classification": "auto_model"
             },
         },
@@ -98,7 +98,7 @@ execution = {
                 "imports": "doc_tr",
             },
             "process_metadata": {
-                "process_type": "ocr"
+                "core_block_type": "ocr"
             }
         }
     ],

@@ -106,7 +106,7 @@ def get_dependency_list_paths(payload):
 
     processes = payload['process']
     for process in processes:
-        task_type = process['process_metadata']['process_type']
+        task_type = process['process_metadata']['core_block_type']
         if task_type in requirement_txt_files:
             dependencies.append(f'{dependency_store_path}/{task_type}.txt')
     return dependencies
