@@ -10,6 +10,8 @@ from fastapi import FastAPI, Request, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from pydantic import BaseModel
+
 
 from db.base import Base
 from db.db_engine import engine, get_session, get_db
@@ -337,9 +339,26 @@ def get_integration_block_types():
     # TODO: Standard Server Response: Implement a standard response template
     return integration_block_types
 
+class LocationRequest(BaseModel):
+    location: str
+
 @app.post("/test")
-async def test(request: Request):
-    resp = await request.json()
-    print(resp)
-    print(type(resp))
-    return {"message": "Hello World"}
+async def test(location: LocationRequest):
+    dummy_temperatures = {
+        "san francisco": 68,
+        "new york": 75,
+        "london": 60,
+        "tokyo": 80,
+        "paris": 65,
+        "dhaka": 70
+    }
+    # Convert location to lowercase for case-insensitive matching
+    location = location.location.lower()
+
+    # Check if the location exists in the dummy data
+    if location in dummy_temperatures:
+        temperature = dummy_temperatures[location]
+        return {"location": location.title(), "temperature": temperature}
+    else:
+        # Return a 404 if the location is not found
+        raise HTTPException(status_code=404, detail="Location not found")
