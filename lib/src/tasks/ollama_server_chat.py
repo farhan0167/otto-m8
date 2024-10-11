@@ -15,13 +15,41 @@ class OllamaServerChat(Task):
             else 'http://host.docker.internal:11434/api/chat'
         )
         self.messages = []
+        self.available_tools = {}
         self.request_payload = self.create_payload_from_run_config()
-
+    
     def run(self, input_:str) -> dict:
         self.request_payload['messages'].append({"role": "user", "content": input_})
         headers = {
             'Content-Type': 'application/json'
         }
+        # Make the first call.
+        response = requests.request(
+            "POST", url=self.ollama_server_endpoint, 
+            headers=headers, 
+            data=json.dumps(self.request_payload)
+        )
+        response = response.json()
+        self.request_payload['messages'].append(response['message'])
+        self.messages = self.request_payload['messages']
+        response['conversation'] = self.messages
+        # If model chose not to call any tools, return the response
+        if not response['message'].get('tool_calls'):
+            return json.loads(json.dumps(response))
+        
+        # If model chose to call tools, then call the available tools.
+        if response['message'].get('tool_calls'):
+            for tool_call in response['message']['tool_calls']:
+                tool_name = tool_call['function']['name']
+                function_to_call = self.available_tools.get(tool_name)
+                if function_to_call is None:
+                    continue
+                function_params = tool_call['function']['arguments']
+                function_response = function_to_call.run(function_params)
+                self.request_payload['messages'].append({
+                    "role": "tool",
+                    "content": str(function_response)
+                })
         response = requests.request(
             "POST", url=self.ollama_server_endpoint, 
             headers=headers, 
@@ -32,7 +60,6 @@ class OllamaServerChat(Task):
         self.messages = self.request_payload['messages']
         response['conversation'] = self.messages
         return json.loads(json.dumps(response))
-
         
         
     
@@ -53,7 +80,9 @@ class OllamaServerChat(Task):
         tools = self.run_config.get('tools')
         if tools is not None:
             for tool in tools:
-                tool = OllamaTool().process_tool(tool)
-                payload['tools'].append(tool)
+                ollama_tool = OllamaTool()
+                tool_schema = ollama_tool.process_tool(tool)
+                payload['tools'].append(tool_schema)
+                self.available_tools[ tool['name'] ] = ollama_tool.implements
         return payload
         
