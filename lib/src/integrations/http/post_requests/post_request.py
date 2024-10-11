@@ -1,5 +1,6 @@
 from integrations.integration import Integration
 import requests
+import json
 
 class HTTPPostRequest(Integration):
     def __init__(self, run_config:dict) -> None:
@@ -17,7 +18,7 @@ class HTTPPostRequest(Integration):
         response = requests.request(
             self.method, url=self.endpoint, 
             headers=headers, 
-            data=input_
+            json=input_
         )
         response = self.post_process_response(response)
         return response
