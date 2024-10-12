@@ -1,4 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
+body {
+    /*font-family: "Inter", sans-serif;*/
+    font-family: 'Segoe UI', sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
 
 .parent-component{
   display: flex;
@@ -17,7 +24,11 @@
   font-size: 10px;
 }
 
+.sidebar-background-color {
+  background-color: #eeeeee;
+}
+
 .btn-primary {
-  background-color: #5900ff; /* Green */
-  --bs-btn-border-color: #5900ff;
+  background-color: #000000; /* Green */
+  --bs-btn-border-color: #000000;
 }

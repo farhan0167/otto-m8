@@ -10,6 +10,8 @@ from fastapi import FastAPI, Request, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from pydantic import BaseModel
+
 
 from db.base import Base
 from db.db_engine import engine, get_session, get_db
@@ -18,6 +20,8 @@ from db.models.users import Users
 from db.models.workflow_templates import WorkflowTemplates
 from blocks import WorkflowTemplate
 from tasks.catalog import TaskRegistry
+
+from integrations.catalog import IntegrationRegistry
 
 # TODO Refactor code so that things that do not need to be here, arent here.
 # Need to have their own files, modules and abstraction. This is a hack.
@@ -104,7 +108,7 @@ def get_dependency_list_paths(payload):
 
     processes = payload['process']
     for process in processes:
-        task_type = process['process_metadata']['process_type']
+        task_type = process['process_metadata']['core_block_type']
         if task_type in requirement_txt_files:
             dependencies.append(f'{dependency_store_path}/{task_type}.txt')
     return dependencies
@@ -136,7 +140,11 @@ def create_container_with_in_memory_dockerfile(payload):
         
         requirement_text_files = get_dependency_list_paths(payload)
         requirement_text_files_for_dockerfile = [path.replace(".", "/app", 1) for path in requirement_text_files]
-        requirement_text_file_paths = " ".join([f"-r {path}" for path in requirement_text_files_for_dockerfile])
+        if requirement_text_files:
+            requirement_text_files_for_dockerfile = [path.replace(".", "/app", 1) for path in requirement_text_files]
+            requirement_text_file_paths = " ".join([f"-r {path}" for path in requirement_text_files_for_dockerfile])
+        else:
+            requirement_text_file_paths = "fastapi"
 
         # Create the Dockerfile content
         dockerfile_content = f"""
@@ -318,7 +326,39 @@ def get_template(template_id: int, db_session: Session = Depends(get_db)):
 
 @app.get("/get_block_types")
 def get_block_types():
-    block_types = TaskRegistry.get_task_registry()
+    task_block_types = TaskRegistry.get_task_registry()
+    integration_block_types = IntegrationRegistry.get_integration_registry()
+    block_types = {**task_block_types, **integration_block_types}
     # TODO: Standard Server Response: Implement a standard response template
     return block_types
 
+
+@app.get("/get_integration_block_types")
+def get_integration_block_types():
+    integration_block_types = IntegrationRegistry.get_integration_registry()
+    # TODO: Standard Server Response: Implement a standard response template
+    return integration_block_types
+
+class LocationRequest(BaseModel):
+    location: str
+
+@app.post("/test")
+async def test(location: LocationRequest):
+    dummy_temperatures = {
+        "san francisco": 68,
+        "new york": 75,
+        "london": 60,
+        "tokyo": 80,
+        "paris": 65,
+        "dhaka": 70
+    }
+    # Convert location to lowercase for case-insensitive matching
+    location = location.location.lower()
+
+    # Check if the location exists in the dummy data
+    if location in dummy_temperatures:
+        temperature = dummy_temperatures[location]
+        return {"location": location.title(), "temperature": temperature}
+    else:
+        # Return a 404 if the location is not found
+        raise HTTPException(status_code=404, detail="Location not found")

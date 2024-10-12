@@ -26,7 +26,7 @@ To add a new kind of block which performs a new kind of Task not yet supported, 
         data: { 
             label: 'Task Block', 
             'modelCard': 'bert-base-uncased', 
-            'process_type': 'hugging_face_model_card',
+            'core_block_type': 'hugging_face_model_card',
             'logo': {
                 'src': '/assets/hugging_face_model_card.png', 
                 'height': '20%',
@@ -43,11 +43,11 @@ To add a new kind of block which performs a new kind of Task not yet supported, 
    import { initialDataAnotherTask } from "./Vendor/AnotherTask/initialData";
     ...
 
-    export const initialDataProcessBlock = ({nodeType, processBlockType}) => {
-        if (processBlockType === 'hugging_face_model_card') {
+    export const initialDataProcessBlock = ({nodeType, core_block_type}) => {
+        if (core_block_type === 'hugging_face_model_card') {
             return initialDataHuggingFaceModelCard(nodeType)
         }
-        if (processBlockType === 'other tasks registered in backend') {
+        if (core_block_type === 'other tasks registered in backend') {
             return initialDataAnotherTask(nodeType)
         }
         ...
