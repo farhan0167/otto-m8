@@ -7,6 +7,7 @@ class TaskCatalog(Enum):
     HUGGING_FACE_MODEL_CARD = 'tasks.hugging_face_model_card.HuggingFaceModelCard'
     OLLAMA_SERVER_GENERATE = 'tasks.ollama_server_generate.OllamaServerGenarate'
     OLLAMA_SERVER_CHAT = 'tasks.ollama_server_chat.OllamaServerChat'
+    OPENAI_CHAT = 'tasks.openai_chat.OpenAIChat'
     OUTPUT = 'tasks.output_block.OutputBlock'
     #### Catalog for Tasks ####
 
@@ -80,3 +81,6 @@ TaskRegistry.add_task_to_registry_by_vendor("HUGGING FACE", "MODEL CARD", TaskCa
 TaskRegistry.add_vendor("Ollama")
 TaskRegistry.add_task_to_registry_by_vendor("Ollama", "OLLAMA GENRATE", TaskCatalog.OLLAMA_SERVER_GENERATE)
 TaskRegistry.add_task_to_registry_by_vendor("Ollama", "OLLAMA CHAT", TaskCatalog.OLLAMA_SERVER_CHAT)
+
+TaskRegistry.add_vendor("OpenAI")
+TaskRegistry.add_task_to_registry_by_vendor("OpenAI", "Chat Completion", TaskCatalog.OPENAI_CHAT)

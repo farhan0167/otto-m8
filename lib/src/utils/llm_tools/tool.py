@@ -11,7 +11,8 @@ class Tool(ABC):
                 "parameters": {
                     "type": "object",
                     "properties": {},
-                    "required": []
+                    "required": [],
+                    "additionalProperties": False
                 }
             }
         }
