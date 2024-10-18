@@ -21,9 +21,11 @@ def verify_password(plain_password: str, password: str) -> bool:
     return pwd_context.verify(plain_password, password)
 
 def create_token(email: str) -> str:
-    """Generate a simple token with 1-hour expiry."""
+    """Generate a simple token with 36-hour expiry."""
+    token_expiration_unit = 60*60
+    token_expiration_hours = 36
     token = secrets.token_hex(16)
-    expires = int((datetime.utcnow() + timedelta(hours=1)).timestamp())
+    expires = int((datetime.utcnow() + timedelta(hours=token_expiration_hours)).timestamp())
     redis_key = f"tokens:{token}"
     
     # Store the token data as a hash
@@ -33,7 +35,8 @@ def create_token(email: str) -> str:
     )
     
     # Set expiration for the token key
-    token_store.expire(redis_key, 3600)  # Expires in 1 hour
+    expire_after = token_expiration_unit * token_expiration_hours
+    token_store.expire(redis_key, expire_after)  # Expires in 1 hour
     
     return token
 
