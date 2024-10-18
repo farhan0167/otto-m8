@@ -1,5 +1,6 @@
 annotated-types==0.7.0
 anyio==4.4.0
+bcrypt==4.2.0
 certifi==2024.8.30
 charset-normalizer==3.3.2
 click==8.1.7
@@ -25,6 +26,7 @@ MarkupSafe==2.1.5
 mdurl==0.1.2
 openai==1.51.2
 packaging==24.1
+passlib==1.7.4
 psycopg2-binary==2.9.9
 pydantic==2.9.1
 pydantic_core==2.23.3

@@ -1,1 +1,3 @@
-# no-code-ai
+# otto-m8
+
+![header image](docs/git_header_img.png)
