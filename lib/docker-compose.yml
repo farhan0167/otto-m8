@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  redis:
+    container_name: redis
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+
+  postgres:
+    container_name: otto-db
+    image: "postgres:latest"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  otto-dashboard:
+    container_name: otto-dashboard
+    image: node:16-alpine
+    working_dir: /app
+    volumes:
+      - ./dashboard:/app
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm start"
+
+volumes:
+  postgres_data:
