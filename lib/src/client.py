@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 from db.base import Base
 from db.db_engine import engine, get_session
 from db.models.users import Users
+from db.auth import hash_password
 from app.routers import (
     template_router, 
     workflow_router, 
@@ -31,13 +32,14 @@ def create_default_user(db_session: Session):
     This function is used at startup to create a default user if no users exist in the database.
     """
     default_username = "default_user"
-    default_email = "default_user@example.com"
+    default_email = "default_user@example.com.admin"
+    default_password = "admin12345"
 
     # Check if the user already exists
     user = db_session.query(Users).filter_by(name=default_username).first()
     if not user:
         # User does not exist, so create a new one
-        new_user = Users(name=default_username, email=default_email)
+        new_user = Users(name=default_username, email=default_email, password=hash_password(default_password))
         db_session.add(new_user)
         try:
             db_session.commit()
