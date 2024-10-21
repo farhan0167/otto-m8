@@ -1,14 +1,6 @@
 <div>
-    <style>
-        .otto-logo-div{
-            margin-bottom: 0px;
-        }
-        .otto-logo{
-            border-radius: 15px;
-        }
-    </style>
-    <div class='otto-logo-div' align="center">
-        <img class='otto-logo' width='80px' src='docs/assets/otto.png'>
+    <div class='otto-logo-div' align="center" style="margin-bottom: 0px;">
+        <img class='otto-logo' width='80px' src='docs/assets/otto.png' style="border-radius: 15px;">
     </div>
     <h1 align="center">otto-m8</h1>
     <p align="center">A Flowchart based automation platform to run deep learning workloads with minimal to no code.</p>
