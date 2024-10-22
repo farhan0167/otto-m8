@@ -25,6 +25,9 @@ class OpenAIChat(Task):
         self.create_payload_from_run_config()
     
     def run(self, input_:str) -> dict:
+        
+        # Flag to determine if a function is available to be called
+        make_function_call = False
         self.messages.append({"role": "user", "content": input_})
 
         # Make the first call.
@@ -52,6 +55,7 @@ class OpenAIChat(Task):
                 function_to_call = self.available_tools.get(tool_name)
                 if function_to_call is None:
                     continue
+                make_function_call = True
                 function_params = json.loads(tool_call['function']['arguments'])
                 function_response = function_to_call.run(function_params)
                 self.messages.append({
@@ -59,6 +63,10 @@ class OpenAIChat(Task):
                     "content": str(function_response),
                     "tool_call_id": tool_call['id']
                 })
+        # If no functions were available for the tools, simply return the response
+        if not make_function_call:
+            return json.loads(json.dumps(response))
+        # Else, utilize the function response to query the OpenAI API.
         response = self.openAI_client.chat.completions.create(
             model=self.model,
             messages=self.messages,

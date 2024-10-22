@@ -19,6 +19,8 @@ class OllamaServerChat(Task):
         self.request_payload = self.create_payload_from_run_config()
     
     def run(self, input_:str) -> dict:
+        # Flag to determine if a function is available to be called
+        make_function_call = False
         self.request_payload['messages'].append({"role": "user", "content": input_})
         headers = {
             'Content-Type': 'application/json'
@@ -44,12 +46,16 @@ class OllamaServerChat(Task):
                 function_to_call = self.available_tools.get(tool_name)
                 if function_to_call is None:
                     continue
+                make_function_call = True
                 function_params = tool_call['function']['arguments']
                 function_response = function_to_call.run(function_params)
                 self.request_payload['messages'].append({
                     "role": "tool",
                     "content": str(function_response)
                 })
+        # If no functions were available for the tools, simply return the response
+        if not make_function_call:
+            return json.loads(json.dumps(response))
         response = requests.request(
             "POST", url=self.ollama_server_endpoint, 
             headers=headers, 
