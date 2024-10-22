@@ -130,7 +130,45 @@ class RunWorkflowBFS(RunWorkflow):
                 workflow_group, group_block_name = block_is_connected_to[i].split('.')
                 inverse_connection_of_connected_block = f"{block.block_type}.{block.name}"
                 self.block_name_map[workflow_group][group_block_name]['reverse_connection'].append(inverse_connection_of_connected_block)
-                
+    
+    def initialize_block(
+        self, 
+        workflow_group, 
+        block,
+        client_input_type,
+        visited
+    ):
+        if workflow_group == 'process' and block.name not in visited:
+            process_metadata = block.process_metadata
+            run_config = block.run_config
+            # Add input type to the run configuration
+            run_config['input_type'] = client_input_type
+            if process_metadata['process_type'] == 'task':
+                process = Implementer().create_task(
+                    task_type=process_metadata['core_block_type'],
+                    run_config=run_config
+                )
+            elif process_metadata['process_type'] == 'integration':
+                process = IntegrationImplementer().create_integration(
+                    integration_type=process_metadata['core_block_type'],
+                    run_config=run_config
+                )
+            else:
+                raise ValueError(f"Process type {process_metadata['process_type']} is not supported")
+            block.implementation = process
+            visited.append(block.name)
+            
+            for connection in block.connections:
+                workflow_group, group_block_name = connection.split('.')
+                next_hop_index = self.block_name_map[workflow_group][group_block_name]['index']
+                next_hop = self.workflow.process[next_hop_index]
+                self.initialize_block(
+                    workflow_group=workflow_group,
+                    block=next_hop,
+                    client_input_type=client_input_type,
+                    visited=visited
+                )
+        
     def initialize_resources(self, *args: Any, **kwds: Any) -> Any:
         inputs = self.workflow.input
         self.create_block_name_map()
@@ -143,25 +181,16 @@ class RunWorkflowBFS(RunWorkflow):
             for connection in client_input.connections:
                 workflow_group = connection.split('.')[0]
                 group_block_name = connection.split('.')[1]
-                next_hop_index = self.block_name_map['process'][group_block_name]['index']
+                next_hop_index = self.block_name_map[workflow_group][group_block_name]['index']
                 next_hop = self.workflow.process[next_hop_index]
-                process_metadata = next_hop.process_metadata
-                run_config = next_hop.run_config
-                # Add input type to the run configuration
-                run_config['input_type'] = client_input.input_type
-                if process_metadata['process_type'] == 'task':
-                    process = Implementer().create_task(
-                        task_type=process_metadata['core_block_type'],
-                        run_config=run_config
-                    )
-                elif process_metadata['process_type'] == 'integration':
-                    process = IntegrationImplementer().create_integration(
-                        integration_type=process_metadata['core_block_type'],
-                        run_config=run_config
-                    )
-                else:
-                    raise ValueError(f"Process type {process_metadata['process_type']} is not supported")
-                next_hop.implementation = process
+                visited = []
+                self.initialize_block(
+                    workflow_group=workflow_group,
+                    block=next_hop,
+                    client_input_type=client_input.input_type,
+                    visited=visited
+                )
+                
     
     
     def run_workflow(self, payload=None, *args: Any, **kwds: Any) -> Any:
