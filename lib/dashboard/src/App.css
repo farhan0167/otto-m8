@@ -2,9 +2,31 @@
 
 body {
     /*font-family: "Inter", sans-serif;*/
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Inter', sans-serif;
     font-optical-sizing: auto;
     font-style: normal;
+}
+
+body .form-control {
+  border-radius: 4px; 
+}
+
+.form-group {
+  margin-bottom: 25px !important;
+}
+
+.form-label {
+  font-weight: 600;
+}
+
+.offcanvas {
+  padding: 8px;
+}
+
+
+.form-control:focus {
+  border: 1px solid #000000;
+  box-shadow: none;
 }
 
 .parent-component{
