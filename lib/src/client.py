@@ -14,7 +14,8 @@ from app.routers import (
     block_types_router,
     function_call_router,
     auth_router,
-    lambdas_router
+    lambdas_router,
+    instant_run_router
 )
 
 # TODO Refactor code so that things that do not need to be here, arent here.
@@ -74,3 +75,4 @@ app.include_router(block_types_router.router)
 app.include_router(function_call_router.router)
 app.include_router(auth_router.router)
 app.include_router(lambdas_router.router)
+app.include_router(instant_run_router.router)
