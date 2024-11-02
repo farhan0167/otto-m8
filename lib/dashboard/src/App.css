@@ -33,18 +33,6 @@ body .form-control {
   display: flex;
 }
 
-.placeholder-block {
-  height: 90px;
-  width: 100px;
-  border: 1px dotted #000000;
-  padding: 5px;
-  border-radius: 5px;
-  background: white;
-}
-
-.placeholder-block  *{
-  font-size: 10px;
-}
 
 .sidebar-background-color {
   background-color: #eeeeee;

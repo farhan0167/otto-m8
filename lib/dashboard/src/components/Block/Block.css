@@ -1,8 +1,8 @@
 .process-block {
-        min-height: 80px;
+        min-height: 90px;
         overflow: auto;
         word-wrap: break-word;
-        width: 120px;
+        width: 150px;
         border: 1px solid #000000;
         border-radius: 5px;
         background-color: #fff;
@@ -18,8 +18,55 @@
 .process-block-body{
     padding-left: 5px;
     padding-top: 2px;
+    padding-right: 5px;
 }
+.process-block-body .form-label{
+    font-size: 7px;
+    margin-bottom: 0;
+}
+.process-block-body .form-control{
+    font-size: 7px;
+    height: 10px;
+    border-radius: 2px;
+    padding-left: 5px;
+}
+.process-block-body .form-group {
+    margin-bottom: 10px !important;
+  }
 
 .process-block * {
     font-size: 8px;
+}
+
+.placeholder-block {
+    height: 90px;
+    width: 100px;
+    padding: 5px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background: #F5EFFF;
+  }
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.add-icon{
+  font-size: 24px;
+  color: #333;
+  transition: color 0.3s, transform 0.3s;
+  cursor: pointer;
+  animation: pulse 1.5s infinite; /* Apply the pulse animation */
+  transition: color 0.3s; /* Smooth color transition on hover */
+}
+
+.add-icon:hover {
+  color: #74039e;
+  transform: scale(1.4);
+  animation: none; /* Stop the pulse animation on hover */
 }
