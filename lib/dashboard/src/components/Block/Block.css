@@ -27,7 +27,11 @@
 .process-block-body .form-control{
     font-size: 8px;
     height: 10px;
+    border-radius: 2px;
 }
+.process-block-body .form-group {
+    margin-bottom: 10px !important;
+  }
 
 .process-block * {
     font-size: 8px;
