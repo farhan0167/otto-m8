@@ -36,3 +36,12 @@
 .process-block * {
     font-size: 8px;
 }
+
+.placeholder-block {
+    height: 90px;
+    width: 100px;
+    padding: 5px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    background: #F5EFFF;
+  }
