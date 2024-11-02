@@ -25,9 +25,10 @@
     margin-bottom: 0;
 }
 .process-block-body .form-control{
-    font-size: 8px;
+    font-size: 7px;
     height: 10px;
     border-radius: 2px;
+    padding-left: 5px;
 }
 .process-block-body .form-group {
     margin-bottom: 10px !important;
