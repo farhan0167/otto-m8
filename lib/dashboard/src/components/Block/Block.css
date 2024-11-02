@@ -47,14 +47,26 @@
     background: #F5EFFF;
   }
 
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
 .add-icon{
   font-size: 24px;
   color: #333;
   transition: color 0.3s, transform 0.3s;
   cursor: pointer;
+  animation: pulse 1.5s infinite; /* Apply the pulse animation */
+  transition: color 0.3s; /* Smooth color transition on hover */
 }
 
 .add-icon:hover {
   color: #74039e;
   transform: scale(1.4);
+  animation: none; /* Stop the pulse animation on hover */
 }
