@@ -45,3 +45,15 @@
     border-radius: 5px;
     background: #F5EFFF;
   }
+
+.add-icon{
+  font-size: 24px;
+  color: #333;
+  transition: color 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+
+.add-icon:hover {
+  color: #74039e;
+  transform: scale(1.4);
+}
