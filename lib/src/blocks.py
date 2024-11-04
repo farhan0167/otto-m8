@@ -31,6 +31,7 @@ class OutputBlock(Block):
     block_type: str = 'output'
     
 class ProcessBlock(Block):
+    custom_name: str
     block_type: str = 'process'
     process_metadata: dict = {}
 
