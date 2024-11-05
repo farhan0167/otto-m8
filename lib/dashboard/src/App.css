@@ -42,3 +42,18 @@ body .form-control {
   background-color: #000000; /* Green */
   --bs-btn-border-color: #000000;
 }
+
+.custom-switch-size {
+  margin-left: 8px;
+}
+
+.custom-switch-size .form-check-input {
+  width: 2.5em; /* Adjust width as needed */
+  height: 1.2em; /* Adjust height as needed */
+  transform: scale(1.5); /* Increase scale to make it bigger */
+
+}
+
+.custom-switch-size .form-check-label {
+  padding-left: 25px;
+}
