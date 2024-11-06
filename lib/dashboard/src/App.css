@@ -12,7 +12,7 @@ body .form-control {
 }
 
 .form-group {
-  margin-bottom: 25px !important;
+  margin-bottom: 25px;
 }
 
 .form-label {
