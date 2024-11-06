@@ -36,9 +36,11 @@ class ProcessBlock(Block):
     process_metadata: dict = {}
 
 class WorkflowTemplate(BaseModel, extra='forbid'):
+    workflow_name: str
     input: List[InputBlock]
     process: List[ProcessBlock]
     output: List[OutputBlock]
+    version: float = 1.0
     
     @model_validator(mode='before')
     @classmethod
