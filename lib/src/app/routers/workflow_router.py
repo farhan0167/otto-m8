@@ -22,14 +22,18 @@ async def create_workflow(
     """Main endpoint that creates a new workflow and add a record to the database"""
     data = await request.json()
     user_id = current_user.id
-    workflow = WorkflowTemplate(**data['backend_template'])
+    backend_template = {
+        "workflow_name": data['workflow_name'],
+        **data['backend_template']
+    }
+    workflow = WorkflowTemplate(**backend_template)
     (container, 
      deployment_url, 
      dockerfile_content, 
      image
     ) = DockerTools.create_container_with_in_memory_dockerfile(workflow.dict())
     
-    backend_template = json.dumps(data['backend_template'])
+    backend_template = json.dumps(workflow.dict())
     frontend_template = json.dumps(data['frontend_template'])
     template_record = WorkflowTemplates(
         user_id=user_id, 
