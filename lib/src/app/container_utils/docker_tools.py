@@ -74,7 +74,7 @@ class DockerTools:
             image, _ = client.images.build(
                 path=temp_dir,
                 # TODO add a field to the blocks for Workflow such that we can get name of the image based on payload
-                tag=payload['workflow_name'],
+                tag=payload['workflow_name'].lower(),
                 rm=True
             )
             host_port = DockerTools.find_available_port(8001, 9000)

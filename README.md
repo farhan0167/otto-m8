@@ -4,8 +4,9 @@
     </div>
     <h1 align="center">otto-m8</h1>
     <p align="center">A Flowchart based automation platform to run deep learning workloads with minimal to no code.</p>
-    <p>otto-m8 (automate) lets users spin up a wide range of AI models, starting from Traditional deep learning models to large language models, all through a flowchart like user interface. At its core, otto-m8 will deploy a Docker container of your workflow that one can use as an API to integrate with your existing workflows, buidling a AI assistant chatbot or using it as a standalone application.</p>
-    <img src='docs/git_header_img.png'/>
+    <p>otto-m8 (automate) lets users spin up a wide range of AI models, starting from Traditional deep learning models to large language models, all through a flowchart like user interface. At its core, otto-m8 will deploy a Docker container of your workflow that you can use as an API to integrate with your existing workflows, build a AI assistant chatbot or use it as a standalone API/application.</p>
+    <p></p>
+    <div align='center'><img src='docs/assets/demo1.gif'/></div>
 </div>
 
 
