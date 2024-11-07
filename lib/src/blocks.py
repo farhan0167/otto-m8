@@ -31,13 +31,16 @@ class OutputBlock(Block):
     block_type: str = 'output'
     
 class ProcessBlock(Block):
+    custom_name: str
     block_type: str = 'process'
     process_metadata: dict = {}
 
 class WorkflowTemplate(BaseModel, extra='forbid'):
+    workflow_name: str
     input: List[InputBlock]
     process: List[ProcessBlock]
     output: List[OutputBlock]
+    version: float = 1.0
     
     @model_validator(mode='before')
     @classmethod

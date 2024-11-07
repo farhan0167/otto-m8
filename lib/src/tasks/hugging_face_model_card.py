@@ -30,8 +30,9 @@ class HuggingFaceModelCard(Task):
         # TODO Post Processing: Perhaps everything should have its own post processing logic.
         try:
             if not isinstance(results, dict):
-                return results
-            results = json.loads(results)
+                # If not dict, convert it into one.
+                results = {'output': results}
+            results = json.loads(json.dumps(results))
         except:
             for process_name, process_outputs in results.items():
                 for i, process_output in enumerate(process_outputs):
@@ -39,6 +40,10 @@ class HuggingFaceModelCard(Task):
                         if not (isinstance(value, str) or isinstance(value, int) or isinstance(value, float)):
                             results[process_name][i][key] = str(value)
             results = json.loads(json.dumps(results))
+        # Check if we need to pass the input to the output
+        pass_input_to_output = self.run_config.get('pass_input_to_output', False)
+        if pass_input_to_output:
+            results['input'] = input_
         return results
     
     def get_huggingface_pipeline_config(self):

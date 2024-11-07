@@ -2,9 +2,6 @@ import requests
 import json
 
 from integrations.integration import Integration
-from db.db_engine import get_session
-from db.models.lambdas import Lambdas
-
 
 class LambdaFunction(Integration):
     def __init__(self, run_config: dict) -> None:

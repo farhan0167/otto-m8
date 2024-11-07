@@ -74,7 +74,7 @@ class DockerTools:
             image, _ = client.images.build(
                 path=temp_dir,
                 # TODO add a field to the blocks for Workflow such that we can get name of the image based on payload
-                tag="fastapi-in-memory-app",
+                tag=payload['workflow_name'].lower(),
                 rm=True
             )
             host_port = DockerTools.find_available_port(8001, 9000)
@@ -119,14 +119,34 @@ class DockerTools:
     def stop_docker_container(container_id: str):
         """Stop a docker container given a container id"""
         client = docker.from_env()
-        container = client.containers.get(container_id)
-        container.stop()
+        try:
+            container = client.containers.get(container_id)
+            container.stop()
+        except docker.errors.NullResource:
+            print("Container not found. Nothing to stop.")
+            
     @staticmethod
-    def delete_docker_container(container_id: str):
-        """Delete a docker container given a container id"""
+    def delete_docker_container(
+        container_id: str,
+        image_id: str = None
+    ):
+        """Delete a docker container given a container id
+        including the associated image."""
         client = docker.from_env()
-        container = client.containers.get(container_id)
-        container.remove()
+        if container_id:
+            container = client.containers.get(container_id)
+            container.remove()
+            # Get the image ID from the container
+            image_id = container.image.id
+        
+        # Remove the image by its ID
+        try:
+            client.images.remove(image=image_id)
+            print(f"Image {image_id} removed successfully.")
+        except docker.errors.ImageNotFound:
+            print("Image not found. Nothing to remove.")
+        except docker.errors.APIError as e:
+            print(f"Failed to remove image: {e}")
     
     @staticmethod
     def start_docker_container(image_id:str, host_port:int=8001):
