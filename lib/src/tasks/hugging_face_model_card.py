@@ -14,8 +14,6 @@ class HuggingFaceModelCard(Task):
         self.model_card = run_config.get('model_card')
         self.input_type = run_config.get('input_type')
         self.get_huggingface_pipeline_config()
-        # self.tokenizer = AutoTokenizer.from_pretrained(self.model_card)
-        # self.model = AutoModelForSequenceClassification.from_pretrained(self.model_card, num_labels=3)
         self.pipeline = pipeline(self.pipeline_tag, model=self.model_card)
         
     
