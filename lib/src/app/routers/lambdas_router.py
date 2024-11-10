@@ -120,7 +120,6 @@ def create_container_with_in_memory_dockerfile(code, lambda_name):
             # Copy the files from your working directory to the temporary directory for docker build context
             source_dir = os.getcwd()
             lambdas_dir = os.path.join(source_dir, "lambdas")
-            print(os.listdir(lambdas_dir))
             shutil.copytree(lambdas_dir, os.path.join(temp_dir, 'app_files'), dirs_exist_ok=True)
             
             with open(os.path.join(temp_dir, 'app_files', 'handler.py'), 'w') as f:
@@ -130,7 +129,7 @@ def create_container_with_in_memory_dockerfile(code, lambda_name):
             image, _ = client.images.build(
                 path=os.path.join(temp_dir, 'app_files'),
                 # TODO add a field to the blocks for Workflow such that we can get name of the image based on payload
-                tag=f"fastapi-lambdas-{lambda_name}",
+                tag=f"otto-m8-lambdas-{lambda_name}",
                 rm=True
             )
             host_port = DockerTools.find_available_port(9000,10000)

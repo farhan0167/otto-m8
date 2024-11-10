@@ -45,7 +45,7 @@ class DockerTools:
 
             # Create the Dockerfile content
             dockerfile_content = f"""
-            FROM python:3.10-slim
+            FROM farhan0167/otto-m8-base:latest
 
             # Set the working directory
             WORKDIR /app
@@ -53,8 +53,6 @@ class DockerTools:
             # Copy existing FastAPI app code into the container
             COPY app_files /app
 
-            # Install shared dependencies
-            RUN pip install fastapi uvicorn python-multipart pillow requests
             # Install task based dependencies dynamically
             RUN pip install {requirement_text_file_paths}
 
