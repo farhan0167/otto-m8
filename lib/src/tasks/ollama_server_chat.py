@@ -14,11 +14,13 @@ class OllamaServerChat(Task):
             if self.run_config.get('endpoint') is not None 
             else 'http://host.docker.internal:11434/api/chat'
         )
-        self.messages = []
         self.available_tools = {}
         self.request_payload = self.create_payload_from_run_config()
     
     def run(self, input_:str) -> dict:
+        self.request_payload['messages'] = []
+        self.request_payload['messages'].append(self.insert_system_message())
+        
         # Flag to determine if a function is available to be called
         make_function_call = False
         self.request_payload['messages'].append({"role": "user", "content": input_})
@@ -33,8 +35,10 @@ class OllamaServerChat(Task):
         )
         response = response.json()
         self.request_payload['messages'].append(response['message'])
-        self.messages = self.request_payload['messages']
-        response['conversation'] = self.messages
+        
+        messages = self.request_payload['messages'][1:]
+        response['conversation'] = messages
+        
         # If model chose not to call any tools, return the response
         if not response['message'].get('tool_calls'):
             return json.loads(json.dumps(response))
@@ -63,8 +67,10 @@ class OllamaServerChat(Task):
         )
         response = response.json()
         self.request_payload['messages'].append(response['message'])
-        self.messages = self.request_payload['messages']
-        response['conversation'] = self.messages
+        
+        messages = self.request_payload['messages'][1:]
+        response['conversation'] = messages
+        
         return json.loads(json.dumps(response))
         
         
@@ -78,10 +84,6 @@ class OllamaServerChat(Task):
         temperature = self.run_config.get('temperature')
         if temperature is not None:
             payload['temperature'] = temperature
-        system_message = self.run_config.get('system')
-        if system_message is not None:
-            self.messages.append({"role": "system", "content": system_message})
-            payload['messages'] = self.messages
         # Process any tools available
         tools = self.run_config.get('tools')
         if tools is not None:
@@ -91,4 +93,8 @@ class OllamaServerChat(Task):
                 payload['tools'].append(tool_schema)
                 self.available_tools[ tool['name'] ] = ollama_tool.implements
         return payload
+    
+    def insert_system_message(self):
+        system_message = self.run_config.get('system')
+        return {"role": "system", "content": system_message}
         

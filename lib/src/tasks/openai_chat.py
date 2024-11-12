@@ -25,25 +25,27 @@ class OpenAIChat(Task):
         self.create_payload_from_run_config()
     
     def run(self, input_:str) -> dict:
+        messages = []
+        messages.append(self.insert_system_message())
         
         # Flag to determine if a function is available to be called
         make_function_call = False
-        self.messages.append({"role": "user", "content": input_})
+        messages.append({"role": "user", "content": input_})
 
         # Make the first call.
         response = self.openAI_client.chat.completions.create(
             model=self.model,
-            messages=self.messages,
+            messages=messages,
             tools=self.tools
         )
         response = response.dict()
         choice = response['choices'][0]
-        self.messages.append(
+        messages.append(
             self.openai_response_get_message(
                 response_choice=choice
             )
         )
-        response['conversation'] = self.messages
+        response['conversation'] = messages[1:]
         # If model chose not to call any tools, return the response
         if not choice['message'].get('tool_calls'):
             return json.loads(json.dumps(response))
@@ -58,7 +60,7 @@ class OpenAIChat(Task):
                 make_function_call = True
                 function_params = json.loads(tool_call['function']['arguments'])
                 function_response = function_to_call.run(function_params)
-                self.messages.append({
+                messages.append({
                     "role": "tool",
                     "content": str(function_response),
                     "tool_call_id": tool_call['id']
@@ -69,18 +71,18 @@ class OpenAIChat(Task):
         # Else, utilize the function response to query the OpenAI API.
         response = self.openAI_client.chat.completions.create(
             model=self.model,
-            messages=self.messages,
+            messages=messages,
             tools=self.tools
         )
         response = response.dict()
         choice = response['choices'][0]
-        self.messages.append(
+        messages.append(
             self.openai_response_get_message(
                 response_choice=choice
             )
         )
 
-        response['conversation'] = self.messages
+        response['conversation'] = messages[1:]
         return json.loads(json.dumps(response))
     
     def openai_response_get_message(self, response_choice):
@@ -109,10 +111,6 @@ class OpenAIChat(Task):
 
         model = self.run_config.get('model', 'gpt-4o-mini')
         self.model = model
-        
-        system_message = self.run_config.get('system')
-        if system_message is not None:
-            self.messages.append({"role": "system", "content": system_message})
             
         # Process any tools available
         tools = self.run_config.get('tools')
@@ -123,4 +121,9 @@ class OpenAIChat(Task):
                 tool_schema = openai_tool.process_tool(tool)
                 self.tools.append(tool_schema)
                 self.available_tools[ tool['name'] ] = openai_tool.implements
+    
+    def insert_system_message(self):
+        system_message = self.run_config.get('system')
+        return {"role": "system", "content": system_message}
+        
         
