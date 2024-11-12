@@ -54,6 +54,48 @@ async def root(data: Request, file: Optional[UploadFile] = File(None)):
         raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
     output = workflow.run_workflow(payload=payload)
+    output = output['Output_Block']['block_output']
     output = json.dumps(output)   
 
     return {"message": output}
+
+@app.post("/workflow_run/run_chat")
+async def chat(data: Request):
+    payload = None
+    # Check if the content type is JSON, which indicates a text input
+    if data.headers.get('content-type') == 'application/json':
+        try:
+            req = await data.json()
+            payload = req.get('text', None)
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid JSON payload")
+        
+    if not payload:
+        #TODO Change this exception
+        raise HTTPException(status_code=400, detail="Invalid JSON payload")
+        
+    output = workflow.run_workflow(payload=payload)
+    output = output['Chat_Output']['block_output']
+    output = list(output.values())[0]
+
+    return output
+
+@app.get("/workflow_run/get_chat_history")
+async def get_chat_history():
+    workflow_outputs = workflow.workflow.output
+    chat_output = None
+    for output in workflow_outputs:
+        if output.name == 'Chat_Output':
+            chat_output = output.implementation
+    chat_history = chat_output.chat_history
+    return {"chat_history": chat_history}
+
+@app.delete("/workflow_run/clear_chat_history")
+async def clear_chat_history():
+    workflow_outputs = workflow.workflow.output
+    chat_output = None
+    for output in workflow_outputs:
+        if output.name == 'Chat_Output':
+            chat_output = output.implementation
+    chat_output.chat_history = []
+    return {"message": "Chat history cleared"}
