@@ -155,27 +155,37 @@ class RunWorkflowBFS(RunWorkflow):
                 )
             else:
                 raise ValueError(f"Process type {process_metadata['process_type']} is not supported")
-            block.implementation = process
-            visited.append(block.name)
-            
-            for connection in block.connections:
-                workflow_group, group_block_name = connection.split('.')
-                next_hop_index = self.block_name_map[workflow_group][group_block_name]['index']
-                next_hop = self.workflow.process[next_hop_index]
-                self.initialize_block(
-                    workflow_group=workflow_group,
-                    block=next_hop,
-                    client_input_type=client_input_type,
-                    visited=visited
+        elif workflow_group == 'output' and block.name not in visited:
+            # TODO: This is a bit of a hack. Come back to this later.
+            if block.name == 'Output_Block':
+                process = Implementer().create_task(
+                    task_type='output'
                 )
+            else:
+                process = Implementer().create_task(
+                    task_type='chat_output'
+                )
+        block.implementation = process
+        visited.append(block.name)
+        
+        for connection in block.connections:
+            workflow_group, group_block_name = connection.split('.')
+            next_hop_index = self.block_name_map[workflow_group][group_block_name]['index']
+            if workflow_group == 'process':
+                next_hop = self.workflow.process[next_hop_index]
+            else:
+                next_hop = self.workflow.output[next_hop_index]
+            self.initialize_block(
+                workflow_group=workflow_group,
+                block=next_hop,
+                client_input_type=client_input_type,
+                visited=visited
+            )
         
     def initialize_resources(self, *args: Any, **kwds: Any) -> Any:
         inputs = self.workflow.input
         self.create_block_name_map()
         self.get_all_reverse_connections()
-        
-        output_implementer = Implementer().create_task(task_type=self.workflow.output[0].block_type)
-        self.workflow.output[0].implementation = output_implementer
         
         for client_input in inputs:
             for connection in client_input.connections:
@@ -242,7 +252,7 @@ class RunWorkflowBFS(RunWorkflow):
                     Queue.append(self.block_name_map[workflow_group][group_block_name]['block'])
         
 
-        return self.block_name_map['output'][self.workflow.output[0].name]['block_output']
+        return self.block_name_map['output']
                     
         
         
