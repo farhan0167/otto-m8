@@ -9,6 +9,7 @@ class TaskCatalog(Enum):
     OLLAMA_SERVER_CHAT = 'tasks.ollama_server_chat.OllamaServerChat'
     OPENAI_CHAT = 'tasks.openai_chat.OpenAIChat'
     OUTPUT = 'tasks.output_block.OutputBlock'
+    CHAT_OUTPUT = 'tasks.chat_output_block.ChatOutputBlock'
     #### Catalog for Tasks ####
 
     def get_class(self):
@@ -75,12 +76,16 @@ class TaskRegistry:
         return cls.vendors
 
 # Register Tasks and Vendors
-TaskRegistry.add_vendor("HUGGING FACE")
-TaskRegistry.add_task_to_registry_by_vendor("HUGGING FACE", "MODEL CARD", TaskCatalog.HUGGING_FACE_MODEL_CARD)
+TaskRegistry.add_vendor("Hugging Face")
+TaskRegistry.add_task_to_registry_by_vendor("Hugging Face", "Model Card", TaskCatalog.HUGGING_FACE_MODEL_CARD)
 
 TaskRegistry.add_vendor("Ollama")
-TaskRegistry.add_task_to_registry_by_vendor("Ollama", "OLLAMA GENRATE", TaskCatalog.OLLAMA_SERVER_GENERATE)
-TaskRegistry.add_task_to_registry_by_vendor("Ollama", "OLLAMA CHAT", TaskCatalog.OLLAMA_SERVER_CHAT)
+TaskRegistry.add_task_to_registry_by_vendor("Ollama", "Ollama Generate", TaskCatalog.OLLAMA_SERVER_GENERATE)
+TaskRegistry.add_task_to_registry_by_vendor("Ollama", "Ollama Chat", TaskCatalog.OLLAMA_SERVER_CHAT)
 
 TaskRegistry.add_vendor("OpenAI")
 TaskRegistry.add_task_to_registry_by_vendor("OpenAI", "Chat Completion", TaskCatalog.OPENAI_CHAT)
+
+TaskRegistry.add_vendor("Output Blocks")
+TaskRegistry.add_task_to_registry_by_vendor("Output Blocks", "Standard", TaskCatalog.OUTPUT)
+TaskRegistry.add_task_to_registry_by_vendor("Output Blocks", "Chat Output", TaskCatalog.CHAT_OUTPUT)
