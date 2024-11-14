@@ -4,79 +4,9 @@ from blocks import WorkflowTemplate, InputBlock
 from tasks.implementer import Implementer
 from integrations.implementer import IntegrationImplementer
 
+    
 class RunWorkflow:
     def __init__(self, workflow: WorkflowTemplate):
-        self.workflow = workflow
-        self.block_name_map = {
-            'input': {},
-            'process': {},
-            'output': {}
-        }
-    
-    def create_block_name_map(self):
-        processes = self.workflow.process
-        self.block_name_map['process'] = {block.name: i for i, block in enumerate(processes)}
-        outputs = self.workflow.output
-        self.block_name_map['output'] = {block.name: i for i, block in enumerate(outputs)}
-    
-    def initialize_resources(self, *args: Any, **kwds: Any) -> Any:
-        inputs = self.workflow.input
-        self.create_block_name_map()
-        
-        output_implementer = Implementer().create_task(task_type=self.workflow.output[0].block_type)
-        self.workflow.output[0].implementation = output_implementer
-        
-        for client_input in inputs:
-            for connection in client_input.connections:
-                workflow_group = connection.split('.')[0]
-                group_block_name = connection.split('.')[1]
-                next_hop_index = self.block_name_map['process'][group_block_name]
-                next_hop = self.workflow.process[next_hop_index]
-                process_metadata = next_hop.process_metadata
-                run_config = next_hop.run_config
-                # Add input type to the run configuration
-                run_config['input_type'] = client_input.input_type
-                if process_metadata['process_type'] == 'task':
-                    process = Implementer().create_task(
-                        task_type=process_metadata['core_block_type'],
-                        run_config=run_config
-                    )
-                elif process_metadata['process_type'] == 'integration':
-                    process = IntegrationImplementer().create_integration(
-                        integration_type=process_metadata['core_block_type'],
-                        run_config=run_config
-                    )
-                else:
-                    raise ValueError(f"Process type {process_metadata['process_type']} is not supported")
-                next_hop.implementation = process
-
-        
-    def run_workflow(self, payload=None, *args: Any, **kwds: Any) -> Any:
-        if not payload:
-            raise Exception('No payload provided')
-        inputs = self.workflow.input
-        #self.create_block_name_map()
-        
-        output_implementer = self.workflow.output[0].implementation
-        
-        for client_input in inputs:
-            client_input.payload = payload
-            for connection in client_input.connections:
-                workflow_group = connection.split('.')[0]
-                group_block_name = connection.split('.')[1]
-                next_hop_index = self.block_name_map['process'][group_block_name]
-                next_hop = self.workflow.process[next_hop_index]
-                #run_config = next_hop.run_config
-                process_output = next_hop.implementation.run(client_input.payload)
-                for process_connection in next_hop.connections:
-                    # TODO: This assumes that the next hop is an output block. This won't be necessarily true.
-                    output_implementer.run(process_output, inbound_process_name=group_block_name)
-                    
-        return output_implementer.final_output
-    
-class RunWorkflowBFS(RunWorkflow):
-    def __init__(self, workflow: WorkflowTemplate):
-        super().__init__(workflow)
         self.workflow = workflow
         self.block_name_map = defaultdict(lambda: defaultdict(lambda: defaultdict(dict)))
         
@@ -119,7 +49,8 @@ class RunWorkflowBFS(RunWorkflow):
                 # current block is connected to 
                 workflow_group, group_block_name = block_is_connected_to[i].split('.')
                 inverse_connection_of_connected_block = f"{block.block_type}.{block.name}"
-                self.block_name_map[workflow_group][group_block_name]['reverse_connection'].append(inverse_connection_of_connected_block)
+                self.block_name_map[workflow_group][group_block_name]\
+                    ['reverse_connection'].append(inverse_connection_of_connected_block)
 
         # Find inverse connections of every process block.
         for block in self.workflow.input:
@@ -129,7 +60,8 @@ class RunWorkflowBFS(RunWorkflow):
                 # current block is connected to 
                 workflow_group, group_block_name = block_is_connected_to[i].split('.')
                 inverse_connection_of_connected_block = f"{block.block_type}.{block.name}"
-                self.block_name_map[workflow_group][group_block_name]['reverse_connection'].append(inverse_connection_of_connected_block)
+                self.block_name_map[workflow_group][group_block_name]\
+                    ['reverse_connection'].append(inverse_connection_of_connected_block)
     
     def initialize_block(
         self, 
@@ -230,7 +162,8 @@ class RunWorkflowBFS(RunWorkflow):
                         previous_hop_group, previous_hop_name = previous_hop.split('.')
                         # previous block's output is current block's input.
                         current_name_output = block.implementation.run(
-                            input_=self.block_name_map[previous_hop_group][previous_hop_name]['block_output']
+                            input_=self.block_name_map[previous_hop_group]\
+                                [previous_hop_name]['block_output']
                         )
                     self.block_name_map[current_group][current_name]['block_output'] = current_name_output
                 elif block.block_type == 'output':
@@ -239,8 +172,9 @@ class RunWorkflowBFS(RunWorkflow):
                         previous_hop_group, previous_hop_name = previous_hop.split('.')
                         # previous block's output is current block's input.
                         current_name_output[previous_hop_name] = block.implementation.run(
-                            output=self.block_name_map[previous_hop_group][previous_hop_name]['block_output'],
-                            inbound_process_name=previous_hop_name
+                            output=self.block_name_map[previous_hop_group] \
+                                [previous_hop_name]['block_output'],
+                            inbound_process_name=previous_hop_name,
                             user_input=payload
                         )
                     self.block_name_map[current_group][current_name]['block_output'] = current_name_output
