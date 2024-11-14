@@ -241,6 +241,7 @@ class RunWorkflowBFS(RunWorkflow):
                         current_name_output[previous_hop_name] = block.implementation.run(
                             output=self.block_name_map[previous_hop_group][previous_hop_name]['block_output'],
                             inbound_process_name=previous_hop_name
+                            user_input=payload
                         )
                     self.block_name_map[current_group][current_name]['block_output'] = current_name_output
 
