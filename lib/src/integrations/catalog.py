@@ -62,7 +62,7 @@ class IntegrationRegistry:
     
 # Register Integrations and Vendors
 IntegrationRegistry.add_vendor("HTTP")
-IntegrationRegistry.add_integration_to_registry_by_vendor("HTTP", "POST REQUEST", IntegrationCatalog.HTTP_POST_REQUEST)
+IntegrationRegistry.add_integration_to_registry_by_vendor("HTTP", "POST Request", IntegrationCatalog.HTTP_POST_REQUEST)
 
 IntegrationRegistry.add_vendor("Custom Code")
-IntegrationRegistry.add_integration_to_registry_by_vendor("Custom Code", "LAMBDA FUNCTION", IntegrationCatalog.LAMBDA_FUNCTION)
+IntegrationRegistry.add_integration_to_registry_by_vendor("Custom Code", "Lambda Function", IntegrationCatalog.LAMBDA_FUNCTION)

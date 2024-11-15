@@ -5,6 +5,11 @@ class OutputBlock(Task):
         super().__init__()
         self.final_output = {}
         
-    def run(self, output='', inbound_process_name:str=None):
+    def run(
+        self, 
+        output='',
+        inbound_process_name:str=None,
+        *args, **kwargs
+    ):
         #self.final_output[inbound_process_name] = output
         return output
