@@ -125,19 +125,19 @@ class DockerTools:
             
     @staticmethod
     def delete_docker_container(
-        container_id: str,
-        image_id: str = None
+        container_id: str
     ):
         """Delete a docker container given a container id
         including the associated image."""
         client = docker.from_env()
         if container_id:
             container = client.containers.get(container_id)
-            container.remove()
-            # Get the image ID from the container
-            image_id = container.image.id
-        
-        # Remove the image by its ID
+            container.remove()        
+    
+    @staticmethod
+    def delete_docker_image(image_id: str):
+        """Delete a docker image given an image id."""
+        client = docker.from_env()
         try:
             client.images.remove(image=image_id)
             print(f"Image {image_id} removed successfully.")

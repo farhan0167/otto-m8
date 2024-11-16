@@ -121,9 +121,9 @@ def delete_workflow(
     if template:
         DockerTools.stop_docker_container(container_id=template.container_id)
         DockerTools.delete_docker_container(
-            container_id=template.container_id,
-            image_id=template.image_id
+            container_id=template.container_id
         )
+        DockerTools.delete_docker_image(image_id=template.image_id)
         db_session.delete(template)
         db_session.commit()
         # TODO: Standard Server Response: Implement a standard response template
