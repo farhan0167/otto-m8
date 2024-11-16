@@ -4,12 +4,12 @@ from enum import Enum
 class TaskCatalog(Enum):
     #### Catalog for Tasks ####
     # key = module.file_name.class_name
-    HUGGING_FACE_MODEL_CARD = 'tasks.hugging_face_model_card.HuggingFaceModelCard'
-    OLLAMA_SERVER_GENERATE = 'tasks.ollama_server_generate.OllamaServerGenarate'
-    OLLAMA_SERVER_CHAT = 'tasks.ollama_server_chat.OllamaServerChat'
-    OPENAI_CHAT = 'tasks.openai_chat.OpenAIChat'
-    OUTPUT = 'tasks.output_block.OutputBlock'
-    CHAT_OUTPUT = 'tasks.chat_output_block.ChatOutputBlock'
+    HUGGING_FACE_MODEL_CARD = 'tasks.hugging_face.hugging_face_model_card.HuggingFaceModelCard'
+    OLLAMA_SERVER_GENERATE = 'tasks.ollama.ollama_server_generate.OllamaServerGenarate'
+    OLLAMA_SERVER_CHAT = 'tasks.ollama.ollama_server_chat.OllamaServerChat'
+    OPENAI_CHAT = 'tasks.openai.openai_chat.OpenAIChat'
+    OUTPUT = 'tasks.output_blocks.output_block.OutputBlock'
+    CHAT_OUTPUT = 'tasks.output_blocks.chat_output_block.ChatOutputBlock'
     #### Catalog for Tasks ####
 
     def get_class(self):
