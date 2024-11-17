@@ -2,6 +2,7 @@ import requests
 import json
 from tasks.task import Task
 from utils.llm_tools.ollama_tool import OllamaTool
+from utils.input_parser.prompt_template import PromptTemplate
 
 
 class OllamaServerChat(Task):
@@ -21,9 +22,16 @@ class OllamaServerChat(Task):
         self.request_payload['messages'] = []
         self.request_payload['messages'].append(self.insert_system_message())
         
+        # Create prompt
+        parse_input = PromptTemplate(
+            input_=input_, 
+            template=self.prompt_template
+        )
+        prompt_template = parse_input()
+        
         # Flag to determine if a function is available to be called
         make_function_call = False
-        self.request_payload['messages'].append({"role": "user", "content": input_})
+        self.request_payload['messages'].append({"role": "user", "content": prompt_template})
         headers = {
             'Content-Type': 'application/json'
         }
@@ -52,7 +60,10 @@ class OllamaServerChat(Task):
                     continue
                 make_function_call = True
                 function_params = tool_call['function']['arguments']
-                function_response = function_to_call.run(function_params)
+                function_response = function_to_call.run(
+                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?
+                    {'data' : json.dumps(function_params)}
+                )
                 self.request_payload['messages'].append({
                     "role": "tool",
                     "content": str(function_response)
@@ -80,6 +91,10 @@ class OllamaServerChat(Task):
         model = self.run_config.get('model')
         if model is None:
             raise Exception("Model is not specified in the run config")
+        
+        prompt_template = self.run_config.get('prompt_template')
+        self.prompt_template = prompt_template
+        
         payload['model'] = model
         temperature = self.run_config.get('temperature')
         if temperature is not None:

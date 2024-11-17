@@ -6,6 +6,7 @@ from openai import OpenAI
 
 from tasks.task import Task
 from utils.llm_tools.openai_tool import OpenAITool
+from utils.input_parser.prompt_template import PromptTemplate
 
 
 class OpenAIChat(Task):
@@ -22,15 +23,23 @@ class OpenAIChat(Task):
         self.available_tools = {}
         self.model = 'gpt-4o-mini'
         self.tools = None
+        self.prompt_template = None
         self.create_payload_from_run_config()
     
     def run(self, input_:dict) -> dict:
         messages = []
         messages.append(self.insert_system_message())
         
+        # Create prompt
+        parse_input = PromptTemplate(
+            input_=input_, 
+            template=self.prompt_template
+        )
+        prompt_template = parse_input()
+        
         # Flag to determine if a function is available to be called
         make_function_call = False
-        messages.append({"role": "user", "content": input_})
+        messages.append({"role": "user", "content": prompt_template})
 
         # Make the first call.
         response = self.openAI_client.chat.completions.create(
@@ -59,7 +68,10 @@ class OpenAIChat(Task):
                     continue
                 make_function_call = True
                 function_params = json.loads(tool_call['function']['arguments'])
-                function_response = function_to_call.run(function_params)
+                function_response = function_to_call.run(
+                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?
+                    {'data' : json.dumps(function_params)}
+                )
                 messages.append({
                     "role": "tool",
                     "content": str(function_response),
@@ -111,6 +123,9 @@ class OpenAIChat(Task):
 
         model = self.run_config.get('model', 'gpt-4o-mini')
         self.model = model
+        
+        prompt_template = self.run_config.get('prompt_template')
+        self.prompt_template = prompt_template
             
         # Process any tools available
         tools = self.run_config.get('tools')
