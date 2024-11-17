@@ -1,6 +1,7 @@
-from integrations.integration import Integration
 import requests
 import json
+from integrations.integration import Integration
+from utils.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
 class HTTPPostRequest(Integration):
     def __init__(self, run_config:dict) -> None:
@@ -12,6 +13,9 @@ class HTTPPostRequest(Integration):
         self.method = 'POST'
         
     def run(self, input_:dict = None):
+        parse_input = BasicIntegrationInputParser(input_)
+        # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?
+        input_ = json.loads(parse_input())
         headers = {
             'Content-Type': self.content_type
         }
