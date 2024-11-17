@@ -17,7 +17,7 @@ class OllamaServerChat(Task):
         self.available_tools = {}
         self.request_payload = self.create_payload_from_run_config()
     
-    def run(self, input_:str) -> dict:
+    def run(self, input_:dict) -> dict:
         self.request_payload['messages'] = []
         self.request_payload['messages'].append(self.insert_system_message())
         

@@ -11,7 +11,7 @@ class HTTPPostRequest(Integration):
             self.endpoint = self.endpoint.replace('localhost', 'host.docker.internal')
         self.method = 'POST'
         
-    def run(self, input_ = None):
+    def run(self, input_:dict = None):
         headers = {
             'Content-Type': self.content_type
         }

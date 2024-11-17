@@ -24,7 +24,7 @@ class OpenAIChat(Task):
         self.tools = None
         self.create_payload_from_run_config()
     
-    def run(self, input_:str) -> dict:
+    def run(self, input_:dict) -> dict:
         messages = []
         messages.append(self.insert_system_message())
         

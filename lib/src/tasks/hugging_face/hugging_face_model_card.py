@@ -17,7 +17,7 @@ class HuggingFaceModelCard(Task):
         self.pipeline = pipeline(self.pipeline_tag, model=self.model_card)
         
     
-    def run(self, input_=None) ->dict:
+    def run(self, input_:dict=None) ->dict:
         if self.input_type == 'text':
             results = self.pipeline(input_)
         elif self.input_type == 'image':

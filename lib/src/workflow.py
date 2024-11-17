@@ -158,13 +158,17 @@ class RunWorkflow:
                 
                 if block.block_type == 'process':
                     current_name_output = ''
+                    input_ = {}
                     for previous_hop in previous_hops:
                         previous_hop_group, previous_hop_name = previous_hop.split('.')
                         # previous block's output is current block's input.
-                        current_name_output = block.implementation.run(
-                            input_=self.block_name_map[previous_hop_group]\
-                                [previous_hop_name]['block_output']
-                        )
+                        previous_block_output = self.block_name_map[previous_hop_group]\
+                            [previous_hop_name]['block_output']
+                        previous_block_custom_name = self.block_name_map[previous_hop_group]\
+                            [previous_hop_name]['block'].custom_name
+                        input_[previous_block_custom_name] = previous_block_output
+                        
+                    current_name_output = block.implementation.run(input_=input_)
                     self.block_name_map[current_group][current_name]['block_output'] = current_name_output
                 elif block.block_type == 'output':
                     current_name_output = {}
