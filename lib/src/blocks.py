@@ -22,6 +22,7 @@ class Block(BaseModel, extra = 'forbid', arbitrary_types_allowed = True):
         raise ValueError(f"{cls.__name__} must have block_type '{cls.__name__.lower()}'")
 
 class InputBlock(Block):
+    custom_name: str = 'user_input'
     block_type: str = 'input'
     payload: Union[str, None] = None
     # The input type of the block determines the type of the input in the run config that will be passed to a model.
