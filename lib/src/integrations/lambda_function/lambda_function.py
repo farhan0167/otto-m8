@@ -2,6 +2,7 @@ import requests
 import json
 
 from integrations.integration import Integration
+from utils.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
 class LambdaFunction(Integration):
     def __init__(self, run_config: dict) -> None:
@@ -10,7 +11,9 @@ class LambdaFunction(Integration):
         self.deployment_url = self.get_lambda_function()
         
     def run(self, input_ = None):
-        data = {"data": input_}
+        parse_input = BasicIntegrationInputParser(input_)
+        # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?
+        data = {"data" : parse_input()}
         payload = {
             "event": data,
             "context": {
