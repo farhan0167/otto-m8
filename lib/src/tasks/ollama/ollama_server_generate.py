@@ -1,7 +1,7 @@
 import requests
 import json
 from tasks.task import Task
-
+from utils.input_parser.prompt_template import PromptTemplate
 
 class OllamaServerGenarate(Task):
     """Task definition of the Ollama Generate endpoint."""
@@ -16,7 +16,14 @@ class OllamaServerGenarate(Task):
         self.request_payload = self.create_payload_from_run_config()
 
     def run(self, input_:dict) -> dict:
-        self.request_payload['prompt'] = input_
+        # Create prompt
+        parse_input = PromptTemplate(
+            input_=input_, 
+            template=self.prompt_template
+        )
+        prompt_template = parse_input()
+        
+        self.request_payload['prompt'] = prompt_template
         headers = {
             'Content-Type': 'application/json'
         }
@@ -34,6 +41,10 @@ class OllamaServerGenarate(Task):
     def create_payload_from_run_config(self) -> dict:
         payload = {"stream": False}
         model = self.run_config.get('model')
+        
+        prompt_template = self.run_config.get('prompt_template')
+        self.prompt_template = prompt_template
+        
         if model is None:
             raise Exception("Model is not specified in the run config")
         payload['model'] = model
