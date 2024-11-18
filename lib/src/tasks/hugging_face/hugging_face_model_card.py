@@ -18,6 +18,8 @@ class HuggingFaceModelCard(Task):
         
     
     def run(self, input_:dict=None) ->dict:
+        input_ = input_.get('user_input')
+        
         if self.input_type == 'text':
             results = self.pipeline(input_)
         elif self.input_type == 'image':
