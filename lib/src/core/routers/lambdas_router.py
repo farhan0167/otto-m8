@@ -11,8 +11,8 @@ from sqlalchemy.orm import Session
 from db.db_engine import get_db
 from db.models.lambdas import Lambdas
 from db.models.users import Users
-from app.container_utils.docker_tools import DockerTools
-from app.routers.dependency import get_current_user
+from core.container_utils.docker_tools import DockerTools
+from core.routers.dependency import get_current_user
 
 router = APIRouter()
 
