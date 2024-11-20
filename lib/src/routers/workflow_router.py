@@ -9,7 +9,7 @@ from db.models.workflow_templates import WorkflowTemplates
 from db.models.users import Users
 from blocks import WorkflowTemplate
 from core.container_utils.docker_tools import DockerTools
-from core.routers.dependency import get_current_user
+from routers.dependency import get_current_user
 
 router = APIRouter()
 

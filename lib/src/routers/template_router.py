@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from db.db_engine import get_db
 from db.models.workflow_templates import WorkflowTemplates
 from db.models.users import Users
-from core.routers.dependency import get_current_user
+from routers.dependency import get_current_user
 
 router = APIRouter()
 

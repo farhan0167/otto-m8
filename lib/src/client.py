@@ -8,7 +8,7 @@ from db.base import Base
 from db.db_engine import engine, get_session
 from db.models.users import Users
 from db.auth import hash_password
-from core.routers import (
+from routers import (
     template_router, 
     workflow_router, 
     block_types_router,
