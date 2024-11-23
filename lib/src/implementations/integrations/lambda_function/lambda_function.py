@@ -2,7 +2,7 @@ import requests
 import json
 
 from implementations.base import BaseImplementation
-from utils.input_parser.integration_inp_parser import BasicIntegrationInputParser
+from core.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
 class LambdaFunction(BaseImplementation):
     def __init__(self, run_config: dict) -> None:

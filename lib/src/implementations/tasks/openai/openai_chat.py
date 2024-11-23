@@ -6,7 +6,7 @@ from openai import OpenAI
 
 from implementations.base import BaseImplementation
 from utils.llm_tools.openai_tool import OpenAITool
-from utils.input_parser.prompt_template import PromptTemplate
+from core.input_parser.prompt_template import PromptTemplate
 
 
 class OpenAIChat(BaseImplementation):

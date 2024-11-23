@@ -1,7 +1,7 @@
 import requests
 import json
 from implementations.base import BaseImplementation
-from utils.input_parser.prompt_template import PromptTemplate
+from core.input_parser.prompt_template import PromptTemplate
 
 class OllamaServerGenarate(BaseImplementation):
     """Task definition of the Ollama Generate endpoint."""
