@@ -1,6 +1,6 @@
 from typing import List, Union
 from pydantic import BaseModel, ValidationError, Field, field_validator, model_validator
-from tasks.task import Task
+from implementations.tasks.task import Task
 
 class Block(BaseModel, extra = 'forbid', arbitrary_types_allowed = True):
     name: str

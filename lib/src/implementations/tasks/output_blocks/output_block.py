@@ -1,4 +1,4 @@
-from tasks.task import Task
+from implementations.tasks.task import Task
 
 class OutputBlock(Task):
     def __init__(self) -> None:

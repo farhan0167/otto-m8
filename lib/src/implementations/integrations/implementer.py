@@ -1,5 +1,5 @@
-from integrations.catalog import IntegrationCatalog
-from integrations.integration import Integration
+from implementations.integrations.catalog import IntegrationCatalog
+from implementations.integrations.integration import Integration
 
         
 class IntegrationImplementer:

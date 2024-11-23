@@ -4,7 +4,7 @@ from PIL import Image
 from transformers import (
     pipeline
 )
-from tasks.task import Task
+from implementations.tasks.task import Task
 from utils.hugging_face.hugging_face_api import HuggingFaceApi
 
 

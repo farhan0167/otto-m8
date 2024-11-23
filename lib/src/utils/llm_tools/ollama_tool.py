@@ -1,5 +1,5 @@
 from utils.llm_tools.tool import Tool
-from integrations.implementer import IntegrationImplementer
+from implementations.integrations.implementer import IntegrationImplementer
 
 class OllamaTool(Tool):
     def __init__(self) -> None:

@@ -1,5 +1,5 @@
-from tasks.catalog import TaskCatalog
-from tasks.task import Task
+from implementations.tasks.catalog import TaskCatalog
+from implementations.tasks.task import Task
 
 # class Implementer:
 #     def __init__(self) -> None:

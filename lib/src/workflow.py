@@ -1,8 +1,8 @@
 from collections import defaultdict, deque
 from typing import Any, Union, List
 from blocks import WorkflowTemplate, InputBlock
-from tasks.implementer import Implementer
-from integrations.implementer import IntegrationImplementer
+from implementations.tasks.implementer import Implementer
+from implementations.integrations.implementer import IntegrationImplementer
 
     
 class RunWorkflow:

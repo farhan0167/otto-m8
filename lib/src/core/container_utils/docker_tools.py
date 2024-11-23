@@ -89,7 +89,7 @@ class DockerTools:
     @staticmethod
     def get_dependency_list_paths(payload):
         dependencies = []
-        dependency_store_path = './tasks/dependencies'
+        dependency_store_path = './implementations/tasks/dependencies'
         requirement_txt_files = os.listdir(dependency_store_path)
         requirement_txt_files = [f.replace('.txt', '') for f in requirement_txt_files]
 

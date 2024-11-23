@@ -1,8 +1,8 @@
 from enum import Enum
 
 class IntegrationCatalog(Enum):
-    HTTP_POST_REQUEST = 'integrations.http.post_requests.post_request.HTTPPostRequest'
-    LAMBDA_FUNCTION = 'integrations.lambda_function.lambda_function.LambdaFunction'
+    HTTP_POST_REQUEST = 'implementations.integrations.http.post_requests.post_request.HTTPPostRequest'
+    LAMBDA_FUNCTION = 'implementations.integrations.lambda_function.lambda_function.LambdaFunction'
     
     
     def get_class(self):

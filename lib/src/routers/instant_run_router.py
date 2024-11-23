@@ -7,8 +7,8 @@ import docker
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-from tasks.implementer import Implementer
-from integrations.implementer import IntegrationImplementer
+from implementations.tasks.implementer import Implementer
+from implementations.integrations.implementer import IntegrationImplementer
 
 
 router = APIRouter()

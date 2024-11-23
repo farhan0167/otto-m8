@@ -1,6 +1,6 @@
 import requests
 import json
-from integrations.integration import Integration
+from implementations.integrations.integration import Integration
 from utils.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
 class HTTPPostRequest(Integration):

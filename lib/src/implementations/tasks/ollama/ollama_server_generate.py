@@ -1,6 +1,6 @@
 import requests
 import json
-from tasks.task import Task
+from implementations.tasks.task import Task
 from utils.input_parser.prompt_template import PromptTemplate
 
 class OllamaServerGenarate(Task):

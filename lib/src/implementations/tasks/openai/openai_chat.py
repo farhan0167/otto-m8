@@ -4,7 +4,7 @@ import json
 from openai import OpenAI
 
 
-from tasks.task import Task
+from implementations.tasks.task import Task
 from utils.llm_tools.openai_tool import OpenAITool
 from utils.input_parser.prompt_template import PromptTemplate
 

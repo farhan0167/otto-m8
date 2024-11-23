@@ -1,4 +1,4 @@
-from integrations.http.post_requests.post_request import HTTPPostRequest
+from implementations.integrations.http.post_requests.post_request import HTTPPostRequest
 import json
 
 run_config={

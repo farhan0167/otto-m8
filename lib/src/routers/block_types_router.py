@@ -2,8 +2,8 @@ import json
 
 from fastapi import APIRouter
 
-from tasks.catalog import TaskRegistry
-from integrations.catalog import IntegrationRegistry
+from implementations.tasks.catalog import TaskRegistry
+from implementations.integrations.catalog import IntegrationRegistry
 
 router = APIRouter()
 

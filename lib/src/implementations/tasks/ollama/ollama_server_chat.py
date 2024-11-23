@@ -1,6 +1,6 @@
 import requests
 import json
-from tasks.task import Task
+from implementations.tasks.task import Task
 from utils.llm_tools.ollama_tool import OllamaTool
 from utils.input_parser.prompt_template import PromptTemplate
 
