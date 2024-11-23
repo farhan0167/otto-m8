@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request, UploadFile, File, HTTPException
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
-from workflow import RunWorkflow
+from engine.workflow import RunWorkflow
 from engine.blocks import WorkflowTemplate
 import json
 
