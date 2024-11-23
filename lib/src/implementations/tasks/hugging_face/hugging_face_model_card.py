@@ -5,7 +5,7 @@ from transformers import (
     pipeline
 )
 from implementations.base import BaseImplementation
-from utils.hugging_face.hugging_face_api import HuggingFaceApi
+from integrations.hugging_face.hugging_face_api import HuggingFaceApi
 
 
 class HuggingFaceModelCard(BaseImplementation):
