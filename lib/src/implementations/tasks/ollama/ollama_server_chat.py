@@ -1,11 +1,11 @@
 import requests
 import json
-from implementations.tasks.task import Task
+from implementations.base import BaseImplementation
 from utils.llm_tools.ollama_tool import OllamaTool
 from utils.input_parser.prompt_template import PromptTemplate
 
 
-class OllamaServerChat(Task):
+class OllamaServerChat(BaseImplementation):
     """Task definition of the Ollama Generate endpoint."""
     def __init__(self, run_config:dict) -> None:
         super().__init__()

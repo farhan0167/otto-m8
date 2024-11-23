@@ -1,5 +1,5 @@
 from implementations.tasks.catalog import TaskCatalog
-from implementations.tasks.task import Task
+from implementations.base import BaseImplementation
 
 # class Implementer:
 #     def __init__(self) -> None:
@@ -22,7 +22,7 @@ class Implementer:
         # Instead of directly storing the value (which is the class), store the enum instance
         self.task_catalog = {str(task_type).split(".")[-1]: task_type for task_type in TaskCatalog}
     
-    def create_task(self, task_type: str, run_config: dict = None) -> Task:
+    def create_task(self, task_type: str, run_config: dict = None) -> BaseImplementation:
         # Retrieve the enum instance and use its initialize method to create the task
         Task_Class: TaskCatalog = self.task_catalog.get(task_type.upper(), None)
         if Task_Class is None:

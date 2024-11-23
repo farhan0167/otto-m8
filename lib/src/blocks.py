@@ -1,13 +1,13 @@
 from typing import List, Union
 from pydantic import BaseModel, ValidationError, Field, field_validator, model_validator
-from implementations.tasks.task import Task
+from implementations.base import BaseImplementation
 
 class Block(BaseModel, extra = 'forbid', arbitrary_types_allowed = True):
     name: str
     block_type: str = 'simple_block'
     connections: list[str] = Field(description="List of connections to other blocks in the model", default=[])
     run_config: dict = Field(description="Configuration for the run", default=None)
-    implementation: Union[Task, None] = Field(description="The implementation of the block", default=None)
+    implementation: Union[BaseImplementation, None] = Field(description="The implementation of the block", default=None)
     
     @field_validator('block_type', mode='before')
     @classmethod

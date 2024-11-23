@@ -4,11 +4,11 @@ from PIL import Image
 from transformers import (
     pipeline
 )
-from implementations.tasks.task import Task
+from implementations.base import BaseImplementation
 from utils.hugging_face.hugging_face_api import HuggingFaceApi
 
 
-class HuggingFaceModelCard(Task):
+class HuggingFaceModelCard(BaseImplementation):
     def __init__(self, run_config:dict) -> None:
         self.run_config = run_config
         self.model_card = run_config.get('model_card')

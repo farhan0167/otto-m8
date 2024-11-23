@@ -1,6 +1,6 @@
-from implementations.tasks.task import Task
+from implementations.base import BaseImplementation
 
-class OutputBlock(Task):
+class OutputBlock(BaseImplementation):
     def __init__(self) -> None:
         super().__init__()
         self.final_output = {}

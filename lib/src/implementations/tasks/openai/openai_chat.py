@@ -4,12 +4,12 @@ import json
 from openai import OpenAI
 
 
-from implementations.tasks.task import Task
+from implementations.base import BaseImplementation
 from utils.llm_tools.openai_tool import OpenAITool
 from utils.input_parser.prompt_template import PromptTemplate
 
 
-class OpenAIChat(Task):
+class OpenAIChat(BaseImplementation):
     """Task definition of the OpenAI Chat Completion."""
     def __init__(self, run_config:dict) -> None:
         super().__init__()
