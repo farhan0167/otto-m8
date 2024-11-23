@@ -1,9 +1,10 @@
 import requests
 import json
-from implementations.integrations.integration import Integration
+
+from implementations.base import BaseImplementation
 from utils.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
-class HTTPPostRequest(Integration):
+class HTTPPostRequest(BaseImplementation):
     def __init__(self, run_config:dict) -> None:
         self.run_config = run_config
         self.content_type = 'application/json'

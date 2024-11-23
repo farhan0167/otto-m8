@@ -1,10 +1,10 @@
 import requests
 import json
 
-from implementations.integrations.integration import Integration
+from implementations.base import BaseImplementation
 from utils.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
-class LambdaFunction(Integration):
+class LambdaFunction(BaseImplementation):
     def __init__(self, run_config: dict) -> None:
         self.run_config = run_config
         self.function_name = self.run_config.get('lambda_function_name')
