@@ -1,4 +1,4 @@
-from utils.llm_tools.tool import Tool
+from extensions.llm_tools.tool import Tool
 from implementations.integrations.implementer import IntegrationImplementer
 
 class OpenAITool(Tool):

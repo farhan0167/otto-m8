@@ -1,7 +1,7 @@
 import requests
 import json
 from implementations.base import BaseImplementation
-from utils.llm_tools.ollama_tool import OllamaTool
+from extensions.llm_tools.ollama_tool import OllamaTool
 from core.input_parser.prompt_template import PromptTemplate
 
 
