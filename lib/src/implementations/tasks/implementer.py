@@ -1,18 +1,5 @@
 from implementations.tasks.catalog import TaskCatalog
 from implementations.base import BaseImplementation
-
-# class Implementer:
-#     def __init__(self) -> None:
-#         self._auto_register_tasks()
-        
-#     def _auto_register_tasks(self):
-#         self.task_catalog = {str(task_type).split(".")[-1]: task_type.value for task_type in TaskCatalog}
-    
-#     def create_task(self, task_type:TaskCatalog) -> Task:
-#         task = self.task_catalog.get(task_type, None)
-#         if task is None:
-#             raise ValueError(f"Task type {task_type} is not supported")
-#         return task()
         
 class Implementer:
     def __init__(self) -> None:
