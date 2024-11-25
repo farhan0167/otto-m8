@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from db.db_engine import get_session
 from db.models.users import Users
-from app.routers.dependency import token_store
+from routers.dependency import token_store
 
 # Password hashing configuration
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

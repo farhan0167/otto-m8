@@ -70,3 +70,14 @@
   transform: scale(1.4);
   animation: none; /* Stop the pulse animation on hover */
 }
+
+.block-delete-icon {
+  top: -13px;
+  right: -1px;
+  color: #D3D3D3;
+}
+
+.block-delete-icon:hover {
+  cursor: pointer;
+  color: #FF5733;
+}
