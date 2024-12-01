@@ -11,6 +11,7 @@ class TaskCatalog(Enum):
     OUTPUT = 'implementations.tasks.output_blocks.output_block.OutputBlock'
     CHAT_OUTPUT = 'implementations.tasks.output_blocks.chat_output_block.ChatOutputBlock'
     LANGCHAIN_PDF_LOADER = 'implementations.tasks.pdf_loader.langchain_pdf_loader.LangchainPDFLoader'
+    TEXT_INPUT = 'implementations.tasks.input_blocks.text_input.text_input.TextInput'
     #### Catalog for Tasks ####
 
     def get_class(self):
