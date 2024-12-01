@@ -15,6 +15,6 @@ class ChatOutputBlock(BaseImplementation):
         conversation = output['conversation']
         # Since this is a chat output block, we need to add the user input to the conversation
         # and not the input the last block received.
-        conversation[0] = {'role': 'user', 'content': user_input}
+        conversation[0] = {'role': 'user', 'content': user_input.get('Input_Block')}
         self.chat_history.extend(conversation)
         return conversation[-1]
