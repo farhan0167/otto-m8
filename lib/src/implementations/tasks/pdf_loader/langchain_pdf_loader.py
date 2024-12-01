@@ -14,7 +14,6 @@ class LangchainPDFLoader(BaseImplementation):
         with tempfile.NamedTemporaryFile(delete=True) as f:
             f.write(input_)
             f.flush()
-            print(f.name)
             doc_pages = PDFLoader(f.name).parse()
             doc = ' '.join(doc_pages)
 
