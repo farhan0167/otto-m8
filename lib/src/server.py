@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request, UploadFile, File, HTTPException
 from typing import Optional
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from engine.workflow import RunWorkflow
 from engine.blocks import WorkflowTemplate
@@ -32,22 +33,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/workflow_run")
-async def root(data: Request, file: Optional[UploadFile] = File(None)):
-    payload = None
-    # Check if the content type is JSON, which indicates a text input
-    if data.headers.get('content-type') == 'application/json':
-        try:
-            req = await data.json()
-            payload = req.get('text', None)
-        except Exception:
-            raise HTTPException(status_code=400, detail="Invalid JSON payload")
+class WorkflowRunRequest(BaseModel):
+    data: dict
 
-    # If a file is available, implicitly it should be an image.
-    if file:
-        # Read the file content
-        payload = await file.read()
-        file_name = file.filename
+@app.post("/workflow_run")
+async def root(request: WorkflowRunRequest):
+    payload = None
+    try:
+        payload = request.data
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
     if not payload:
         #TODO Change this exception
@@ -60,15 +55,12 @@ async def root(data: Request, file: Optional[UploadFile] = File(None)):
     return {"message": output}
 
 @app.post("/workflow_run/run_chat")
-async def chat(data: Request):
+async def chat(request: WorkflowRunRequest):
     payload = None
-    # Check if the content type is JSON, which indicates a text input
-    if data.headers.get('content-type') == 'application/json':
-        try:
-            req = await data.json()
-            payload = req.get('text', None)
-        except Exception:
-            raise HTTPException(status_code=400, detail="Invalid JSON payload")
+    try:
+        payload = request.data
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
     if not payload:
         #TODO Change this exception

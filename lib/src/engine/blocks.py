@@ -21,12 +21,17 @@ class Block(BaseModel, extra = 'forbid', arbitrary_types_allowed = True):
             return v
         raise ValueError(f"{cls.__name__} must have block_type '{cls.__name__.lower()}'")
 
+class StartBlock(Block):
+    name: str = 'start'
+    block_type: str = 'start_node'
+
 class InputBlock(Block):
     custom_name: str = 'user_input'
     block_type: str = 'input'
     payload: Union[str, None] = None
     # The input type of the block determines the type of the input in the run config that will be passed to a model.
     input_type: str = 'text'
+    process_metadata: dict = {}
     
 class OutputBlock(Block):
     block_type: str = 'output'

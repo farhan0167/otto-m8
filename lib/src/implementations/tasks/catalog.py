@@ -10,6 +10,8 @@ class TaskCatalog(Enum):
     OPENAI_CHAT = 'implementations.tasks.openai.openai_chat.OpenAIChat'
     OUTPUT = 'implementations.tasks.output_blocks.output_block.OutputBlock'
     CHAT_OUTPUT = 'implementations.tasks.output_blocks.chat_output_block.ChatOutputBlock'
+    LANGCHAIN_PDF_LOADER = 'implementations.tasks.pdf_loader.langchain_pdf_loader.LangchainPDFLoader'
+    TEXT_INPUT = 'implementations.tasks.input_blocks.text_input.text_input.TextInput'
     #### Catalog for Tasks ####
 
     def get_class(self):
@@ -89,3 +91,6 @@ TaskRegistry.add_task_to_registry_by_vendor("OpenAI", "Chat Completion", TaskCat
 TaskRegistry.add_vendor("Output Blocks")
 TaskRegistry.add_task_to_registry_by_vendor("Output Blocks", "Standard", TaskCatalog.OUTPUT)
 TaskRegistry.add_task_to_registry_by_vendor("Output Blocks", "Chat Output", TaskCatalog.CHAT_OUTPUT)
+
+TaskRegistry.add_vendor("Langchain")
+TaskRegistry.add_task_to_registry_by_vendor("Langchain", "PDF Loader", TaskCatalog.LANGCHAIN_PDF_LOADER)
