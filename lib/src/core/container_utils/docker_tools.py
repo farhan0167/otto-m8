@@ -33,6 +33,7 @@ class DockerTools:
         with tempfile.TemporaryDirectory() as temp_dir:
             # Copy the files from your working directory to the temporary directory for docker build context
             source_dir = os.getcwd()
+            host_cache_path = os.path.join(source_dir, ".cache")
             shutil.copytree(source_dir, os.path.join(temp_dir, 'app_files'), dirs_exist_ok=True)
             
             requirement_text_files = DockerTools.get_dependency_list_paths(payload)
@@ -77,7 +78,7 @@ class DockerTools:
             )
             host_port = DockerTools.find_available_port(8001, 9000)
             # Run the container
-            container = DockerTools.start_docker_container(image_id=image.id, host_port=host_port)
+            container = DockerTools.start_docker_container(image_id=image.id, host_port=host_port, host_cache_path=host_cache_path)
 
             print(f"Container started with ID: {container.short_id}")
             # TODO: Make localhost configurable. Not everything will stay in localhost.
@@ -147,7 +148,7 @@ class DockerTools:
             print(f"Failed to remove image: {e}")
     
     @staticmethod
-    def start_docker_container(image_id:str, host_port:int=8001):
+    def start_docker_container(image_id:str, host_port:int=8001, host_cache_path:str='./.cache'):
         """
         Start a docker container given an image id. The container will be started detached and bind the port 8000 to the given host port.
 
@@ -163,6 +164,7 @@ class DockerTools:
                 image=image_id,
                 ports={'8000/tcp': ("0.0.0.0", host_port)},
                 detach=True,
+                volumes={host_cache_path: {'bind': '/root/.cache', 'mode': 'rw'}},
                 # TODO add name of the container
             )
         return container
