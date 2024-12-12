@@ -19,6 +19,7 @@ docker compose up -d
 
 # Navigate to the FastAPI directory (update this path to the correct one)
 cd "./src/" || exit
+mkdir .cache
 
 # Check if virtual environment exists
 if [ -d "venv" ]; then

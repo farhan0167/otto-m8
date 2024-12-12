@@ -18,15 +18,20 @@ class HuggingFaceModelCard(BaseImplementation):
         
     
     def run(self, input_:dict=None) ->dict:
-        input_ = input_.get('user_input')
+        # input_ = input_.get('user_input')
         
-        if self.input_type == 'text':
-            results = self.pipeline(input_)
-        elif self.input_type == 'image':
-            input_ = self.preprocess_image_input(input_)
-            results = self.pipeline(input_)
-        else:
-            raise Exception(f"Input type {self.input_type} not supported")
+        # if self.input_type == 'text':
+        #     results = self.pipeline(input_)
+        # elif self.input_type == 'image':
+        #     input_ = self.preprocess_image_input(input_)
+        #     results = self.pipeline(input_)
+        # else:
+        #     raise Exception(f"Input type {self.input_type} not supported")
+        
+        input_ = list(input_.values())[0]
+        input_ = self.preprocess_image_input(input_)
+        results = self.pipeline(input_)
+        
         # TODO Post Processing: Perhaps everything should have its own post processing logic.
         try:
             if not isinstance(results, dict):

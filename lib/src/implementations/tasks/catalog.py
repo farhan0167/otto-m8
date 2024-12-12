@@ -12,6 +12,7 @@ class TaskCatalog(Enum):
     CHAT_OUTPUT = 'implementations.tasks.output_blocks.chat_output_block.ChatOutputBlock'
     LANGCHAIN_PDF_LOADER = 'implementations.tasks.pdf_loader.langchain_pdf_loader.LangchainPDFLoader'
     TEXT_INPUT = 'implementations.tasks.input_blocks.text_input.text_input.TextInput'
+    IMAGE_INPUT = 'implementations.tasks.input_blocks.image_input.image.ImageInput'
     #### Catalog for Tasks ####
 
     def get_class(self):
@@ -94,3 +95,7 @@ TaskRegistry.add_task_to_registry_by_vendor("Output Blocks", "Chat Output", Task
 
 TaskRegistry.add_vendor("Langchain")
 TaskRegistry.add_task_to_registry_by_vendor("Langchain", "PDF Loader", TaskCatalog.LANGCHAIN_PDF_LOADER)
+
+TaskRegistry.add_vendor("Input Blocks")
+# TaskRegistry.add_task_to_registry_by_vendor("Input Blocks", "Text Input", TaskCatalog.TEXT_INPUT)
+TaskRegistry.add_task_to_registry_by_vendor("Input Blocks", "Image Input", TaskCatalog.IMAGE_INPUT)
