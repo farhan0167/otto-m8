@@ -6,7 +6,7 @@ from transformers import (
 )
 from implementations.base import BaseImplementation
 from integrations.hugging_face.hugging_face_api import HuggingFaceApi
-
+from core.types import InputType
 
 class HuggingFaceModelCard(BaseImplementation):
     def __init__(self, run_config:dict) -> None:
@@ -29,7 +29,9 @@ class HuggingFaceModelCard(BaseImplementation):
         #     raise Exception(f"Input type {self.input_type} not supported")
         
         input_ = list(input_.values())[0]
-        input_ = self.preprocess_image_input(input_)
+        # For any file based input, we assume its an image. Preprocess it.
+        if self.input_type == InputType.FILE.value:
+            input_ = self.preprocess_image_input(input_)
         results = self.pipeline(input_)
         
         # TODO Post Processing: Perhaps everything should have its own post processing logic.
