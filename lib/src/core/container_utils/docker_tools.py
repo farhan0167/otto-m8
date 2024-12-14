@@ -136,7 +136,7 @@ class DockerTools:
             print(f"Failed to remove image: {e}")
     
     @staticmethod
-    def start_docker_container(image_id:str, host_port:int=8001, host_cache_path:str='./.cache'):
+    def start_docker_container(image_id:str, host_port:int=8001, host_cache_path=None):
         """
         Start a docker container given an image id. The container will be started detached and bind the port 8000 to the given host port.
 
@@ -147,12 +147,13 @@ class DockerTools:
         Returns:
             docker.models.containers.Container: The started container.
         """
+        volumes = {host_cache_path: {'bind': '/root/.cache', 'mode': 'rw'}} if host_cache_path else None
         client = docker.from_env()
         container = client.containers.run(
                 image=image_id,
                 ports={'8000/tcp': ("0.0.0.0", host_port)},
                 detach=True,
-                volumes={host_cache_path: {'bind': '/root/.cache', 'mode': 'rw'}},
+                volumes=volumes
                 # TODO add name of the container
             )
         return container
