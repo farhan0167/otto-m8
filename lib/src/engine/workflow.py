@@ -69,10 +69,14 @@ class RunWorkflow:
             workflow_group == 'input' and 
             block.name not in visited
         ):
+            run_config = block.run_config
             process_metadata = block.process_metadata
+            # Add input type to the run configuration
+            run_config['input_type'] = client_input_type
             if process_metadata['process_type'] == 'task':
                 process = Implementer().create_task(
-                    task_type=process_metadata['core_block_type']
+                    task_type=process_metadata['core_block_type'],
+                    run_config=run_config
                 )
             else:
                 raise ValueError(f"Process type {process_metadata['process_type']} is not supported")

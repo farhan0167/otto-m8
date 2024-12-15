@@ -4,13 +4,13 @@ import shutil
 import tempfile
 import os
 import socket
-
+import time
 import docker
 
 class DockerTools:
     
     @staticmethod
-    def create_container_with_in_memory_dockerfile(payload):
+    def create_container_with_in_memory_dockerfile(payload, debug=False):
         """
         Create a Docker container from the given payload by writing the payload
         as a JSON file directly into the container. The container will be started
@@ -25,66 +25,55 @@ class DockerTools:
             tuple: A tuple containing the started container, the deployment URL,
             the Dockerfile content and the built image.
         """
+        begin = time.time()
         client = docker.from_env()
         json_payload = json.dumps(payload, indent=4)
         escaped_json_payload = json_payload.replace('"', '\\"').replace('\n', '\\n')
 
-        # Create a temporary directory so that we can pass our app files to docker build context
-        with tempfile.TemporaryDirectory() as temp_dir:
-            # Copy the files from your working directory to the temporary directory for docker build context
-            source_dir = os.getcwd()
-            shutil.copytree(source_dir, os.path.join(temp_dir, 'app_files'), dirs_exist_ok=True)
+        source_dir = os.getcwd()
+        host_cache_path = os.path.join(source_dir, ".cache")
+        
+        # Create the Dockerfile content
+        dockerfile_content = f"""
+        FROM farhan0167/otto-m8-base:latest
+
+        # Set the working directory
+        WORKDIR /app
+
+        # Write the JSON payload directly into the container
+        RUN echo '{escaped_json_payload}' > /app/data.json
+
+        # Command to run the FastAPI app with Uvicorn
+        CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+        """
+        
+        dockerfile = io.BytesIO(dockerfile_content.encode('utf-8'))
+        dockerfile.seek(0)
+
+        # Build the Docker image from the temporary directory
+        image, logs = client.images.build(
+            fileobj=dockerfile,
+            dockerfile='Dockerfile',
+            path=source_dir,
+            tag=payload['workflow_name'].lower(),
+            rm=True,
+            cache_from=["farhan0167/otto-m8-base:latest"]
+        )
+        if debug:
+            for log in logs:
+                print(log.get('stream', ''))
             
-            requirement_text_files = DockerTools.get_dependency_list_paths(payload)
-            requirement_text_files_for_dockerfile = [path.replace(".", "/app", 1) for path in requirement_text_files]
-            if requirement_text_files:
-                requirement_text_files_for_dockerfile = [path.replace(".", "/app", 1) for path in requirement_text_files]
-                requirement_text_file_paths = " ".join([f"-r {path}" for path in requirement_text_files_for_dockerfile])
-            else:
-                requirement_text_file_paths = "fastapi"
-
-            # Create the Dockerfile content
-            dockerfile_content = f"""
-            FROM farhan0167/otto-m8-base:latest
-
-            # Set the working directory
-            WORKDIR /app
-
-            # Copy existing FastAPI app code into the container
-            COPY app_files /app
-
-            # Install task based dependencies dynamically
-            RUN pip install {requirement_text_file_paths}
-
-            # Write the JSON payload directly into the container
-            RUN echo '{escaped_json_payload}' > /app/data.json
-
-            # Command to run the FastAPI app with Uvicorn
-            CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
-            """
-            
-            # Write the Dockerfile to the temporary directory
-            dockerfile_path = os.path.join(temp_dir, 'Dockerfile')
-            with open(dockerfile_path, 'w') as dockerfile:
-                dockerfile.write(dockerfile_content)
-
-            # Build the Docker image from the temporary directory
-            image, _ = client.images.build(
-                path=temp_dir,
-                # TODO add a field to the blocks for Workflow such that we can get name of the image based on payload
-                tag=payload['workflow_name'].lower(),
-                rm=True
-            )
-            host_port = DockerTools.find_available_port(8001, 9000)
-            # Run the container
-            container = DockerTools.start_docker_container(image_id=image.id, host_port=host_port)
-
-            print(f"Container started with ID: {container.short_id}")
-            # TODO: Make localhost configurable. Not everything will stay in localhost.
-            deployment_url = f"http://localhost:{host_port}/workflow_run"
-            print(f"Run workflow with: {deployment_url}")
-            # TODO Make this better, such as a tuple
-            return container, deployment_url, dockerfile_content, image
+        host_port = DockerTools.find_available_port(8001, 9000)
+        # Run the container
+        container = DockerTools.start_docker_container(image_id=image.id, host_port=host_port, host_cache_path=host_cache_path)
+        end = time.time()
+        print(f"Time taken to create workflow: {end - begin}s")
+        print(f"Container started with ID: {container.short_id}")
+        # TODO: Make localhost configurable. Not everything will stay in localhost.
+        deployment_url = f"http://localhost:{host_port}/workflow_run"
+        print(f"Run workflow with: {deployment_url}")
+        # TODO Make this better, such as a tuple
+        return container, deployment_url, dockerfile_content, image
         
     @staticmethod
     def get_dependency_list_paths(payload):
@@ -147,7 +136,7 @@ class DockerTools:
             print(f"Failed to remove image: {e}")
     
     @staticmethod
-    def start_docker_container(image_id:str, host_port:int=8001):
+    def start_docker_container(image_id:str, host_port:int=8001, host_cache_path=None):
         """
         Start a docker container given an image id. The container will be started detached and bind the port 8000 to the given host port.
 
@@ -158,11 +147,13 @@ class DockerTools:
         Returns:
             docker.models.containers.Container: The started container.
         """
+        volumes = {host_cache_path: {'bind': '/root/.cache', 'mode': 'rw'}} if host_cache_path else None
         client = docker.from_env()
         container = client.containers.run(
                 image=image_id,
                 ports={'8000/tcp': ("0.0.0.0", host_port)},
                 detach=True,
+                volumes=volumes
                 # TODO add name of the container
             )
         return container
