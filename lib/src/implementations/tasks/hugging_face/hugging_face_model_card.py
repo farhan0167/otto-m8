@@ -9,6 +9,10 @@ from integrations.hugging_face.hugging_face_api import HuggingFaceApi
 from core.types import InputType
 
 class HuggingFaceModelCard(BaseImplementation):
+    """ 
+    Implementation of Hugging Face Pipeline abstraction for single
+    input models. 
+    """
     def __init__(self, run_config:dict) -> None:
         self.run_config = run_config
         self.model_card = run_config.get('model_card')
@@ -18,16 +22,7 @@ class HuggingFaceModelCard(BaseImplementation):
         
     
     def run(self, input_:dict=None) ->dict:
-        # input_ = input_.get('user_input')
-        
-        # if self.input_type == 'text':
-        #     results = self.pipeline(input_)
-        # elif self.input_type == 'image':
-        #     input_ = self.preprocess_image_input(input_)
-        #     results = self.pipeline(input_)
-        # else:
-        #     raise Exception(f"Input type {self.input_type} not supported")
-        
+        # Since this is unimodal, we only will ever take 1 input.
         input_ = list(input_.values())[0]
         # For any file based input, we assume its an image. Preprocess it.
         if self.input_type == InputType.FILE.value:
