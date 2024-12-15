@@ -80,7 +80,7 @@ class TaskRegistry:
 
 # Register Tasks and Vendors
 TaskRegistry.add_vendor("Hugging Face")
-TaskRegistry.add_task_to_registry_by_vendor("Hugging Face", "Model Card", TaskCatalog.HUGGING_FACE_MODEL_CARD)
+TaskRegistry.add_task_to_registry_by_vendor("Hugging Face", "Model Card - Unimodal", TaskCatalog.HUGGING_FACE_MODEL_CARD)
 
 TaskRegistry.add_vendor("Ollama")
 TaskRegistry.add_task_to_registry_by_vendor("Ollama", "Ollama Generate", TaskCatalog.OLLAMA_SERVER_GENERATE)
