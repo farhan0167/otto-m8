@@ -5,6 +5,7 @@ class TaskCatalog(Enum):
     #### Catalog for Tasks ####
     # key = module.file_name.class_name
     HUGGING_FACE_MODEL_CARD = 'implementations.tasks.hugging_face.hugging_face_model_card.HuggingFaceModelCard'
+    HUGGING_FACE_MULTIMODAL = 'implementations.tasks.hugging_face.hugging_face_multimodal.HuggingFaceMultimodalPipeline'
     OLLAMA_SERVER_GENERATE = 'implementations.tasks.ollama.ollama_server_generate.OllamaServerGenarate'
     OLLAMA_SERVER_CHAT = 'implementations.tasks.ollama.ollama_server_chat.OllamaServerChat'
     OPENAI_CHAT = 'implementations.tasks.openai.openai_chat.OpenAIChat'
@@ -81,6 +82,7 @@ class TaskRegistry:
 # Register Tasks and Vendors
 TaskRegistry.add_vendor("Hugging Face")
 TaskRegistry.add_task_to_registry_by_vendor("Hugging Face", "Model Card - Unimodal", TaskCatalog.HUGGING_FACE_MODEL_CARD)
+TaskRegistry.add_task_to_registry_by_vendor("Hugging Face", "Model Card - Multimodal", TaskCatalog.HUGGING_FACE_MULTIMODAL)
 
 TaskRegistry.add_vendor("Ollama")
 TaskRegistry.add_task_to_registry_by_vendor("Ollama", "Ollama Generate", TaskCatalog.OLLAMA_SERVER_GENERATE)
