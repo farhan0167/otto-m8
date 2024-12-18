@@ -6,7 +6,7 @@ from transformers import (
 )
 from implementations.base import BaseImplementation
 from integrations.hugging_face.hugging_face_api import HuggingFaceApi
-from core.types import InputType
+from core.input_parser.hf_multimodal_parser import HuggingFaceMultimodalInputParser
 
 class HuggingFaceMultimodalPipeline(BaseImplementation):
     """ 
@@ -22,12 +22,15 @@ class HuggingFaceMultimodalPipeline(BaseImplementation):
         
     
     def run(self, input_:dict=None) ->dict:
-        # Since this is unimodal, we only will ever take 1 input.
-        input_ = list(input_.values())[0]
-        # For any file based input, we assume its an image. Preprocess it.
-        if self.input_type == InputType.FILE.value:
-            input_ = self.preprocess_image_input(input_)
-        results = self.pipeline(input_)
+        # Pass input to an input parser, getting img, text based on run config
+        input_parser = HuggingFaceMultimodalInputParser(input_, self.run_config)
+        image, text = input_parser()
+        
+        # Pre-process the image input into PIL Image object
+        image = self.preprocess_image_input(image)
+        
+        # pass it to pipelines
+        results = self.pipeline(image, text)
         
         # TODO Post Processing: Perhaps everything should have its own post processing logic.
         try:
@@ -49,6 +52,10 @@ class HuggingFaceMultimodalPipeline(BaseImplementation):
         return results
     
     def get_huggingface_pipeline_config(self):
+        pipeline_tag = self.run_config.get('huggingface_task_type')
+        if pipeline_tag is not None:
+            self.pipeline_tag = pipeline_tag
+            return
         models = HuggingFaceApi.search_model(self.model_card)
         for model in models:
             if model.modelId == self.model_card:
