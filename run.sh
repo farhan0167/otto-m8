@@ -21,6 +21,9 @@ docker compose up -d
 cd "./src/" || exit
 mkdir .cache
 
+echo "Building base image..."
+docker build -f base.Dockerfile -t farhan0167/otto-m8-base:latest .
+
 # Check if virtual environment exists
 if [ -d "venv" ]; then
     echo "Virtual environment exists. Activating venv..."
