@@ -18,7 +18,7 @@ class HuggingFaceMultimodalPipeline(BaseImplementation):
         self.model_card = run_config.get('model_card')
         self.input_type = run_config.get('input_type')
         self.get_huggingface_pipeline_config()
-        self.pipeline = pipeline(self.pipeline_tag, model=self.model_card)
+        self.pipeline = pipeline(self.pipeline_tag, model=self.model_card, trust_remote_code=True)
         
     
     def run(self, input_:dict=None) ->dict:
