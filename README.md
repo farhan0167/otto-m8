@@ -59,8 +59,11 @@ request = requests.post(
 response = request.json()['message']
 response = json.loads(response)
 print(response)
-"""
+```
+
+```python
 Output:
+"""
 {
   "f92cffae-14d2-43f4-a961-2fcd5829f1bc": {
     "id": "chatcmpl-AgOrZExPgef0TzHVGNVJJr1vmrJyR",
