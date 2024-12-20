@@ -46,7 +46,7 @@ with open(path_to_pdf, "rb") as f:
     data = f.read()
     data_base64 = base64.b64encode(data).decode("utf-8")
 
-# Based on the Block's displayed name, append your data:
+# Based on the Block's displayed name(`id` on Block config tab), append your data:
 payload = {
     "Langchain_PDF_Parser": data_base64,
     "Input_Block": "What was amazon's net sales?"
@@ -124,3 +124,16 @@ Use the Chat Output block to use the chat interface:
 You can run almost any Huggingface model(although not really) that can be run via
 Huggingface's pipeline abstraction. Below is a simple demo of the `Salesforce/blip-image-captioning-base` model.
 ![hf_multimodal_demo](/docs/assets/hf_multimodal.gif)
+
+## Roadmap
+- [x] Basic Chatbot and HF workflows
+- [x] Function Calling
+- [x] Lambda Functions/ Custom Code blocks
+- [x] Multimodality for Huggingface
+- [ ] Multimodality for OpenAI
+- [ ] SDK for interacting with deployed workflows
+- [ ] Observability for every block's output like a Logger
+- [ ] Memory for Chatbot and RAG. Goal is to not clutter the drawing board.
+- [ ] Streamline workflow creation, edits and redeployment. Some form of version control
+- [ ] ML Model Training via UI?
+
