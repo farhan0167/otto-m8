@@ -35,6 +35,10 @@ app.add_middleware(
 
 class WorkflowRunRequest(BaseModel):
     data: dict
+    
+@app.get("/workflow_run/health_check")
+async def health_check():
+    return {"message": "OK"}
 
 @app.post("/workflow_run")
 async def root(request: WorkflowRunRequest):
