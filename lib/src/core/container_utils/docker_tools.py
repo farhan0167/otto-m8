@@ -27,8 +27,7 @@ class DockerTools:
         """
         begin = time.time()
         client = docker.from_env()
-        json_payload = json.dumps(payload, indent=4)
-        escaped_json_payload = json_payload.replace('"', '\\"').replace('\n', '\\n')
+        json_payload = json.dumps(payload)
 
         source_dir = os.getcwd()
         host_cache_path = os.path.join(source_dir, ".cache")
@@ -41,7 +40,7 @@ class DockerTools:
         WORKDIR /app
 
         # Write the JSON payload directly into the container
-        RUN echo '{escaped_json_payload}' > /app/data.json
+        RUN echo '{json_payload}' > /app/data.json
 
         # Command to run the FastAPI app with Uvicorn
         CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
