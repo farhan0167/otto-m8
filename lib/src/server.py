@@ -8,13 +8,10 @@ import json
 
 # Read the escaped JSON from file
 with open('data.json', 'r') as file:
-    escaped_json_payload = file.read()
-
-# Unescape the JSON string
-unescaped_json_payload = escaped_json_payload.replace('\\"', '"').replace('\\n', '\n')
+    json_payload = file.read()
 
 # Load the JSON as a dictionary
-execution = json.loads(unescaped_json_payload)
+execution = json.loads(json_payload)
 
 template = WorkflowTemplate(**execution)
 workflow = RunWorkflow(template)
