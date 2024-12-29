@@ -24,21 +24,9 @@ mkdir .cache
 echo "Building base image..."
 docker build -f base.Dockerfile -t farhan0167/otto-m8-base:latest .
 
-# Check if virtual environment exists
-if [ -d "venv" ]; then
-    echo "Virtual environment exists. Activating venv..."
-    source venv/bin/activate
-else
-    echo "Virtual environment not found. Creating venv..."
-    python3 -m venv venv
-    source venv/bin/activate
-    echo "Installing dependencies from requirements.txt..."
-    pip install -r requirements.txt
-fi
-
 # Echo the react app URL
 echo "Otto Dashboard URL: http://localhost:3000"
 
 # Start the FastAPI server using Uvicorn
 echo "Starting FastAPI server..."
-uvicorn client:app --host 0.0.0.0 --port 8000 --reload
+poetry run uvicorn client:app --host 0.0.0.0 --port 8000 --reload
