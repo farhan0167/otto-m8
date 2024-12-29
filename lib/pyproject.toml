@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "otto_m8_backend"
-version = "0.0.6"
+version = "0.0.7"
 authors = [
   { name="farhan0167", email="ahmadfarhanishraq@gmail.com" },
 ]
