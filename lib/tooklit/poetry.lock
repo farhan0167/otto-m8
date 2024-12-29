@@ -1552,13 +1552,13 @@ files = [
 
 [[package]]
 name = "otto-m8-backend"
-version = "0.0.6"
+version = "0.0.7"
 description = "Backend engine for otto-m8, a low code tool to build and deploy AI/ML workloads."
 optional = false
 python-versions = ">=3.11.4"
 files = [
-    {file = "otto_m8_backend-0.0.6-py3-none-any.whl", hash = "sha256:14cba8965fe14448e8db520e0f175e4abe22ca5763dbf483dd49975f689f3613"},
-    {file = "otto_m8_backend-0.0.6.tar.gz", hash = "sha256:324da7ce878ccf4c74a315dcfac539151d559851e93b69bb532f1ca69dee1b27"},
+    {file = "otto_m8_backend-0.0.7-py3-none-any.whl", hash = "sha256:6eba17d8fb1093a55acd74e044f6b9464a11cc27f79c5c59b529f8a8682e1878"},
+    {file = "otto_m8_backend-0.0.7.tar.gz", hash = "sha256:e05220590f0d6664dd77ba73267c307a810bbb399a4e62847fae9bdfee81b5b4"},
 ]
 
 [package.dependencies]
@@ -2986,4 +2986,4 @@ propcache = ">=0.2.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "3.11.4"
-content-hash = "43d852be3080108800c0c914adcb77fd70afc60c06a70b6812e0bede4e478e67"
+content-hash = "d31eed46d900b0b66a005b3e7a10fdab546f5c4cbfc9ec9bcbdb38b3dd35c35b"
