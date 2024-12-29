@@ -18,7 +18,7 @@ echo "Building and running Docker Compose in lib directory..."
 docker compose up -d
 
 # Navigate to the FastAPI directory (update this path to the correct one)
-cd "./src/" || exit
+cd "./otto_backend/" || exit
 mkdir .cache
 
 echo "Building base image..."
