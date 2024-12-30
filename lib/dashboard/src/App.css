@@ -66,3 +66,14 @@ body .form-control {
 .modal{
   z-index: 9999;
 }
+
+.page-main-container{
+  margin-top: 60px;
+  padding-right: 8%;
+  padding-left: 2%;
+}
+.page-main-container h2{
+  font-weight: 600;
+  font-size: 27px;
+  margin-bottom: 50px;
+}
