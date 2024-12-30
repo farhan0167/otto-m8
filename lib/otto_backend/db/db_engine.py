@@ -1,9 +1,10 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String
 
-#SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:123456@localhost:5432/postgres"
+DB_HOST = os.getenv("DB_HOST", "localhost")
+SQLALCHEMY_DATABASE_URL = f"postgresql://postgres:123456@{DB_HOST}:5432/postgres"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, 

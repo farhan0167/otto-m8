@@ -152,7 +152,11 @@ class DockerTools:
                 image=image_id,
                 ports={'8000/tcp': ("0.0.0.0", host_port)},
                 detach=True,
-                volumes=volumes
+                volumes=volumes,
+                network='lib_otto_network',
+                environment={
+                    'DB_HOST': 'postgres'
+                }
                 # TODO add name of the container
             )
         return container
