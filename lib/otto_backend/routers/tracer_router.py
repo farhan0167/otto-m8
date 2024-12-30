@@ -27,8 +27,8 @@ def get_trace(
         # TODO: Standard Server Response: Implement a standard response template
         for trace in traces:
             response.append({
-                "start_timestamp": trace.start_timestamp,
-                "end_timestamp": trace.end_timestamp,
+                "start_timestamp": trace.start_timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+                "end_timestamp": trace.end_timestamp.strftime("%Y-%m-%d %H:%M:%S"),
                 "execution_time": round(trace.execution_time, 2),
                 "log": trace.log
             })
