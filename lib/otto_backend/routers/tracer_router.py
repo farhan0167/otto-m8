@@ -34,4 +34,4 @@ def get_trace(
             })
         return response
     else:
-        raise HTTPException(status_code=404, detail="Trace not found")    
+        return []    
