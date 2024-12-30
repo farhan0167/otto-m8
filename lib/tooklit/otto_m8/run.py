@@ -40,6 +40,7 @@ class OttoRun:
         response = requests.post(
             self.workflow_url,
             json={
+                "template_id": self.template.id,
                 "data": payload
             }
         )
