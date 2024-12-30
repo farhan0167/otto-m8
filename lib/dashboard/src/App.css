@@ -57,3 +57,23 @@ body .form-control {
 .custom-switch-size .form-check-label {
   padding-left: 25px;
 }
+
+/* For side bar text color */
+.MuiListItemText-primary{
+  color: #000000;
+}
+
+.modal{
+  z-index: 9999;
+}
+
+.page-main-container{
+  margin-top: 60px;
+  padding-right: 8%;
+  padding-left: 2%;
+}
+.page-main-container h2{
+  font-weight: 600;
+  font-size: 27px;
+  margin-bottom: 50px;
+}

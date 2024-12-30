@@ -5,8 +5,8 @@ import secrets
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
-from db.db_engine import get_session
-from db.models.users import Users
+from .db_engine import get_session
+from .models.users import Users
 from routers.dependency import token_store
 
 # Password hashing configuration

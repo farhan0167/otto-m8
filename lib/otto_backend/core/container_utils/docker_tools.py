@@ -41,9 +41,9 @@ class DockerTools:
 
         # Write the JSON payload directly into the container
         RUN echo '{json_payload}' > /app/data.json
-
+        
         # Command to run the FastAPI app with Uvicorn
-        CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+        CMD ["poetry", "run", "uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
         """
         
         dockerfile = io.BytesIO(dockerfile_content.encode('utf-8'))
@@ -152,7 +152,11 @@ class DockerTools:
                 image=image_id,
                 ports={'8000/tcp': ("0.0.0.0", host_port)},
                 detach=True,
-                volumes=volumes
+                volumes=volumes,
+                network='lib_otto_network',
+                environment={
+                    'DB_HOST': 'postgres'
+                }
                 # TODO add name of the container
             )
         return container

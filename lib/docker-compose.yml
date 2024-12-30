@@ -18,6 +18,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - otto_network
 
   otto-dashboard:
     container_name: otto-dashboard
@@ -31,3 +33,7 @@ services:
 
 volumes:
   postgres_data:
+
+networks:
+  otto_network:
+    driver: bridge

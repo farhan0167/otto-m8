@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "otto_m8_backend"
+version = "0.0.7"
+authors = [
+  { name="farhan0167", email="ahmadfarhanishraq@gmail.com" },
+]
+description = "Backend engine for otto-m8, a low code tool to build and deploy AI/ML workloads."
+readme = "README.md"
+requires-python = ">=3.11.4"
+dependencies = [
+        "fastapi>=0.115.6",
+        "uvicorn>=0.34.0",
+        "requests>=2.32.3",
+        "pillow>=11.0.0",
+        "python-dotenv>=1.0.1",
+        "psycopg2-binary>=2.9.10",
+        "openai>=1.58.1",
+        "pypdf>=5.1.0",
+        "pydantic>=2.10.4",
+        "sqlalchemy>=2.0.36",
+        "transformers>=4.47.1",
+        "langchain>=0.3.13",
+        "langchain-community>=0.3.13",
+        "docker>=7.1.0",
+        "huggingface-hub>=0.27.0",
+        "redis>=5.2.1",
+        "tqdm>=4.67.1",
+        "torch>=2.5.1",
+        "torchvision>=0.20.1",
+        "passlib>=1.7.4",
+        "python-multipart>=0.0.20",
+        "bcrypt>=4.2.1"
+    ]
+
+[project.urls]
+Homepage = "https://otto-m8.com"
+Issues = "https://github.com/farhan0167/otto-m8/issues"

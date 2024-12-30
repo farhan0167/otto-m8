@@ -3,3 +3,4 @@ build
 .git
 venv
 __pycache__
+**.egg**

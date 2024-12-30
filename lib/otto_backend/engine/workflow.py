@@ -1,14 +1,21 @@
+import time
 from collections import defaultdict, deque
 from typing import Any
 from engine.blocks import WorkflowTemplate, StartBlock
 from implementations.tasks.implementer import Implementer
 from implementations.integrations.implementer import IntegrationImplementer
+from tracer import (
+    Tracer,
+    BlockTrace,
+    WorkflowTrace
+)
 
     
 class RunWorkflow:
     def __init__(self, workflow: WorkflowTemplate):
         self.workflow = workflow
         self.block_name_map = defaultdict(lambda: defaultdict(lambda: defaultdict(dict)))
+        self.tracer = None
         
     def create_block_name_map(self):
         """Create a mapping of block names to block objects and their associated metadata."""
@@ -143,12 +150,21 @@ class RunWorkflow:
                 
     
     
-    def run_workflow(self, payload:dict=None, *args: Any, **kwds: Any) -> Any:
+    def run_workflow(
+        self, 
+        payload:dict=None, 
+        template_id:int=None, 
+        *args: Any, **kwds: Any
+    ) -> Any:
         """
         Main function to run the workflow based on the input payload.
         This implements a breadth first search traversal of every block(node)
         in the workflow(graph).
         """
+        if template_id:
+            # Initialize Tracer
+            self.tracer = Tracer()
+        
         visited = set()
         start_block = self.get_start_block()
         Queue =deque([start_block])
@@ -160,7 +176,10 @@ class RunWorkflow:
             if not block:
                 break
             # Process block logic.
-            self.process_BFS_step(block, payload)
+            self.process_BFS_step(
+                block = block, 
+                payload = payload,
+            )
 
             # once a block is processed, add it's children to the queue if they haven't been visited.
             for connection in block.connections:
@@ -168,8 +187,11 @@ class RunWorkflow:
                 if group_block_name not in visited:
                     visited.add(group_block_name)
                     Queue.append(self.block_name_map[workflow_group][group_block_name]['block'])
-        
-
+                    
+        if template_id:
+            # Save Tracer
+            self.tracer.save(template_id=template_id)
+            self.tracer = None
         return self.block_name_map['output']
     
     def process_BFS_step(self, block, payload):
@@ -179,8 +201,14 @@ class RunWorkflow:
         of each block's implementation.
         """
         if block.block_type != 'start_node':
+            execution_time = 0.0
+            begin = time.time()
+            
             current_group, current_name = block.block_type, block.name
             previous_hops = self.block_name_map[current_group][current_name]['reverse_connection']
+            
+            input_ = None
+            current_name_output = None
             
             if block.block_type == 'input':
                 input_ = payload[current_name]
@@ -217,6 +245,17 @@ class RunWorkflow:
                         user_input=payload
                     )
                 self.block_name_map[current_group][current_name]['block_output'] = current_name_output
+                
+            execution_time = time.time() - begin
+            if self.tracer:
+                # Log to Tracer
+                self.tracer.log(
+                        block_name=current_name,
+                        block_group=current_group,
+                        block_input=input_,
+                        block_output=current_name_output,
+                        execution_time=execution_time
+                )
     
     def get_start_block(self):
         """

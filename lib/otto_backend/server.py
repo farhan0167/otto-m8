@@ -32,6 +32,7 @@ app.add_middleware(
 
 class WorkflowRunRequest(BaseModel):
     data: dict
+    template_id: int = None
     
 @app.get("/workflow_run/health_check")
 async def health_check():
@@ -42,6 +43,7 @@ async def root(request: WorkflowRunRequest):
     payload = None
     try:
         payload = request.data
+        template_id = request.template_id
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
@@ -49,7 +51,7 @@ async def root(request: WorkflowRunRequest):
         #TODO Change this exception
         raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
-    output = workflow.run_workflow(payload=payload)
+    output = workflow.run_workflow(payload=payload, template_id=template_id)
     output = output['Output_Block']['block_output']
     output = json.dumps(output)   
 
@@ -60,6 +62,7 @@ async def chat(request: WorkflowRunRequest):
     payload = None
     try:
         payload = request.data
+        template_id = request.template_id
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
@@ -67,7 +70,7 @@ async def chat(request: WorkflowRunRequest):
         #TODO Change this exception
         raise HTTPException(status_code=400, detail="Invalid JSON payload")
         
-    output = workflow.run_workflow(payload=payload)
+    output = workflow.run_workflow(payload=payload, template_id=template_id)
     output = output['Chat_Output']['block_output']
     output = list(output.values())[0]
 
