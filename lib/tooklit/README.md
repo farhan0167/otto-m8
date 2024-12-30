@@ -24,11 +24,10 @@ import json
 otto = OttoRun(workflow_url='http://localhost:8001/workflow_run')
 
 payload = otto.create_empty_payload()
-print(payload)
+# print(payload) # Do this to ensure you know the names of your input blocks
 
 payload['Input_Block'] = "<insert your text>"
 
 response = otto.run(payload)
 print(json.dumps(response, indent=4))
-
 ```

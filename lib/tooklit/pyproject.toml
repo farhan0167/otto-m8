@@ -5,6 +5,10 @@ description = "Python SDK for otto-m8, a low code tool to build and deploy AI/ML
 authors = ["farhan0167 <afi225@nyu.edu>"]
 license = "Apache-2.0"
 readme = "README.md"
+include = [
+    "core",
+    "run.py"
+]
 
 [tool.poetry.dependencies]
 python = "3.11.4"

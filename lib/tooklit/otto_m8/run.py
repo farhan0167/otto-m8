@@ -9,6 +9,9 @@ config = OttoConfig()
 db = get_session()
 
 class OttoRun:
+    """ 
+    Object to interact with the workflow. 
+    """
     def __init__(
         self,
         workflow_url: str,
