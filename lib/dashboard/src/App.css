@@ -57,3 +57,12 @@ body .form-control {
 .custom-switch-size .form-check-label {
   padding-left: 25px;
 }
+
+/* For side bar text color */
+.MuiListItemText-primary{
+  color: #000000;
+}
+
+.modal{
+  z-index: 9999;
+}
