@@ -47,8 +47,17 @@ def get_draft_workflows(
     drafts = db_session.query(DraftTemplate).filter(
         DraftTemplate.user_id == current_user.id
     ).all()
+    response = []
+    for draft in drafts:
+        response.append({
+            "id": draft.id,
+            "name": draft.name,
+            "description": draft.description,
+            "template": json.loads(draft.frontend_template),
+            "reference_template_id": draft.reference_template_id
+        })
     
-    return drafts
+    return response
     
 @router.get("/get_draft_workflow/{template_id}", tags=["Draft Workflows/Templates"])
 def get_draft_workflow(
