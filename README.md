@@ -8,9 +8,13 @@
 
 ## ♾️ Wait, what is Otto-m8?
 
-otto-m8 (automate) lets users spin up a wide range of AI models, starting from Traditional deep learning models to large language models, all through a flowchart like user interface. At its core, otto-m8 will deploy a Docker container of your workflow that you can use as an API to integrate with your existing workflows, build a AI assistant chatbot or use it as a standalone API/application.
+otto-m8 (automate) is a low code platform that allows users to build AI/ML workflows through a flowchart like UI. To be more specific, its a platform that aims to abstract away the code needed to launch deep learning based workflows, where a workflow could mean just using an AI model by itself, or integrating with other third party API's. 
 
-The idea is simple-provide a easy-to-use user interface to spin up AI models. A lot of code needed to run AI models(both LLMs and traditional deep learning models) are boilerplate code blocks, including the deployments which is more often than not is a REST API serving the model. The goal of otto-m8 is not only to abstract that through code but to abstract the entire process into a UI. Otto-m8 operates with a Input, Process, Output paradigm, where every flow has some form of input, that gets processed via a series of processes, and then an output.
+Imagine the following scenario: you have trained a deep learning model and pushed the model to Huggingface Hub. While you could potentially host your model using their Inference API, you want to integrate your model with a LLM or some other function to make your model useful. This is where otto-m8 comes in by:
+1) Allowing you to chain your model with other models and integrations visually, which we'll call a workflow.
+2) Serve that workflow as a REST API that other users could consume from.
+
+To take it a step further, consider otto-m8 as a visual infrastructure platform that creates a deployable docker container hosting your ML model and business logic. 
 
 ## 🚀 Getting Started
 
@@ -175,6 +179,7 @@ Huggingface's pipeline abstraction. Below is a simple demo of the `Salesforce/bl
 - [x] Observability for every block's output like a Logger
 - [ ] Memory for Chatbot and RAG. Goal is to not clutter the drawing board.
 - [x] Streamline workflow creation, edits and redeployment. Some form of version control
+- [ ] Apart from Lambdas that deploy seperate docker containers for custom code, build a custom code block which is deployed within the workflow container.
 - [ ] ML Model Training via UI?
 
 
