@@ -185,4 +185,4 @@ Huggingface's pipeline abstraction. Below is a simple demo of the `Salesforce/bl
 
 ## License
 
-This project is licensed under the Apchace 2.0 License - see the [LICENSE](https://github.com/farhan0167/otto-m8/blob/main/LICENSE) file for details.
+This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/farhan0167/otto-m8/blob/main/LICENSE) file for details.
