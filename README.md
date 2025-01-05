@@ -3,15 +3,20 @@
         <img class='otto-logo' width='980px' src='docs/assets/otto-m8.png' style="border-radius: 5px;">
     </div>
     <h1 align="center">otto-m8</h1>
-    <p align="center">A Flowchart based automation platform to run deep learning workloads with minimal to no code.</p>
-    <p>otto-m8 (automate) lets users spin up a wide range of AI models, starting from Traditional deep learning models to large language models, all through a flowchart like user interface. At its core, otto-m8 will deploy a Docker container of your workflow that you can use as an API to integrate with your existing workflows, build a AI assistant chatbot or use it as a standalone API/application.</p>
-    <p>The idea is simple-provide a easy-to-use user interface to spin up AI models. A lot of code needed to run AI models(both LLMs and traditional deep learning models)
-    are boilerplate code blocks, including the deployments which is more often than not a REST API serving the model. The goal of otto-m8 is not only to abstract that through code
-    but to abstract the entire process into a UI. Otto-m8 operates with a Input, Process, Output paradigm, where every flow has some form of input, that gets processed via a series of processes, and then an output.</p>
-    <p>This is currently an MVP and made source available, which is to say this is not an Open Source software.</p>
+    <p align="center">An open source Flowchart based automation platform to run deep learning workloads with minimal to no code.</p>
 </div>
 
-## Getting Started
+## ♾️ Wait, what is Otto-m8?
+
+otto-m8 (automate) is a low code platform that allows users to build AI/ML workflows through a flowchart like UI. To be more specific, its a platform that aims to abstract away the code needed to launch deep learning based workflows, where a workflow could mean just using an AI model by itself, or integrating with other third party API's. 
+
+Imagine the following scenario: you have trained a deep learning model and pushed the model to Huggingface Hub. While you could potentially host your model using their Inference API, you want to integrate your model with a LLM or some other function to make your model useful. This is where otto-m8 comes in by:
+1) Allowing you to chain your model with other models and integrations visually, which we'll call a workflow.
+2) Serve that workflow as a REST API that other users could consume from.
+
+To take it a step further, consider otto-m8 as a visual infrastructure platform that creates a deployable docker container hosting your ML model and business logic. 
+
+## 🚀 Getting Started
 
 1. Pre-req: Make sure to have Docker or Docker Desktop Installed on your computer, and in order to run Ollama blocks, make sure you have the Ollama server running in the background.
 2. Run the following command to make `run.sh` executable
@@ -24,13 +29,52 @@ chmod +x run.sh
 ```
 This should launch both the dashboard and the server. To access the dashboard, head over to `http://localhost:3000/`. Use the default login credentials to access the dashboard, and get started on your first workflow.
 
-## Examples
+## 🛠️ Documentation
+Please see [here](https://otto-m8.com/) for full documentation, including:
+- [Introduction](https://otto-m8.com/docs/introduction): Overview of the platform
+- [Conceptual-Guide](https://otto-m8.com/docs/category/conceptual-guide): The core concepts that went behind building otto-m8
+- [Tutorials](https://otto-m8.com/docs/category/tutorials): If you want to see what you can build with otto-m8, this guide is what you're looking for.
+
+## 🔍 Examples
 
 ### OpenAI Langchain PDF Parsing
 Below is an example of a workflow that incorporates Langchain's PDF Parser to build a workflow:
 ![langchain_pdf_parse](/docs/assets/amazon.gif)
 
-To run it as an API:
+#### To run with the sdk:
+
+- Install the library:
+```
+pip install otto-m8
+```
+
+- And then run:
+
+```python
+import base64
+import json
+from otto_m8.run import OttoRun
+
+# Assuming your workflow is running on port 8001
+otto = OttoRun(workflow_url='http://localhost:8001/workflow_run')
+
+path_to_pdf = "./AMZN-Q1-2024-Earnings-Release.pdf"
+# Any kind of upload documents expect a base64 encoded string.
+with open(path_to_pdf, "rb") as f:
+    data = f.read()
+    data_base64 = base64.b64encode(data).decode("utf-8")
+
+# Based on the Block's displayed name(`id` on Block config tab), append your data:
+payload = {
+    "Langchain_PDF_Parser": data_base64,
+    "Input_Block": "What was amazon's net sales?"
+}
+
+response = otto.run(payload)
+print(response)
+```
+
+#### To run it using the Request libray:
 ```python
 import requests
 import base64
@@ -131,9 +175,14 @@ Huggingface's pipeline abstraction. Below is a simple demo of the `Salesforce/bl
 - [x] Lambda Functions/ Custom Code blocks
 - [x] Multimodality for Huggingface
 - [ ] Multimodality for OpenAI
-- [ ] SDK for interacting with deployed workflows
-- [ ] Observability for every block's output like a Logger
+- [x] SDK for interacting with deployed workflows
+- [x] Observability for every block's output like a Logger
 - [ ] Memory for Chatbot and RAG. Goal is to not clutter the drawing board.
-- [ ] Streamline workflow creation, edits and redeployment. Some form of version control
+- [x] Streamline workflow creation, edits and redeployment. Some form of version control
+- [ ] Apart from Lambdas that deploy seperate docker containers for custom code, build a custom code block which is deployed within the workflow container.
 - [ ] ML Model Training via UI?
 
+
+## License
+
+This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/farhan0167/otto-m8/blob/main/LICENSE) file for details.

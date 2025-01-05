@@ -16,7 +16,8 @@ from routers import (
     auth_router,
     lambdas_router,
     instant_run_router,
-    tracer_router
+    tracer_router,
+    draft_router
 )
 
 # TODO Refactor code so that things that do not need to be here, arent here.
@@ -78,3 +79,4 @@ app.include_router(auth_router.router)
 app.include_router(lambdas_router.router)
 app.include_router(instant_run_router.router)
 app.include_router(tracer_router.router)
+app.include_router(draft_router.router)
