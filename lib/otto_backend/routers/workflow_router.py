@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from db.db_engine import get_db
 from db.models.workflow_templates import WorkflowTemplates
 from db.models.users import Users
+from db.models import DraftTemplate
 from engine.blocks import WorkflowTemplate
 from core.container_utils.docker_tools import DockerTools
 from routers.dependency import get_current_user
@@ -49,10 +50,78 @@ async def create_workflow(
     db_session.add(template_record)
     db_session.commit()
     template_id = template_record.id
+    
+    draft_to_delete = db_session.query(DraftTemplate).filter(DraftTemplate.id == data['draft_template_id']).first()
+    if draft_to_delete:
+        db_session.delete(draft_to_delete)
+        db_session.commit()
     # TODO: Standard Server Response: Implement a standard response template
     return {
         "status": "success",
         "deployment_url": deployment_url,
+        "template_id": template_id
+    }
+    
+@router.post("/update_workflow/", tags=["Workflows"])
+async def update_workflow(
+    request: Request, 
+    db_session: Session = Depends(get_db),
+    current_user: Users = Depends(get_current_user)
+):
+    data = await request.json()
+    
+    template_id = data['reference_template_id']
+    
+    template = db_session.query(WorkflowTemplates).filter(WorkflowTemplates.id == template_id).first()
+    
+    if template:
+        DockerTools.stop_docker_container(container_id=template.container_id)
+        DockerTools.delete_docker_container(
+            container_id=template.container_id
+        )
+        DockerTools.delete_docker_image(image_id=template.image_id)
+        # db_session.delete(template)
+        db_session.commit()
+    
+    # Create the new resources
+    user_id = current_user.id
+    backend_template = {
+        "workflow_name": data['workflow_name'],
+        **data['backend_template']
+    }
+    workflow = WorkflowTemplate(**backend_template)
+    (container, 
+     deployment_url, 
+     dockerfile_content, 
+     image
+    ) = DockerTools.create_container_with_in_memory_dockerfile(workflow.dict())
+    
+    backend_template = json.dumps(workflow.dict())
+    frontend_template = json.dumps(data['frontend_template'])
+    
+    if template:
+        template.name = data['workflow_name']
+        template.description = data['workflow_description']
+        template.backend_template=backend_template, 
+        template.frontend_template=frontend_template,
+        template.dockerfile_template=dockerfile_content,
+        template.deployment_url=deployment_url,
+        template.container_id=container.short_id,
+        template.image_id=image.id
+        
+        db_session.commit()
+    else:
+        raise HTTPException(status_code=404, detail="Template not found")
+    
+    # Delete from the draft table
+    draft_template = db_session.query(DraftTemplate).filter(DraftTemplate.reference_template_id == template_id).first()
+    if draft_template:
+        db_session.delete(draft_template)
+        db_session.commit()
+    
+    # TODO: Standard Server Response: Implement a standard response template
+    return {
+        "status": "success",
         "template_id": template_id
     }
     
