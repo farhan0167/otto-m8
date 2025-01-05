@@ -12,3 +12,5 @@ class DraftTemplate(Base):
     frontend_template = Column(Text, nullable=True)
     # Reference to a template already deployed. This will constrain only 1 edit at any given time.
     reference_template_id = Column(Integer, unique=True, nullable=True)
+    date_created = Column(DateTime)
+    date_modified = Column(DateTime)
