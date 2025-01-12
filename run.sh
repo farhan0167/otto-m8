@@ -21,6 +21,9 @@ docker compose up -d
 cd "./otto_backend/" || exit
 mkdir .cache
 
+echo "Building slim base image..."
+docker build -f slim-base.Dockerfile -t farhan0167/otto-m8-slim-base:latest .
+
 echo "Building base image..."
 docker build -f base.Dockerfile -t farhan0167/otto-m8-base:latest .
 
