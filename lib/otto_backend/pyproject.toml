@@ -4,6 +4,7 @@ version = "0.0.2"
 description = "Flowchart-like UI to interconnect LLM's and Huggingface models, and deploy them as a REST API with little to no code."
 authors = ["farhan0167 <afi225@nyu.edu>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "3.11.4"

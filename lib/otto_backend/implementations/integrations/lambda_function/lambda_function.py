@@ -31,15 +31,30 @@ class LambdaFunction(BaseImplementation):
     
     def get_lambda_function(self):
         # TODO: Add support for local host
-        response = requests.request(
-            method='GET',
-            url=f'http://host.docker.internal:8000/get_lambda_by_name/{self.function_name}',
-            headers={'Content-Type': 'application/json'}
-        )
-        if response.status_code != 200:
-            raise Exception(response.text)
-        lambda_function = response.json()
-        url = lambda_function['deployment_url']
-        if 'localhost' in url:
-            url = url.replace('http://localhost', 'http://host.docker.internal')
-        return url
+        try:
+            response = requests.request(
+                method='GET',
+                url=f'http://host.docker.internal:8000/get_lambda_by_name/{self.function_name}',
+                headers={'Content-Type': 'application/json'}
+            )
+            if response.status_code != 200:
+                raise Exception(response.text)
+            lambda_function = response.json()
+            url = lambda_function['deployment_url']
+            if 'localhost' in url:
+                url = url.replace('http://localhost', 'http://host.docker.internal')
+            return url
+        
+        except requests.exceptions.ConnectionError:
+            print("Failed to connect using host.docker.internal, trying localhost")
+            try:
+                response = requests.request(
+                    method='GET',
+                    url=f'http://localhost:8000/get_lambda_by_name/{self.function_name}',
+                    headers={'Content-Type': 'application/json'}
+                )
+            except requests.exceptions.ConnectionError:
+                raise Exception("Failed to connect to lambda function using localhost")
+            lambda_function = response.json()
+            url = lambda_function['deployment_url']
+            return url
