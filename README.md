@@ -18,7 +18,7 @@ To take it a step further, consider otto-m8 as a visual infrastructure platform 
 
 ## 🚀 Getting Started
 
-1. Pre-req: Make sure to have Docker or Docker Desktop Installed on your computer, and in order to run Ollama blocks, make sure you have the Ollama server running in the background.
+1. Pre-req: Make sure to have Docker or Docker Desktop Installed on your computer, and in order to run Ollama blocks, make sure you have the Ollama server running in the background. This project was built using Python `3.11.4`, and it is recommended that you run it on the same version but you can also run this with versions `>=3.10,<3.13`. In case of any hiccups, please raise an [issue](https://github.com/farhan0167/otto-m8/issues).
 2. Run the following command to make `run.sh` executable
 ```bash
 chmod +x run.sh
@@ -27,7 +27,7 @@ chmod +x run.sh
 ```bash
 ./run.sh
 ```
-This should launch both the dashboard and the server. To access the dashboard, head over to `http://localhost:3000/`. Use the default login credentials to access the dashboard, and get started on your first workflow.
+This should launch both the dashboard and the server. To launch the server, the script will atempt to install poetry in your system, and install all the dependencies needed to launch the server. To access the dashboard, head over to `http://localhost:3000/`. Use the default login credentials to access the dashboard, and get started on your first workflow.
 
 ## 🛠️ Documentation
 Please see [here](https://otto-m8.com/) for full documentation, including:

@@ -21,6 +21,14 @@ docker compose up -d
 cd "./otto_backend/" || exit
 mkdir .cache
 
+LOCK_FILE="poetry.lock"
+
+if [ -f "$LOCK_FILE" ]; then
+    echo "$LOCK_FILE found. Removing..."
+    rm "$LOCK_FILE"
+    echo "$LOCK_FILE removed."
+fi
+
 echo "Building slim base image..."
 docker build -f slim-base.Dockerfile -t farhan0167/otto-m8-slim-base:latest .
 
@@ -29,6 +37,12 @@ docker build -f base.Dockerfile -t farhan0167/otto-m8-base:latest .
 
 # Echo the react app URL
 echo "Otto Dashboard URL: http://localhost:3000"
+
+pip install poetry
+echo "Python version: $(python --version)"
+# Install dependencies
+echo "Installing dependencies..."
+poetry install
 
 # Start the FastAPI server using Uvicorn
 echo "Starting FastAPI server..."
