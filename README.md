@@ -26,6 +26,7 @@ To take it a step further, consider otto-m8 as a visual infrastructure platform 
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 Once installation is complete, make sure to export poetry to PATH. This instruction should appear once you install poetry via the command above.
+
 4. This project was built using Python `3.11.4`, and it is recommended that you run it on the same version but you can also run this with versions `>=3.10,<3.13`. In case of any hiccups, please raise an [issue](https://github.com/farhan0167/otto-m8/issues).
 
 ### Run the project
