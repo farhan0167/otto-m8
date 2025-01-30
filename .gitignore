@@ -3,3 +3,4 @@ build
 *.egg*
 dist
 __pycache__
+poetry.lock
