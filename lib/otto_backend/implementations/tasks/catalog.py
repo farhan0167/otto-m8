@@ -63,7 +63,7 @@ class TaskCatalog(Enum):
             raise ValueError(f"Task type {task_type} is not supported.")
         
 class TaskRegistry(BlockRegistry):
-    process_type = "tasks"
+    process_type = "task"
 
 # Register Tasks and Vendors
 TaskRegistry.add_vendor("Hugging Face")

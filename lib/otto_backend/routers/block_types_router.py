@@ -36,7 +36,7 @@ def get_integration_block_types():
 def get_source_code(core_block_type: str, process_type: str):
     core_block_type = core_block_type.upper()
 
-    if process_type == 'tasks':
+    if process_type == 'task':
         cls = TaskCatalog[core_block_type]
     elif process_type == 'integration':
         cls = IntegrationCatalog[core_block_type]
