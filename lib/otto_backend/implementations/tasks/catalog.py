@@ -1,4 +1,5 @@
 from enum import Enum
+from ..base import BlockRegistry
 
 
 class TaskCatalog(Enum):
@@ -61,43 +62,83 @@ class TaskCatalog(Enum):
         except KeyError:
             raise ValueError(f"Task type {task_type} is not supported.")
         
-class TaskRegistry:
-    vendors = {}
-    
-    @classmethod
-    def add_vendor(cls, vendor: str):
-        if vendor not in cls.vendors:
-            cls.vendors[vendor] = {}
-    
-    @classmethod
-    def add_task_to_registry_by_vendor(cls, vendor: str, task_name: str, task: TaskCatalog):
-        if vendor not in cls.vendors:
-            raise Exception(f"Vendor {vendor} is not supported.")
-        cls.vendors[vendor][task_name] = task.name.lower()
-    
-    @classmethod
-    def get_task_registry(cls):
-        return cls.vendors
+class TaskRegistry(BlockRegistry):
+    process_type = "tasks"
 
 # Register Tasks and Vendors
 TaskRegistry.add_vendor("Hugging Face")
-TaskRegistry.add_task_to_registry_by_vendor("Hugging Face", "Model Card - Unimodal", TaskCatalog.HUGGING_FACE_MODEL_CARD)
-TaskRegistry.add_task_to_registry_by_vendor("Hugging Face", "Model Card - Multimodal", TaskCatalog.HUGGING_FACE_MULTIMODAL)
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Hugging Face", 
+    display_name="Model Card - Unimodal", 
+    task=TaskCatalog.HUGGING_FACE_MODEL_CARD, 
+    ui_block_type="process",
+    source_path="implementations/tasks/hugging_face/hugging_face_model_card.py"
+)
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Hugging Face", 
+    display_name="Model Card - Multimodal", 
+    task=TaskCatalog.HUGGING_FACE_MULTIMODAL, 
+    ui_block_type="process",
+    source_path="implementations/tasks/hugging_face/hugging_face_multimodal.py"
+)
 
 TaskRegistry.add_vendor("Ollama")
-TaskRegistry.add_task_to_registry_by_vendor("Ollama", "Ollama Generate", TaskCatalog.OLLAMA_SERVER_GENERATE)
-TaskRegistry.add_task_to_registry_by_vendor("Ollama", "Ollama Chat", TaskCatalog.OLLAMA_SERVER_CHAT)
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Ollama", 
+    display_name="Ollama Generate", 
+    task=TaskCatalog.OLLAMA_SERVER_GENERATE, 
+    ui_block_type="process",
+    source_path="implementations/tasks/ollama/ollama_server_generate.py"
+)
+
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Ollama", 
+    display_name="Ollama Chat", 
+    task=TaskCatalog.OLLAMA_SERVER_CHAT,
+    ui_block_type="process",
+    source_path="implementations/tasks/ollama/ollama_server_chat.py"
+)
 
 TaskRegistry.add_vendor("OpenAI")
-TaskRegistry.add_task_to_registry_by_vendor("OpenAI", "Chat Completion", TaskCatalog.OPENAI_CHAT)
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="OpenAI", 
+    display_name="Completion", 
+    task=TaskCatalog.OPENAI_CHAT,
+    ui_block_type="process",
+    source_path="implementations/tasks/openai/openai_chat.py"
+)
 
 TaskRegistry.add_vendor("Output Blocks")
-TaskRegistry.add_task_to_registry_by_vendor("Output Blocks", "Standard", TaskCatalog.OUTPUT)
-TaskRegistry.add_task_to_registry_by_vendor("Output Blocks", "Chat Output", TaskCatalog.CHAT_OUTPUT)
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Output Blocks", 
+    display_name="Standard", 
+    task=TaskCatalog.OUTPUT,
+    ui_block_type="output",
+    source_path="implementations/tasks/output_blocks/output_block.py"
+)
+
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Output Blocks", 
+    display_name="Chat Output", 
+    task=TaskCatalog.CHAT_OUTPUT,
+    ui_block_type="output",
+    source_path="implementations/tasks/output_blocks/chat_output_block.py"
+)
 
 TaskRegistry.add_vendor("Langchain")
-TaskRegistry.add_task_to_registry_by_vendor("Langchain", "PDF Loader", TaskCatalog.LANGCHAIN_PDF_LOADER)
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Langchain",
+    display_name="PDF Loader",
+    task=TaskCatalog.LANGCHAIN_PDF_LOADER,
+    ui_block_type="process",
+    source_path="implementations/tasks/langchain/langchain_pdf_loader.py"
+)
 
 TaskRegistry.add_vendor("Input Blocks")
-# TaskRegistry.add_task_to_registry_by_vendor("Input Blocks", "Text Input", TaskCatalog.TEXT_INPUT)
-TaskRegistry.add_task_to_registry_by_vendor("Input Blocks", "Image Input", TaskCatalog.IMAGE_INPUT)
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Input Blocks", 
+    display_name="Text Input", 
+    task=TaskCatalog.TEXT_INPUT,
+    ui_block_type="input",
+    source_path="implementations/tasks/input_blocks/text_input_block.py"
+)

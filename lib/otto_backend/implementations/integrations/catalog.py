@@ -1,4 +1,5 @@
 from enum import Enum
+from ..base import BlockRegistry
 
 class IntegrationCatalog(Enum):
     HTTP_POST_REQUEST = 'implementations.integrations.http.post_requests.post_request.HTTPPostRequest'
@@ -42,27 +43,24 @@ class IntegrationCatalog(Enum):
         # if run_config was passed, init the class with the run_config else use the default
         return cls(run_config, *args, **kwargs) if run_config is not None else cls(*args, **kwargs)
     
-class IntegrationRegistry:
-    vendors = {}
-
-    @classmethod
-    def add_vendor(cls, vendor: str):
-        if vendor not in cls.vendors:
-            cls.vendors[vendor] = {}
-
-    @classmethod
-    def add_integration_to_registry_by_vendor(cls, vendor: str, integration_name: str, integrations: IntegrationCatalog):
-        if vendor not in cls.vendors:
-            raise Exception(f"Vendor {vendor} is not supported.")
-        cls.vendors[vendor][integration_name] = integrations.name.lower()
-
-    @classmethod
-    def get_integration_registry(cls):
-        return cls.vendors
+class IntegrationRegistry(BlockRegistry):
+    process_type = "integration"
     
 # Register Integrations and Vendors
 IntegrationRegistry.add_vendor("HTTP")
-IntegrationRegistry.add_integration_to_registry_by_vendor("HTTP", "POST Request", IntegrationCatalog.HTTP_POST_REQUEST)
+IntegrationRegistry.add_block_to_registry_by_vendor(
+    vendor="HTTP", 
+    display_name="POST Request", 
+    task=IntegrationCatalog.HTTP_POST_REQUEST, 
+    ui_block_type="process",
+    source_path="implementations/integrations/http/post_requests/post_request.py"
+)
 
 IntegrationRegistry.add_vendor("Custom Code")
-IntegrationRegistry.add_integration_to_registry_by_vendor("Custom Code", "Lambda Function", IntegrationCatalog.LAMBDA_FUNCTION)
+IntegrationRegistry.add_block_to_registry_by_vendor(
+    vendor="Custom Code", 
+    display_name="Lambda Function", 
+    task=IntegrationCatalog.LAMBDA_FUNCTION, 
+    ui_block_type="process",
+    source_path="implementations/integrations/lambda_function/lambda_function.py"
+)

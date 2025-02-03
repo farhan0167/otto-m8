@@ -1,4 +1,5 @@
 from enum import Enum
+from ..base import BlockRegistry
 
 
 class CustomCatalog(Enum):
@@ -52,23 +53,8 @@ class CustomCatalog(Enum):
         except KeyError:
             raise ValueError(f"Task type {task_type} is not supported.")
         
-class CustomRegistry:
-    vendors = {}
-    
-    @classmethod
-    def add_vendor(cls, vendor: str):
-        if vendor not in cls.vendors:
-            cls.vendors[vendor] = {}
-    
-    @classmethod
-    def add_task_to_registry_by_vendor(cls, vendor: str, task_name: str, task: CustomCatalog):
-        if vendor not in cls.vendors:
-            raise Exception(f"Vendor {vendor} is not supported.")
-        cls.vendors[vendor][task_name] = task.name.lower()
-    
-    @classmethod
-    def get_task_registry(cls):
-        return cls.vendors
+class CustomRegistry(BlockRegistry):
+    process_type = "custom"
 
 # Register Tasks and Vendors
 vendor = "Custom Blocks"

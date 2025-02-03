@@ -18,32 +18,32 @@ router = APIRouter()
 
 @router.get("/get_block_types", tags=["Blocks"])
 def get_block_types():
-    task_block_types = TaskRegistry.get_task_registry()
-    integration_block_types = IntegrationRegistry.get_integration_registry()
-    custom_block_types = CustomRegistry.get_task_registry()
+    task_block_types = TaskRegistry.get_blocks_from_registry()
+    integration_block_types = IntegrationRegistry.get_blocks_from_registry()
+    custom_block_types = CustomRegistry.get_blocks_from_registry()
     block_types = {**task_block_types, **integration_block_types, **custom_block_types}
-    print(json.dumps(block_types, indent=4))
     # TODO: Standard Server Response: Implement a standard response template
     return block_types
 
 
 @router.get("/get_integration_block_types", tags=["Blocks"])
 def get_integration_block_types():
-    integration_block_types = IntegrationRegistry.get_integration_registry()
+    integration_block_types = IntegrationRegistry.get_blocks_from_registry()
     # TODO: Standard Server Response: Implement a standard response template
     return integration_block_types
 
 @router.get("/get_block_codes", tags=["Blocks"])
-def get_source_code(core_block_type: str):
+def get_source_code(core_block_type: str, process_type: str):
     core_block_type = core_block_type.upper()
-    try:
+
+    if process_type == 'tasks':
         cls = TaskCatalog[core_block_type]
-    except:
-        try:
-            cls = IntegrationCatalog[core_block_type]
-        except:
-            #raise ValueError(f"Core block type {core_block_type} is not supported.")
-            return HTTPException(status_code=404, detail=f"Core block type {core_block_type} is not supported.")
+    elif process_type == 'integration':
+        cls = IntegrationCatalog[core_block_type]
+    elif process_type == 'custom':
+        cls = CustomCatalog[core_block_type]
+    else:
+        raise ValueError(f"Core block type {core_block_type} is not supported.")
     
     cls = cls.get_class()
     source_path = inspect.getfile(cls)
@@ -84,7 +84,14 @@ def insert_to_custom_catalog(
            custom_catalog_source = custom_catalog_source.replace(line, line + newline)
         
         if "CustomRegistry.add_vendor(vendor)" in line:
-            newline = f"\nCustomRegistry.add_task_to_registry_by_vendor(vendor, '{core_block_type}', CustomCatalog.{core_block_type.upper()})\n"
+            newline = f"""\nCustomRegistry.add_block_to_registry_by_vendor(
+            vendor="Custom Blocks",
+            display_name="{block_file_name} - {class_name}",
+            task=CustomCatalog.{core_block_type.upper()},
+            ui_block_type="process",
+            source_path="implementations/custom/blocks/{block_file_name}/{class_name}.py"
+)
+        """
             custom_catalog_source = custom_catalog_source.replace(line, line + newline)
     with open(custom_catalog_path, "w") as f:
         f.write(custom_catalog_source)
