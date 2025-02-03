@@ -105,6 +105,11 @@ class RunWorkflow:
                     integration_type=process_metadata['core_block_type'],
                     run_config=run_config
                 )
+            elif process_metadata['process_type'] == 'custom':
+                process = CustomBlockImplementer().create_task(
+                    task_type=process_metadata['core_block_type'],
+                    run_config=run_config
+                )
             else:
                 raise ValueError(f"Process type {process_metadata['process_type']} is not supported")
         elif workflow_group == 'output' and block.name not in visited:
