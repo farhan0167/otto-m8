@@ -130,15 +130,23 @@ TaskRegistry.add_block_to_registry_by_vendor(
     vendor="Langchain",
     display_name="PDF Loader",
     task=TaskCatalog.LANGCHAIN_PDF_LOADER,
-    ui_block_type="process",
+    ui_block_type="input",
     source_path="implementations/tasks/langchain/langchain_pdf_loader.py"
 )
 
 TaskRegistry.add_vendor("Input Blocks")
+# TaskRegistry.add_block_to_registry_by_vendor(
+#     vendor="Input Blocks", 
+#     display_name="Text Input", 
+#     task=TaskCatalog.TEXT_INPUT,
+#     ui_block_type="input",
+#     source_path="implementations/tasks/input_blocks/text_input_block.py"
+# )
+
 TaskRegistry.add_block_to_registry_by_vendor(
     vendor="Input Blocks", 
-    display_name="Text Input", 
-    task=TaskCatalog.TEXT_INPUT,
+    display_name="Image Input", 
+    task=TaskCatalog.IMAGE_INPUT,
     ui_block_type="input",
-    source_path="implementations/tasks/input_blocks/text_input_block.py"
+    source_path="implementations/tasks/input_blocks/image_input_block.py"
 )
