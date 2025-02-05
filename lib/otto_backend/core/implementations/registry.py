@@ -19,15 +19,20 @@ class BlockRegistry:
         display_name: str, 
         task: Enum,
         ui_block_type: str,
-        source_path: str
+        source_path: str,
+        reference_core_block_type: str = None
     ):
         if vendor not in cls.vendors:
             raise Exception(f"Vendor {vendor} is not supported.")
+        if not reference_core_block_type:
+            # only custom blocks will have a reference. If not found, then its a regular block.
+            reference_core_block_type=task.name.lower()
         cls.vendors[vendor][display_name] = {
             'core_block_type': task.name.lower(),
             'process_type': cls.process_type,
             'ui_block_type': ui_block_type,
-            'source_path': source_path
+            'source_path': source_path,
+            'reference_core_block_type': reference_core_block_type
         }
     
     @classmethod
