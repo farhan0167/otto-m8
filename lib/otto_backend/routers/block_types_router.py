@@ -104,7 +104,6 @@ def insert_to_custom_catalog(
         if "CustomRegistry.add_vendor(vendor)" in line:
             newline = f"""\nCustomRegistry.add_block_to_registry_by_vendor(
             vendor="Custom Blocks",
-            display_name="{block_file_name} - {class_name}",
             task=CustomCatalog.{block_file_name_upper},
             ui_block_type="process",
             source_path="implementations/custom/blocks/{block_file_name}.py",

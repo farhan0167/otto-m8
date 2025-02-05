@@ -15,8 +15,7 @@ class BlockRegistry:
     @classmethod
     def add_block_to_registry_by_vendor(
         cls, 
-        vendor: str, 
-        display_name: str, 
+        vendor: str,
         task: Enum,
         ui_block_type: str,
         source_path: str,

@@ -49,8 +49,7 @@ class IntegrationRegistry(BlockRegistry):
 # Register Integrations and Vendors
 IntegrationRegistry.add_vendor("HTTP")
 IntegrationRegistry.add_block_to_registry_by_vendor(
-    vendor="HTTP", 
-    display_name="POST Request", 
+    vendor="HTTP",
     task=IntegrationCatalog.HTTP_POST_REQUEST, 
     ui_block_type="process",
     source_path="implementations/integrations/http/post_requests/post_request.py"
@@ -58,8 +57,7 @@ IntegrationRegistry.add_block_to_registry_by_vendor(
 
 IntegrationRegistry.add_vendor("Custom Code")
 IntegrationRegistry.add_block_to_registry_by_vendor(
-    vendor="Custom Code", 
-    display_name="Lambda Function", 
+    vendor="Custom Code",
     task=IntegrationCatalog.LAMBDA_FUNCTION, 
     ui_block_type="process",
     source_path="implementations/integrations/lambda_function/lambda_function.py"

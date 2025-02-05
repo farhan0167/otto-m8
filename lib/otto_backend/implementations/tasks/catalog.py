@@ -68,15 +68,13 @@ class TaskRegistry(BlockRegistry):
 # Register Tasks and Vendors
 TaskRegistry.add_vendor("Hugging Face")
 TaskRegistry.add_block_to_registry_by_vendor(
-    vendor="Hugging Face", 
-    display_name="Model Card - Unimodal", 
+    vendor="Hugging Face",
     task=TaskCatalog.HUGGING_FACE_MODEL_CARD, 
     ui_block_type="process",
     source_path="implementations/tasks/hugging_face/hugging_face_model_card.py"
 )
 TaskRegistry.add_block_to_registry_by_vendor(
-    vendor="Hugging Face", 
-    display_name="Model Card - Multimodal", 
+    vendor="Hugging Face",
     task=TaskCatalog.HUGGING_FACE_MULTIMODAL, 
     ui_block_type="process",
     source_path="implementations/tasks/hugging_face/hugging_face_multimodal.py"
@@ -84,16 +82,14 @@ TaskRegistry.add_block_to_registry_by_vendor(
 
 TaskRegistry.add_vendor("Ollama")
 TaskRegistry.add_block_to_registry_by_vendor(
-    vendor="Ollama", 
-    display_name="Ollama Generate", 
+    vendor="Ollama",
     task=TaskCatalog.OLLAMA_SERVER_GENERATE, 
     ui_block_type="process",
     source_path="implementations/tasks/ollama/ollama_server_generate.py"
 )
 
 TaskRegistry.add_block_to_registry_by_vendor(
-    vendor="Ollama", 
-    display_name="Ollama Chat", 
+    vendor="Ollama",
     task=TaskCatalog.OLLAMA_SERVER_CHAT,
     ui_block_type="process",
     source_path="implementations/tasks/ollama/ollama_server_chat.py"
@@ -101,8 +97,7 @@ TaskRegistry.add_block_to_registry_by_vendor(
 
 TaskRegistry.add_vendor("OpenAI")
 TaskRegistry.add_block_to_registry_by_vendor(
-    vendor="OpenAI", 
-    display_name="Completion", 
+    vendor="OpenAI",
     task=TaskCatalog.OPENAI_CHAT,
     ui_block_type="process",
     source_path="implementations/tasks/openai/openai_chat.py"
@@ -110,16 +105,14 @@ TaskRegistry.add_block_to_registry_by_vendor(
 
 TaskRegistry.add_vendor("Output Blocks")
 TaskRegistry.add_block_to_registry_by_vendor(
-    vendor="Output Blocks", 
-    display_name="Standard", 
+    vendor="Output Blocks",
     task=TaskCatalog.OUTPUT,
     ui_block_type="output",
     source_path="implementations/tasks/output_blocks/output_block.py"
 )
 
 TaskRegistry.add_block_to_registry_by_vendor(
-    vendor="Output Blocks", 
-    display_name="Chat Output", 
+    vendor="Output Blocks",
     task=TaskCatalog.CHAT_OUTPUT,
     ui_block_type="output",
     source_path="implementations/tasks/output_blocks/chat_output_block.py"
@@ -128,7 +121,6 @@ TaskRegistry.add_block_to_registry_by_vendor(
 TaskRegistry.add_vendor("Langchain")
 TaskRegistry.add_block_to_registry_by_vendor(
     vendor="Langchain",
-    display_name="PDF Loader",
     task=TaskCatalog.LANGCHAIN_PDF_LOADER,
     ui_block_type="input",
     source_path="implementations/tasks/langchain/langchain_pdf_loader.py"
@@ -136,16 +128,14 @@ TaskRegistry.add_block_to_registry_by_vendor(
 
 TaskRegistry.add_vendor("Input Blocks")
 # TaskRegistry.add_block_to_registry_by_vendor(
-#     vendor="Input Blocks", 
-#     display_name="Text Input", 
+#     vendor="Input Blocks",
 #     task=TaskCatalog.TEXT_INPUT,
 #     ui_block_type="input",
 #     source_path="implementations/tasks/input_blocks/text_input_block.py"
 # )
 
 TaskRegistry.add_block_to_registry_by_vendor(
-    vendor="Input Blocks", 
-    display_name="Image Input", 
+    vendor="Input Blocks",
     task=TaskCatalog.IMAGE_INPUT,
     ui_block_type="input",
     source_path="implementations/tasks/input_blocks/image_input_block.py"
