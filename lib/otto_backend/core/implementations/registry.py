@@ -34,6 +34,11 @@ class BlockRegistry:
             'source_path': source_path,
             'reference_core_block_type': reference_core_block_type
         }
+        
+    @classmethod
+    def remove_block_from_registry_by_vendor(cls, vendor: str, display_name: str):
+        if vendor in cls.vendors and display_name in cls.vendors[vendor]:
+            del cls.vendors[vendor][display_name]
     
     @classmethod
     def get_blocks_from_registry(cls):
