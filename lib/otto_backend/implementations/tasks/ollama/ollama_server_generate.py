@@ -5,6 +5,8 @@ from core.input_parser.prompt_template import PromptTemplate
 
 class OllamaServerGenarate(BaseImplementation):
     """Task definition of the Ollama Generate endpoint."""
+    display_name = 'Ollama Generate'
+    
     def __init__(self, run_config:dict) -> None:
         super().__init__()
         self.run_config = run_config

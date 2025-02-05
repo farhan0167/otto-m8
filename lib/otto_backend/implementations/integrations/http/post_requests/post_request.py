@@ -5,6 +5,8 @@ from implementations.base import BaseImplementation
 from core.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
 class HTTPPostRequest(BaseImplementation):
+    display_name = 'Post Request'
+    
     def __init__(self, run_config:dict) -> None:
         self.run_config = run_config
         self.content_type = 'application/json'

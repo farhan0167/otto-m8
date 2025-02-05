@@ -5,6 +5,8 @@ from implementations.base import BaseImplementation
 from core.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
 class LambdaFunction(BaseImplementation):
+    display_name = 'Lambda Function'
+    
     def __init__(self, run_config: dict) -> None:
         self.run_config = run_config
         self.function_name = self.run_config.get('lambda_function_name')

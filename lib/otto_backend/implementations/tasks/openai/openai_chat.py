@@ -11,6 +11,8 @@ from core.input_parser.prompt_template import PromptTemplate
 
 class OpenAIChat(BaseImplementation):
     """Task definition of the OpenAI Chat Completion."""
+    display_name = 'OpenAI Chat Completion'
+    
     def __init__(self, run_config:dict) -> None:
         super().__init__()
         self.run_config = run_config
