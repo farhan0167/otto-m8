@@ -15,6 +15,7 @@
     "charter-webfont": "^4.1.0",
     "formik": "^2.4.6",
     "js-sha1": "^0.7.0",
+    "monaco-themes": "^0.4.4",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-dnd": "^16.0.1",
