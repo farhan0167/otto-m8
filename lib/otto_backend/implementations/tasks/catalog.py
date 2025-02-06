@@ -15,6 +15,7 @@ class TaskCatalog(Enum):
     LANGCHAIN_PDF_LOADER = 'implementations.tasks.pdf_loader.langchain_pdf_loader.LangchainPDFLoader'
     TEXT_INPUT = 'implementations.tasks.input_blocks.text_input.text_input.TextInput'
     IMAGE_INPUT = 'implementations.tasks.input_blocks.image_input.image.ImageInput'
+    CUSTOM_BLOCK = 'implementations.tasks.custom.basic_block.CustomBlock'
     #### Catalog for Tasks ####
 
     def get_class(self):
@@ -139,4 +140,12 @@ TaskRegistry.add_block_to_registry_by_vendor(
     task=TaskCatalog.IMAGE_INPUT,
     ui_block_type="input",
     source_path="implementations/tasks/input_blocks/image_input_block.py"
+)
+
+TaskRegistry.add_vendor("Custom Blocks")
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Custom Blocks",
+    task=TaskCatalog.CUSTOM_BLOCK,
+    ui_block_type="process",
+    source_path="implementations/tasks/custom_block/custom_block.py"
 )
