@@ -4,3 +4,4 @@ build
 dist
 __pycache__
 poetry.lock
+lib/otto_backend/implementations/custom/blocks/*.py

@@ -4,6 +4,7 @@ from core.types import InputType
 from implementations.base import BaseImplementation
 
 class ImageInput(BaseImplementation):
+    display_name = 'Image Input'
     def __init__(self, run_config:dict) -> None:
         self.input_type = run_config.get('input_type')
     

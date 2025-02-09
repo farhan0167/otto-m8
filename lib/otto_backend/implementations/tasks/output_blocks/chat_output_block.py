@@ -1,6 +1,8 @@
 from implementations.base import BaseImplementation
 
 class ChatOutputBlock(BaseImplementation):
+    display_name = 'Chat Output'
+    
     def __init__(self) -> None:
         super().__init__()
         self.chat_history = []

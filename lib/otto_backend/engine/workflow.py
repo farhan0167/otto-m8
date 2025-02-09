@@ -2,8 +2,11 @@ import time
 from collections import defaultdict, deque
 from typing import Any
 from engine.blocks import WorkflowTemplate, StartBlock
-from implementations.tasks.implementer import Implementer
-from implementations.integrations.implementer import IntegrationImplementer
+from implementations import (
+    Implementer,
+    IntegrationImplementer,
+    CustomBlockImplementer
+)
 from tracer import (
     Tracer,
     BlockTrace,
@@ -100,6 +103,11 @@ class RunWorkflow:
             elif process_metadata['process_type'] == 'integration':
                 process = IntegrationImplementer().create_integration(
                     integration_type=process_metadata['core_block_type'],
+                    run_config=run_config
+                )
+            elif process_metadata['process_type'] == 'custom':
+                process = CustomBlockImplementer().create_task(
+                    task_type=process_metadata['core_block_type'],
                     run_config=run_config
                 )
             else:

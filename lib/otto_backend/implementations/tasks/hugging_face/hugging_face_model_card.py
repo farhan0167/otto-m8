@@ -13,6 +13,8 @@ class HuggingFaceModelCard(BaseImplementation):
     Implementation of Hugging Face Pipeline abstraction for single
     input models. 
     """
+    display_name = 'Model Card - Unimodal'
+    
     def __init__(self, run_config:dict) -> None:
         self.run_config = run_config
         self.model_card = run_config.get('model_card')

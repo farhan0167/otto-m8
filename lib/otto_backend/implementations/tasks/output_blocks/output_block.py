@@ -1,6 +1,8 @@
 from implementations.base import BaseImplementation
 
 class OutputBlock(BaseImplementation):
+    display_name = 'Output Block'
+    
     def __init__(self) -> None:
         super().__init__()
         self.final_output = {}

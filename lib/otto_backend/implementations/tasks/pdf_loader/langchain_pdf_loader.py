@@ -5,6 +5,8 @@ from integrations.langchain.pdf_loader import PDFLoader
 from implementations.base import BaseImplementation
 
 class LangchainPDFLoader(BaseImplementation):
+    display_name = 'PDF Loader'
+    
     def __init__(self, run_config:dict=None) -> None:
         pass
     

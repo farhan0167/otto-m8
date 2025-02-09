@@ -1,11 +1,13 @@
 from enum import Enum
 from ..base import BlockRegistry
 
-class IntegrationCatalog(Enum):
-    HTTP_POST_REQUEST = 'implementations.integrations.http.post_requests.post_request.HTTPPostRequest'
-    LAMBDA_FUNCTION = 'implementations.integrations.lambda_function.lambda_function.LambdaFunction'
-    
-    
+
+class CustomCatalog(Enum):
+    #### Start: Catalog for Custom Blocks ####
+    #HUGGING_FACE_MODEL_CARD = 'implementations.tasks.hugging_face.hugging_face_model_card.HuggingFaceModelCard'
+
+    #### End: Catalog for Custom Blocks ####
+
     def get_class(self):
         """
         Return the class instance associated with this Enum value.
@@ -42,23 +44,19 @@ class IntegrationCatalog(Enum):
         cls = self.get_class()
         # if run_config was passed, init the class with the run_config else use the default
         return cls(run_config, *args, **kwargs) if run_config is not None else cls(*args, **kwargs)
-    
-class IntegrationRegistry(BlockRegistry):
-    process_type = "integration"
-    
-# Register Integrations and Vendors
-IntegrationRegistry.add_vendor("HTTP")
-IntegrationRegistry.add_block_to_registry_by_vendor(
-    vendor="HTTP",
-    task=IntegrationCatalog.HTTP_POST_REQUEST, 
-    ui_block_type="process",
-    source_path="implementations/integrations/http/post_requests/post_request.py"
-)
 
-IntegrationRegistry.add_vendor("Custom Code")
-IntegrationRegistry.add_block_to_registry_by_vendor(
-    vendor="Custom Code",
-    task=IntegrationCatalog.LAMBDA_FUNCTION, 
-    ui_block_type="process",
-    source_path="implementations/integrations/lambda_function/lambda_function.py"
-)
+        
+    @staticmethod
+    def from_string(task_type: str):
+        try:
+            return CustomCatalog[task_type]
+        except KeyError:
+            raise ValueError(f"Task type {task_type} is not supported.")
+        
+class CustomRegistry(BlockRegistry):
+    process_type = "custom"
+
+# Register Tasks and Vendors
+vendor = "Custom Blocks"
+CustomRegistry.add_vendor(vendor)
+#CustomRegistry.add_task_to_registry_by_vendor(vendor, "Model Card - Unimodal", CustomRegistry.HUGGING_FACE_MODEL_CARD)
