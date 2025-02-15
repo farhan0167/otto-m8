@@ -1,26 +1,6 @@
 from abc import abstractmethod, ABC
-from typing import List, Union, Any
-from pydantic import BaseModel
+from core.blocks import BlockMetadata
 
-class Field(BaseModel):
-    name: str
-    display_name: Union[str, None]
-    default_value: Any = ''
-    type:str = 'text'
-    is_run_config: bool = True
-    show_in_ui: bool = True
-
-class BlockMetadata:
-    def __init__(self, fields:List[Field]) -> None:
-        default_fields = [
-            Field(name="custom_name", display_name="Block Name", is_run_config=False),
-            Field(name="source_code", display_name="View Code", is_run_config=False, show_in_ui=False),
-            Field(name="source_path", display_name=None, is_run_config=False, show_in_ui=False),
-            Field(name="source_hash", display_name=None, is_run_config=False, show_in_ui=False),
-            Field(name="process_type", display_name=None, is_run_config=False, show_in_ui=False),
-            Field(name="core_block_type", display_name=None, show_in_ui=False),
-        ]
-        self.fields = [*default_fields, *fields]
 
 class BaseImplementation(ABC):
     """Base class for all implementations. An implementation is a class that implements a
@@ -57,6 +37,14 @@ class BaseImplementation(ABC):
         for field in cls.block_metadata.fields:
             initial_data['data'][field.name] = field.default_value
         return initial_data
+    
+    @classmethod
+    def get_block_config_sidebar_fields(cls):
+        block_config_sidebar_fields = []
+        for field in cls.block_metadata.fields:
+            if field.is_run_config:
+                block_config_sidebar_fields.append(field.__dict__)
+        return block_config_sidebar_fields
     
     @abstractmethod
     def run(self):
