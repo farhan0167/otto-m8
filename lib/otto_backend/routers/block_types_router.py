@@ -1,28 +1,23 @@
 import json
 import inspect
 import os
+from collections import defaultdict
 
 from fastapi import APIRouter, HTTPException, Response
 from pydantic import BaseModel
 
-from core.implementations.registry import BlockRegistryUtils
+from core.implementations.registry import BlockRegistry, BlockRegistryUtils
 from implementations import (
-    TaskRegistry,
     TaskCatalog,
     IntegrationCatalog,
-    IntegrationRegistry,
     CustomCatalog,
-    CustomRegistry
 )
 
 router = APIRouter()
 
 @router.get("/get_block_types", tags=["Blocks"])
 def get_block_types():
-    task_block_types = TaskRegistry.get_blocks_from_registry()
-    integration_block_types = IntegrationRegistry.get_blocks_from_registry()
-    custom_block_types = CustomRegistry.get_blocks_from_registry()
-    block_types = {**task_block_types, **integration_block_types, **custom_block_types}
+    block_types = BlockRegistry.get_blocks_from_registry()
     # TODO: Standard Server Response: Implement a standard response template
     return block_types
 
@@ -56,9 +51,15 @@ def get_block_initial_data(
 
 @router.get("/get_integration_block_types", tags=["Blocks"])
 def get_integration_block_types():
-    integration_block_types = IntegrationRegistry.get_blocks_from_registry()
+    block_types = BlockRegistry.get_blocks_from_registry()
+    integration_block_types = defaultdict(dict)
+    for vendor, block in block_types.items():
+        for display_name, block_metadata in block.items():
+            if block_metadata['process_type'] == 'integration':
+                integration_block_types[vendor][display_name] = block_metadata
+
     # TODO: Standard Server Response: Implement a standard response template
-    return integration_block_types
+    return dict(integration_block_types)
 
 @router.get("/get_block_codes", tags=["Blocks"])
 def get_source_code(core_block_type: str, process_type: str):
@@ -124,6 +125,6 @@ def delete_block_type(custom_block: dict):
         file_path=custom_catalog_path,
         enum_key=block_metadata['core_block_type'].upper()
     )
-    IntegrationRegistry.remove_block_from_registry_by_vendor(vendor_name, display_name)
+    BlockRegistry.remove_block_from_registry_by_vendor(vendor_name, display_name)
     return Response(status_code=200, content=json.dumps({"message": "Block type deleted successfully."}))
     
