@@ -1,7 +1,13 @@
-from implementations.base import BaseImplementation
+from implementations.base import (
+    BaseImplementation,
+    BlockMetadata,
+    Field
+)
 
 class ChatOutputBlock(BaseImplementation):
     display_name = 'Chat Output'
+    block_type = 'output'
+    block_metadata = BlockMetadata([])
     
     def __init__(self) -> None:
         super().__init__()

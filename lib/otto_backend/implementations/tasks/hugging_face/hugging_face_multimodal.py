@@ -4,7 +4,11 @@ from PIL import Image
 from transformers import (
     pipeline
 )
-from implementations.base import BaseImplementation
+from implementations.base import (
+    BaseImplementation,
+    BlockMetadata,
+    Field
+)
 from integrations.hugging_face.hugging_face_api import HuggingFaceApi
 from core.input_parser.hf_multimodal_parser import HuggingFaceMultimodalInputParser
 
@@ -14,6 +18,11 @@ class HuggingFaceMultimodalPipeline(BaseImplementation):
     input models. 
     """
     display_name = 'Model Card - Multimodal'
+    block_type = 'process'
+    block_metadata = BlockMetadata([
+        Field(name="modelCard", display_name="Model Card", is_run_config=True),
+        Field(name="huggingface_task_type", display_name="Hugging Face Task Type", is_run_config=True, default_value=None),
+    ])
     
     def __init__(self, run_config:dict) -> None:
         self.run_config = run_config

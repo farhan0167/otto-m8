@@ -1,11 +1,22 @@
 import requests
 import json
-from implementations.base import BaseImplementation
+from implementations.base import (
+    BaseImplementation,
+    BlockMetadata,
+    Field
+)
 from core.input_parser.prompt_template import PromptTemplate
 
 class OllamaServerGenarate(BaseImplementation):
     """Task definition of the Ollama Generate endpoint."""
     display_name = 'Ollama Generate'
+    block_type = 'process'
+    block_metadata = BlockMetadata([
+        Field(name="model", display_name="Model", is_run_config=True, default_value='llama3'),
+        Field(name="endpoint", display_name="Endpoint", is_run_config=True, show_in_ui=False),
+        Field(name="system", display_name="System Message", is_run_config=True, show_in_ui=False),
+        Field(name="prompt", display_name="Prompt Template", is_run_config=True, show_in_ui=False),
+    ])
     
     def __init__(self, run_config:dict) -> None:
         super().__init__()
