@@ -22,7 +22,7 @@ class OpenAIChat(BaseImplementation):
         Field(name="model", display_name="Model", is_run_config=True, default_value='gpt-4o-mini'),
         Field(name="openai_api_key", display_name="API Key", is_run_config=True, show_in_ui=False),
         Field(name="system", display_name="System Message", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),
-        Field(name="prompt", display_name="Prompt Template", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),
+        Field(name="prompt", display_name="Prompt Template", is_run_config=True, show_in_ui=False, type=FieldType.PROMPT_TEMPLATE.value),
         Field(name="tools", display_name="Tools", is_run_config=True, default_value=[], show_in_ui=False, type=FieldType.TOOL_LIST.value),
     ])
     

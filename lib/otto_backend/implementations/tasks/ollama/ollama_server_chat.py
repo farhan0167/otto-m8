@@ -3,7 +3,8 @@ import json
 from implementations.base import (
     BaseImplementation,
     BlockMetadata,
-    Field
+    Field,
+    FieldType
 )
 from extensions.llm_tools.ollama_tool import OllamaTool
 from core.input_parser.prompt_template import PromptTemplate
@@ -16,8 +17,8 @@ class OllamaServerChat(BaseImplementation):
     block_metadata = BlockMetadata([
         Field(name="model", display_name="Model", is_run_config=True, default_value='llama3'),
         Field(name="endpoint", display_name="Endpoint", is_run_config=True, show_in_ui=False),
-        Field(name="system", display_name="System Message", is_run_config=True, show_in_ui=False),
-        Field(name="prompt", display_name="Prompt Template", is_run_config=True, show_in_ui=False),
+        Field(name="system", display_name="System Message", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),
+        Field(name="prompt", display_name="Prompt Template", is_run_config=True, show_in_ui=False, type=FieldType.PROMPT_TEMPLATE.value),
         Field(name="tools", display_name="Tools", is_run_config=True, default_value=[], show_in_ui=False),
     ])
     
