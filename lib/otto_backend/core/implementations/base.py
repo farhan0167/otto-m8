@@ -18,11 +18,11 @@ class BaseImplementation(ABC):
         return run_config
         
     @classmethod
-    def get_block_ui(cls):
+    def get_block_config_ui_fields(cls):
         block_ui_fields = []
         for field in cls.block_metadata.fields:
             if field.show_in_ui:
-                block_ui_fields.append(field.name)
+                block_ui_fields.append(field.__dict__)
         return block_ui_fields
     
     @classmethod
@@ -30,7 +30,7 @@ class BaseImplementation(ABC):
         initial_data = {
             'id': '',
             'position': {'x': 500, 'y': 100},
-            'data': {'label': ''},
+            'data': {'label': '', 'sidebar_fields': [], 'block_ui_fields': []},
             'type': cls.block_type
         }
         

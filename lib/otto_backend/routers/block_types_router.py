@@ -26,6 +26,33 @@ def get_block_types():
     # TODO: Standard Server Response: Implement a standard response template
     return block_types
 
+@router.get("/get_block_initial_data", tags=["Blocks"])
+def get_block_initial_data(
+    core_block_type: str, 
+    process_type: str
+):
+    core_block_type = core_block_type.upper()
+    if process_type == 'task':
+        cls = TaskCatalog[core_block_type]
+    elif process_type == 'integration':
+        cls = IntegrationCatalog[core_block_type]
+    elif process_type == 'custom':
+        cls = CustomCatalog[core_block_type]
+    else:
+        raise ValueError(f"Core block type {core_block_type} is not supported.")
+    
+    cls = cls.get_class()
+    initial_data = cls.get_frontend_block_data()
+    sidebar_fields = cls.get_block_config_sidebar_fields()
+    block_ui_fields = cls.get_block_config_ui_fields()
+
+    initial_data['data']['sidebar_fields'] = sidebar_fields
+    initial_data['data']['block_ui_fields'] = block_ui_fields
+
+    return Response(status_code=200, content=json.dumps({
+        **initial_data
+    }))
+
 
 @router.get("/get_integration_block_types", tags=["Blocks"])
 def get_integration_block_types():
