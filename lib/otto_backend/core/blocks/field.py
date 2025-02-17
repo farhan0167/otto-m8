@@ -10,8 +10,10 @@ class FieldType(Enum):
     LAMBDAS_DROPDOWN = 'lambdas_dropdown'
     TOOL_LIST = 'tool_list'
     PROMPT_TEMPLATE = 'prompt_template'
+    MULTIMODAL_SELECTOR = 'multimodal_selector'
     
 class StaticDropdownOption(BaseModel):
+    """Object to represent a dropdown option for a static dropdown."""
     value: str
     label: str
     
@@ -22,6 +24,9 @@ class StaticDropdownOption(BaseModel):
         }
 
 class Field(BaseModel):
+    """Base representation of a field in a block. These are used by
+    users to configure a block or see the block's configuration in the block.
+    """
     name: str
     display_name: Union[str, None] = None
     default_value: Any = ''
@@ -29,6 +34,38 @@ class Field(BaseModel):
     dropdown_options: List[Dict] = []
     is_run_config: bool = True
     show_in_ui: bool = True
+    
+class MultimodalField:
+    """Object to represent a field for a multimodal selector."""
+    def __init__(
+        self,
+        image:Field,
+        text:Field,
+        name: Union[str, None] = None,
+        display_name: Union[str, None] = None,
+        is_run_config: bool = True,
+        show_in_ui: bool = False
+    ) -> None:
+        self.name = name
+        self.display_name = display_name
+        self.image = image
+        self.text = text
+        self.type = FieldType.MULTIMODAL_SELECTOR.value
+        self.show_in_ui = show_in_ui
+        self.is_run_config = is_run_config
+        
+    def __dict__(self):
+        result = {
+            'name': self.name,
+            'display_name': self.display_name,
+            'type': self.type,
+            'image': self.image.__dict__,
+            'text': self.text.__dict__,
+            'is_run_config': self.is_run_config,
+            'show_in_ui': self.show_in_ui,
+        }
+        
+        return result
     
     
     

@@ -7,7 +7,9 @@ from transformers import (
 from implementations.base import (
     BaseImplementation,
     BlockMetadata,
-    Field
+    Field,
+    FieldType,
+    MultimodalField
 )
 from integrations.hugging_face.hugging_face_api import HuggingFaceApi
 from core.input_parser.hf_multimodal_parser import HuggingFaceMultimodalInputParser
@@ -22,6 +24,11 @@ class HuggingFaceMultimodalPipeline(BaseImplementation):
     block_metadata = BlockMetadata([
         Field(name="modelCard", display_name="Model Card", is_run_config=True),
         Field(name="huggingface_task_type", display_name="Hugging Face Task Type", is_run_config=True, default_value=None),
+        MultimodalField(
+            display_name="Configure Multimodal Input",
+            image=Field(name="image_input", display_name="Image"),
+            text=Field(name="text_input", display_name="Text"),
+        )
     ])
     
     def __init__(self, run_config:dict) -> None:

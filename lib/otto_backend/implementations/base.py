@@ -4,7 +4,8 @@ from core.blocks import (
     Field, 
     FieldType, 
     BlockMetadata, 
-    StaticDropdownOption
+    StaticDropdownOption,
+    MultimodalField
 )
 
 __all__ = [
@@ -13,5 +14,6 @@ __all__ = [
     'Field', 
     'FieldType', 
     'BlockMetadata', 
-    'StaticDropdownOption'
+    'StaticDropdownOption',
+    'MultimodalField'
 ]

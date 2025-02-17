@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from core.blocks import BlockMetadata
+from core.blocks import BlockMetadata, MultimodalField
 
 
 class BaseImplementation(ABC):
@@ -19,6 +19,7 @@ class BaseImplementation(ABC):
         
     @classmethod
     def get_block_config_ui_fields(cls):
+        """Return the fields that are visible in the block's UI."""
         block_ui_fields = []
         for field in cls.block_metadata.fields:
             if field.show_in_ui:
@@ -27,6 +28,7 @@ class BaseImplementation(ABC):
     
     @classmethod
     def get_frontend_block_data(cls):
+        """Return the initial data for a block."""
         initial_data = {
             'id': '',
             'position': {'x': 500, 'y': 100},
@@ -35,14 +37,24 @@ class BaseImplementation(ABC):
         }
         
         for field in cls.block_metadata.fields:
+            if isinstance(field, MultimodalField):
+                image = field.image
+                text = field.text
+                initial_data['data'][image.name] = image.default_value
+                initial_data['data'][text.name] = text.default_value
+                continue
             initial_data['data'][field.name] = field.default_value
         return initial_data
     
     @classmethod
     def get_block_config_sidebar_fields(cls):
+        """Return the fields that are visible in the block's configuration sidebar."""
         block_config_sidebar_fields = []
         for field in cls.block_metadata.fields:
             if field.is_run_config:
+                if isinstance(field, MultimodalField):
+                    block_config_sidebar_fields.append(field.__dict__())
+                    continue
                 block_config_sidebar_fields.append(field.__dict__)
         return block_config_sidebar_fields
     
