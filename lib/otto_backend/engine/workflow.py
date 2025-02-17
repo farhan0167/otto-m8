@@ -1,7 +1,13 @@
 import time
 from collections import defaultdict, deque
-from typing import Any
-from engine.blocks import WorkflowTemplate, StartBlock
+from typing import Any, Union, List, Dict
+from engine.blocks import (
+    WorkflowTemplate,
+    InputBlock,
+    ProcessBlock,
+    OutputBlock,
+    StartBlock
+)
 from implementations import (
     Implementer,
     IntegrationImplementer,
@@ -20,7 +26,7 @@ class RunWorkflow:
         self.block_name_map = defaultdict(lambda: defaultdict(lambda: defaultdict(dict)))
         self.tracer = None
         
-    def create_block_name_map(self):
+    def create_block_name_map(self) -> None:
         """Create a mapping of block names to block objects and their associated metadata."""
         for workflow_group, blocks in self.workflow.__dict__.items():
             if workflow_group not in ['input', 'process', 'output']:
@@ -35,7 +41,7 @@ class RunWorkflow:
                 }
         self.block_name_map = dict(self.block_name_map)
     
-    def get_all_reverse_connections(self):
+    def get_all_reverse_connections(self) -> None:
         """Function to find the inverse connections of every block in the workflow.
         Basically, we know every block is connected to some block in the workflow. If
         a current block is connected to some next block, we know that the next block is
@@ -67,10 +73,10 @@ class RunWorkflow:
     
     def initialize_block(
         self, 
-        workflow_group, 
-        block,
-        client_input_type,
-        visited
+        workflow_group: str, 
+        block: Union[InputBlock, ProcessBlock, OutputBlock],
+        client_input_type: str,
+        visited: List
     ):
         if block.name in visited:
             return
@@ -160,7 +166,7 @@ class RunWorkflow:
     
     def run_workflow(
         self, 
-        payload:dict=None, 
+        payload:Dict=None, 
         template_id:int=None, 
         *args: Any, **kwds: Any
     ) -> Any:
@@ -202,7 +208,11 @@ class RunWorkflow:
             self.tracer = None
         return self.block_name_map['output']
     
-    def process_BFS_step(self, block, payload):
+    def process_BFS_step(
+        self, 
+        block: Union[InputBlock, ProcessBlock, OutputBlock],
+        payload: Dict
+    ) -> None:
         """ 
         Logic to process a block. Depending on the block type, different
         implmenetation of the block will be invoked via the run method
@@ -265,7 +275,7 @@ class RunWorkflow:
                         execution_time=execution_time
                 )
     
-    def get_start_block(self):
+    def get_start_block(self) -> StartBlock:
         """
         Get the start block of the workflow, which is a special type of block
         that has connections to all the input blocks in the workflow. This 
