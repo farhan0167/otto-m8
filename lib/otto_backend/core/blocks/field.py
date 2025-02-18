@@ -5,6 +5,7 @@ import requests
 
 class FieldType(Enum):
     TEXT = 'text'
+    PASSWORD = 'password'
     TEXTAREA = 'textarea'
     STATIC_DROPDOWN = 'static_dropdown'
     LAMBDAS_DROPDOWN = 'lambdas_dropdown'

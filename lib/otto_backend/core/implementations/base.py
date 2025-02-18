@@ -29,9 +29,14 @@ class BaseImplementation(ABC):
     @classmethod
     def get_frontend_block_data(cls):
         """Return the initial data for a block."""
+        position_map = {
+            "input": {"x": 300, "y": 150},
+            "output": {"x": 700, "y": 100},
+            "process": {"x": 500, "y": 100}
+        }
         initial_data = {
             'id': '',
-            'position': {'x': 500, 'y': 100},
+            'position': position_map[cls.block_type],
             'data': {'label': '', 'sidebar_fields': [], 'block_ui_fields': []},
             'type': cls.block_type
         }
