@@ -49,7 +49,7 @@ async def create_draft_workflow(
     }
 
 @router.get("/get_draft_workflows", tags=["Draft Workflows/Templates"])
-def get_draft_workflows(
+async def get_draft_workflows(
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)
 ):
@@ -74,7 +74,7 @@ def get_draft_workflows(
     return response
     
 @router.get("/get_draft_workflow/{template_id}", tags=["Draft Workflows/Templates"])
-def get_draft_workflow(
+async def get_draft_workflow(
     template_id: int, 
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)
@@ -101,7 +101,7 @@ def get_draft_workflow(
         raise HTTPException(status_code=404, detail="Template not found")
     
 @router.get("/draft_exists/{reference_template_id}", tags=["Draft Workflows/Templates"])
-def draft_exists(
+async def draft_exists(
     reference_template_id: int, 
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)
@@ -132,7 +132,7 @@ def draft_exists(
     
     
 @router.get("/delete_draft_workflow/{template_id}", tags=["Draft Workflows/Templates"])
-def delete_draft_workflow(
+async def delete_draft_workflow(
     template_id: int, 
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)
@@ -158,7 +158,7 @@ class UpdateDraftWorkflowRequest(BaseModel):
     template_id: int   
 
 @router.post("/update_draft_workflow", tags=["Draft Workflows/Templates"])
-def update_draft_workflow(
+async def update_draft_workflow(
     request: UpdateDraftWorkflowRequest,
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)

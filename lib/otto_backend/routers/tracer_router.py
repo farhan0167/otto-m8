@@ -12,7 +12,7 @@ from routers.dependency import get_current_user
 router = APIRouter()
 
 @router.get("/trace/{id}", tags=["Tracer"])
-def get_trace(
+async def get_trace(
     id: int, 
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)

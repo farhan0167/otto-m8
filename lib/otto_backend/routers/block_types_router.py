@@ -16,13 +16,13 @@ from implementations import (
 router = APIRouter()
 
 @router.get("/get_block_types", tags=["Blocks"])
-def get_block_types():
+async def get_block_types():
     block_types = BlockRegistry.get_blocks_from_registry()
     # TODO: Standard Server Response: Implement a standard response template
     return block_types
 
 @router.get("/get_block_initial_data", tags=["Blocks"])
-def get_block_initial_data(
+async def get_block_initial_data(
     core_block_type: str, 
     process_type: str
 ):
@@ -50,7 +50,7 @@ def get_block_initial_data(
 
 
 @router.get("/get_integration_block_types", tags=["Blocks"])
-def get_integration_block_types():
+async def get_integration_block_types():
     block_types = BlockRegistry.get_blocks_from_registry()
     integration_block_types = defaultdict(dict)
     for vendor, block in block_types.items():
@@ -62,7 +62,7 @@ def get_integration_block_types():
     return dict(integration_block_types)
 
 @router.get("/get_block_codes", tags=["Blocks"])
-def get_source_code(core_block_type: str, process_type: str):
+async def get_source_code(core_block_type: str, process_type: str):
     core_block_type = core_block_type.upper()
 
     if process_type == 'task':
@@ -92,7 +92,7 @@ class SaveBlockCodeRequest(BaseModel):
         
 
 @router.post("/save_block_code", tags=["Blocks"])
-def save_source_code(request: SaveBlockCodeRequest):
+async def save_source_code(request: SaveBlockCodeRequest):
     with open(request.source_path, 'w') as f:
         f.write(request.source_code)
     
@@ -112,7 +112,7 @@ def save_source_code(request: SaveBlockCodeRequest):
 
 
 @router.delete("/delete_block_type", tags=["Blocks"])
-def delete_block_type(custom_block: dict):
+async def delete_block_type(custom_block: dict):
     print(custom_block)
     block_metadata = custom_block['block_metadata']
     file_to_delete = block_metadata['source_path']
