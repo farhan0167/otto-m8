@@ -80,3 +80,7 @@ app.include_router(lambdas_router.router)
 app.include_router(instant_run_router.router)
 app.include_router(tracer_router.router)
 app.include_router(draft_router.router)
+
+@app.get("/health_check", tags=["Health Check"])
+async def health_check():
+    return {"status": "ok"}
