@@ -147,5 +147,5 @@ TaskRegistry.add_block_to_registry_by_vendor(
     vendor="Custom Blocks",
     task=TaskCatalog.CUSTOM_BLOCK,
     ui_block_type="process",
-    source_path="implementations/tasks/custom_block/custom_block.py"
+    source_path="implementations/tasks/custom/basic_block.py"
 )

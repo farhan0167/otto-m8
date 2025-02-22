@@ -35,13 +35,19 @@ async def get_block_initial_data(
         try:
             cls = CustomCatalog[core_block_type]
         except Exception as e:
+            print("Error getting class:", e)
             raise HTTPException(status_code=500, detail=str(e))
     else:
         raise ValueError(f"Core block type {core_block_type} is not supported.")
     try:
         cls = cls.get_class()
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return Response(status_code=200, content=json.dumps({
+            'id': '',
+            'position': {"x": 500, "y": 100},
+            'data': {'label': '', 'sidebar_fields': [], 'block_ui_fields': []},
+            'type': 'process'
+        }))
     initial_data = cls.get_frontend_block_data()
     sidebar_fields = cls.get_block_config_sidebar_fields()
     block_ui_fields = cls.get_block_config_ui_fields()
@@ -67,20 +73,8 @@ async def get_integration_block_types():
     return dict(integration_block_types)
 
 @router.get("/get_block_codes", tags=["Blocks"])
-async def get_source_code(core_block_type: str, process_type: str):
-    core_block_type = core_block_type.upper()
-
-    if process_type == 'task':
-        cls = TaskCatalog[core_block_type]
-    elif process_type == 'integration':
-        cls = IntegrationCatalog[core_block_type]
-    elif process_type == 'custom':
-        cls = CustomCatalog[core_block_type]
-    else:
-        raise ValueError(f"Core block type {core_block_type} is not supported.")
-    
-    cls = cls.get_class()
-    source_path = inspect.getfile(cls)
+async def get_source_code(source_path: str = None):
+    source_path = source_path
     with open(source_path, 'r') as f:
         source_code = f.read()
     return {

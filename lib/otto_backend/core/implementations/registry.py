@@ -23,8 +23,12 @@ class BlockRegistry:
     ):
         if vendor not in cls.vendors:
             raise Exception(f"Vendor {vendor} is not supported.")
-        block_cls = task.get_class()
-        display_name = block_cls.display_name
+        try:
+            block_cls = task.get_class()
+        except Exception as e:
+            print("Error getting class:", e)
+            block_cls = None
+        display_name = block_cls.display_name if block_cls else task.name
         
         if not reference_core_block_type:
             # only custom blocks will have a reference. If not found, then its a regular block.
