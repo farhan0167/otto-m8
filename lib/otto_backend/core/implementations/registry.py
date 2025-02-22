@@ -88,13 +88,16 @@ class BlockRegistryUtils:
                 custom_catalog_source = custom_catalog_source.replace(line, line + newline)
                 
             if "CustomRegistry.add_vendor(vendor)" in line:
-                    newline = f"""\nCustomRegistry.add_block_to_registry_by_vendor(
+                    newline = f"""\ntry:
+    CustomRegistry.add_block_to_registry_by_vendor(
                     vendor="Custom Blocks",
                     task=CustomCatalog.{block_file_name_upper},
                     ui_block_type="process",
                     source_path="implementations/custom/blocks/{block_file_name}.py",
                     reference_core_block_type="{reference_core_block_type}"
 )
+except Exception as e:
+    print(f"Error adding block to registry ", e)
                 """
                     custom_catalog_source = custom_catalog_source.replace(line, line + newline)
         with open(custom_catalog_path, "w") as f:
@@ -114,11 +117,16 @@ class BlockRegistryUtils:
 
         # Step 2: Remove ONLY the `CustomRegistry.add_block_to_registry_by_vendor(...)` call that references the specific Enum
         registry_pattern = re.compile(
-            rf"^\s*CustomRegistry\.add_block_to_registry_by_vendor\(\s*\n"  # Function call start
+            rf"^\s*try:\s*\n"  # Start of the try block
+            rf"(?:\s+.*\n)*?"  # Match any lines before the function call
+            rf"\s*CustomRegistry\.add_block_to_registry_by_vendor\(\s*\n"  # Function call start
             rf"(?:\s+.*\n)*?"  # Match any lines before `task=`
             rf"\s+task=CustomCatalog\.{re.escape(enum_key)},\s*\n"  # Ensure `task=` matches the specific Enum
             rf"(?:\s+.*\n)*?"  # Match any lines after `task=`
-            rf"\s*\)\s*\n*",  # Ensure it ends correctly
+            rf"\s*\)\s*\n"  # Ensure the function call ends correctly
+            rf"(?:\s+.*\n)*?"  # Match any lines after the function call
+            rf"\s*except Exception as e:\s*\n"  # Match the except block
+            rf"\s*print\(f\"Error adding block to registry \", e\)\s*\n*",  # Match the print statement in the except block
             re.MULTILINE
         )
 

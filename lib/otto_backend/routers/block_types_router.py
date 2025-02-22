@@ -32,11 +32,16 @@ async def get_block_initial_data(
     elif process_type == 'integration':
         cls = IntegrationCatalog[core_block_type]
     elif process_type == 'custom':
-        cls = CustomCatalog[core_block_type]
+        try:
+            cls = CustomCatalog[core_block_type]
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
     else:
         raise ValueError(f"Core block type {core_block_type} is not supported.")
-    
-    cls = cls.get_class()
+    try:
+        cls = cls.get_class()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     initial_data = cls.get_frontend_block_data()
     sidebar_fields = cls.get_block_config_sidebar_fields()
     block_ui_fields = cls.get_block_config_ui_fields()
@@ -93,16 +98,19 @@ class SaveBlockCodeRequest(BaseModel):
 
 @router.post("/save_block_code", tags=["Blocks"])
 async def save_source_code(request: SaveBlockCodeRequest):
-    with open(request.source_path, 'w') as f:
-        f.write(request.source_code)
-    
-    new_core_block_type = BlockRegistryUtils.insert_to_custom_catalog(
-        block_file_name=request.file_name,
-        block_code_path=request.source_path,
-        block_code=request.source_code,
-        core_block_type=request.core_block_type,
-        reference_core_block_type=request.reference_core_block_type
-    )
+    try:
+        with open(request.source_path, 'w') as f:
+            f.write(request.source_code)
+        
+        new_core_block_type = BlockRegistryUtils.insert_to_custom_catalog(
+            block_file_name=request.file_name,
+            block_code_path=request.source_path,
+            block_code=request.source_code,
+            core_block_type=request.core_block_type,
+            reference_core_block_type=request.reference_core_block_type
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
     return Response(status_code=200, content=json.dumps(
         {
             "new_core_block_type": new_core_block_type, 
