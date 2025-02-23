@@ -1,11 +1,20 @@
 import requests
 import json
 
-from implementations.base import BaseImplementation
+from implementations.base import (
+    BaseImplementation,
+    BlockMetadata,
+    Field
+)
 from core.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
 class HTTPPostRequest(BaseImplementation):
     display_name = 'Post Request'
+    block_type = 'process'
+    block_metadata = BlockMetadata([
+        Field(name="endpoint", display_name="Endpoint", is_run_config=True),
+        Field(name="method", display_name="Method", is_run_config=False, default_value='POST'),
+    ])
     
     def __init__(self, run_config:dict) -> None:
         self.run_config = run_config

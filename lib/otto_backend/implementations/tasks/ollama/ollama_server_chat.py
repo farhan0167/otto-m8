@@ -1,6 +1,11 @@
 import requests
 import json
-from implementations.base import BaseImplementation
+from implementations.base import (
+    BaseImplementation,
+    BlockMetadata,
+    Field,
+    FieldType
+)
 from extensions.llm_tools.ollama_tool import OllamaTool
 from core.input_parser.prompt_template import PromptTemplate
 
@@ -8,6 +13,14 @@ from core.input_parser.prompt_template import PromptTemplate
 class OllamaServerChat(BaseImplementation):
     """Task definition of the Ollama Generate endpoint."""
     display_name = 'Ollama Chat'
+    block_type = 'process'
+    block_metadata = BlockMetadata([
+        Field(name="model", display_name="Model", is_run_config=True, default_value='llama3'),
+        Field(name="endpoint", display_name="Endpoint", is_run_config=True, show_in_ui=False),
+        Field(name="system", display_name="System Message", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),
+        Field(name="prompt_template", display_name="Prompt Template", is_run_config=True, show_in_ui=False, type=FieldType.PROMPT_TEMPLATE.value),
+        Field(name="tools", display_name="Tools", is_run_config=True, default_value=[], show_in_ui=False, type=FieldType.TOOL_LIST.value),
+    ])
     
     def __init__(self, run_config:dict) -> None:
         super().__init__()
@@ -103,7 +116,7 @@ class OllamaServerChat(BaseImplementation):
             payload['temperature'] = temperature
         # Process any tools available
         tools = self.run_config.get('tools')
-        if tools is not None:
+        if tools:
             for tool in tools:
                 ollama_tool = OllamaTool()
                 tool_schema = ollama_tool.process_tool(tool)

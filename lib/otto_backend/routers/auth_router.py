@@ -17,7 +17,7 @@ class SignupUser(BaseModel):
     password: str
 
 @router.post("/register", status_code=status.HTTP_201_CREATED, tags=["users"])
-def register_user(user_info: SignupUser, db: Session = Depends(get_db)):
+async def register_user(user_info: SignupUser, db: Session = Depends(get_db)):
     name, email, password = user_info.name, user_info.email, user_info.password
     print(name, email, password)
     """Register a new user."""
@@ -34,7 +34,7 @@ def register_user(user_info: SignupUser, db: Session = Depends(get_db)):
     return {"message": f"User {name} registered successfully"}
 
 @router.post("/login", tags=["users"])
-def login(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     """Login user and generate token."""
     user = authenticate_user(email=form_data.username, password=form_data.password)
     if not user:
@@ -45,6 +45,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.get("/protected-resource")
-def protected_route(user: Users = Depends(get_current_user)):
+async def protected_route(user: Users = Depends(get_current_user)):
     """Access protected route."""
     return {"message": f"Hello {user.name}, welcome to the protected route!"}

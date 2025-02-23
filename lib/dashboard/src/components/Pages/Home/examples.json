@@ -8,35 +8,61 @@
             "nodes": [
               {
                 "id": "1",
-                "type": "input",
                 "position": {
                   "x": 300,
                   "y": 150
                 },
                 "data": {
                   "label": "Input Block",
-                  "input_type": "text",
+                  "sidebar_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "input_type",
+                      "display_name": "Input Type",
+                      "default_value": "text",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "block_ui_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "input_type",
+                      "display_name": "Input Type",
+                      "default_value": "text",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
                   "custom_name": "user_input",
+                  "source_code": "",
+                  "source_path": "",
+                  "source_hash": "",
+                  "process_type": "task",
                   "core_block_type": "text_input",
-                  "process_type": "task"
+                  "input_type": "text"
                 },
-                "sourcePosition": "right",
-                "deletable": true,
-                "measured": {
-                  "width": 150,
-                  "height": 40
-                }
-              },
-              {
-                "id": "3",
-                "type": "output",
-                "position": {
-                  "x": 700,
-                  "y": 150
-                },
-                "data": {
-                  "label": "Output Block"
-                },
+                "type": "input",
                 "sourcePosition": "right",
                 "targetPosition": "left",
                 "measured": {
@@ -45,36 +71,151 @@
                 }
               },
               {
-                "id": "xwms3",
+                "id": "3",
                 "position": {
-                  "x": 497.5,
-                  "y": 122
+                  "x": 700,
+                  "y": 150
                 },
                 "data": {
-                  "label": "bf2c9098-351e-4a0d-82ff-2667de376054",
+                  "label": "Output Block",
+                  "sidebar_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "block_ui_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
                   "custom_name": "",
-                  "model": "gpt-4o-mini",
-                  "core_block_type": "openai_chat",
-                  "reference_core_block_type": "openai_chat",
+                  "source_code": "",
+                  "source_path": "",
+                  "source_hash": "",
+                  "process_type": "",
+                  "core_block_type": "output"
+                },
+                "type": "output",
+                "sourcePosition": "right",
+                "targetPosition": "left",
+                "measured": {
+                  "width": 150,
+                  "height": 40
+                }
+              },
+              {
+                "id": "es32z",
+                "position": {
+                  "x": 500,
+                  "y": 115.9497487437186
+                },
+                "data": {
+                  "label": "220c4692-eb4d-4ab8-9ce8-c1e9d89673b2",
+                  "sidebar_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "model",
+                      "display_name": "Model",
+                      "default_value": "gpt-4o-mini",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "openai_api_key",
+                      "display_name": "API Key",
+                      "default_value": "",
+                      "type": "password",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": false
+                    },
+                    {
+                      "name": "system",
+                      "display_name": "System Message",
+                      "default_value": "",
+                      "type": "textarea",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": false
+                    },
+                    {
+                      "name": "prompt_template",
+                      "display_name": "Prompt Template",
+                      "default_value": "",
+                      "type": "prompt_template",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": false
+                    },
+                    {
+                      "name": "tools",
+                      "display_name": "Tools",
+                      "default_value": [],
+                      "type": "tool_list",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": false
+                    }
+                  ],
+                  "block_ui_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "model",
+                      "display_name": "Model",
+                      "default_value": "gpt-4o-mini",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "custom_name": "",
+                  "source_code": "import requests\nimport json\n\nfrom openai import OpenAI\n\n\nfrom implementations.base import (\n    BaseImplementation,\n    BlockMetadata,\n    Field,\n    FieldType\n)\nfrom extensions.llm_tools.openai_tool import OpenAITool\nfrom core.input_parser.prompt_template import PromptTemplate\n\n\nclass OpenAIChat(BaseImplementation):\n    \"\"\"Task definition of the OpenAI Chat Completion.\"\"\"\n    display_name = 'OpenAI Chat Completion'\n    block_type = 'process'\n    block_metadata = BlockMetadata([\n        Field(name=\"model\", display_name=\"Model\", is_run_config=True, default_value='gpt-4o-mini'),\n        Field(name=\"openai_api_key\", display_name=\"API Key\", is_run_config=True, show_in_ui=False, type=FieldType.PASSWORD.value),\n        Field(name=\"system\", display_name=\"System Message\", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),\n        Field(name=\"prompt_template\", display_name=\"Prompt Template\", is_run_config=True, show_in_ui=False, type=FieldType.PROMPT_TEMPLATE.value),\n        Field(name=\"tools\", display_name=\"Tools\", is_run_config=True, default_value=[], show_in_ui=False, type=FieldType.TOOL_LIST.value),\n    ])\n    \n    def __init__(self, run_config:dict) -> None:\n        super().__init__()\n        self.run_config = run_config\n        if not self.run_config.get('openai_api_key'):\n            raise Exception(\"OpenAI API key is not specified in the run config\")\n        self.openAI_client = OpenAI(\n            api_key=self.run_config.get('openai_api_key'),\n        ) \n        self.messages = []\n        self.available_tools = {}\n        self.model = 'gpt-4o-mini'\n        self.tools = None\n        self.prompt_template = None\n        self.create_payload_from_run_config()\n    \n    def run(self, input_:dict) -> dict:\n        messages = []\n        messages.append(self.insert_system_message())\n        \n        # Create prompt\n        parse_input = PromptTemplate(\n            input_=input_, \n            template=self.prompt_template\n        )\n        prompt_template = parse_input()\n        \n        # Flag to determine if a function is available to be called\n        make_function_call = False\n        messages.append({\"role\": \"user\", \"content\": prompt_template})\n\n        # Make the first call.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        response['conversation'] = messages[1:]\n        # If model chose not to call any tools, return the response\n        if not choice['message'].get('tool_calls'):\n            return json.loads(json.dumps(response))\n        \n        # If model chose to call tools, then call the available tools.\n        if choice['message'].get('tool_calls'):\n            for tool_call in choice['message']['tool_calls']:\n                tool_name = tool_call['function']['name']\n                function_to_call = self.available_tools.get(tool_name)\n                if function_to_call is None:\n                    continue\n                make_function_call = True\n                function_params = json.loads(tool_call['function']['arguments'])\n                function_response = function_to_call.run(\n                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?\n                    {'data' : json.dumps(function_params)}\n                )\n                messages.append({\n                    \"role\": \"tool\",\n                    \"content\": str(function_response),\n                    \"tool_call_id\": tool_call['id']\n                })\n        # If no functions were available for the tools, simply return the response\n        if not make_function_call:\n            return json.loads(json.dumps(response))\n        # Else, utilize the function response to query the OpenAI API.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n\n        response['conversation'] = messages[1:]\n        return json.loads(json.dumps(response))\n    \n    def openai_response_get_message(self, response_choice):\n        \"\"\"\n        Process the response from OpenAI's chat.completions.create API call, \n        returning the message that should be appended to the conversation.\n\n        Args:\n            response_choice: The response from OpenAI's chat.completions.create API call\n        \n        Returns:\n            A dictionary containing the message to be appended to the conversation\n        \"\"\"\n        message = {\"role\": \"\"}\n        #response_choice = response.choices[0]\n        message['role'] = response_choice[\"message\"][\"role\"]\n        if response_choice[\"message\"]['content']:\n            message['content'] = response_choice[\"message\"][\"content\"]\n        if response_choice[\"message\"]['tool_calls']:\n            message['tool_calls'] = response_choice[\"message\"][\"tool_calls\"]\n        return message\n        \n        \n    \n    def create_payload_from_run_config(self) -> dict:\n\n        model = self.run_config.get('model', 'gpt-4o-mini')\n        self.model = model\n        \n        prompt_template = self.run_config.get('prompt_template')\n        self.prompt_template = prompt_template\n            \n        # Process any tools available\n        tools = self.run_config.get('tools')\n        if tools:\n            self.tools = []\n            for tool in tools:\n                openai_tool = OpenAITool()\n                tool_schema = openai_tool.process_tool(tool)\n                self.tools.append(tool_schema)\n                self.available_tools[ tool['name'] ] = openai_tool.implements\n    \n    def insert_system_message(self):\n        system_message = self.run_config.get('system')\n        return {\"role\": \"system\", \"content\": system_message}\n        \n        ",
+                  "source_path": "implementations/tasks/openai/openai_chat.py",
+                  "source_hash": "eaa7e645b75b13086d63f9b258476ae7f4bf8ea1",
                   "process_type": "task",
-                  "logo": {
-                    "src": "/assets/openai.png",
-                    "height": "40%",
-                    "width": "40%"
-                  },
-                  "system": "You are a helpful assistant.",
-                  "prompt": "{user_input}",
-                  "openai_api_key": null,
+                  "core_block_type": "openai_chat",
+                  "model": "gpt-4o-mini",
+                  "openai_api_key": "",
+                  "system": "You are a helpful assistant",
+                  "prompt_template": "{user_input}",
                   "tools": [],
-                  "pass_input_to_output": false,
-                  "source_code": "import requests\nimport json\n\nfrom openai import OpenAI\n\n\nfrom implementations.base import BaseImplementation\nfrom extensions.llm_tools.openai_tool import OpenAITool\nfrom core.input_parser.prompt_template import PromptTemplate\n\n\nclass OpenAIChat(BaseImplementation):\n    \"\"\"Task definition of the OpenAI Chat Completion.\"\"\"\n    display_name = 'OpenAI Chat Completion'\n    \n    def __init__(self, run_config:dict) -> None:\n        super().__init__()\n        self.run_config = run_config\n        if not self.run_config.get('openai_api_key'):\n            raise Exception(\"OpenAI API key is not specified in the run config\")\n        self.openAI_client = OpenAI(\n            api_key=self.run_config.get('openai_api_key'),\n        ) \n        self.messages = []\n        self.available_tools = {}\n        self.model = 'gpt-4o-mini'\n        self.tools = None\n        self.prompt_template = None\n        self.create_payload_from_run_config()\n    \n    def run(self, input_:dict) -> dict:\n        messages = []\n        messages.append(self.insert_system_message())\n        \n        # Create prompt\n        parse_input = PromptTemplate(\n            input_=input_, \n            template=self.prompt_template\n        )\n        prompt_template = parse_input()\n        \n        # Flag to determine if a function is available to be called\n        make_function_call = False\n        messages.append({\"role\": \"user\", \"content\": prompt_template})\n\n        # Make the first call.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        response['conversation'] = messages[1:]\n        # If model chose not to call any tools, return the response\n        if not choice['message'].get('tool_calls'):\n            return json.loads(json.dumps(response))\n        \n        # If model chose to call tools, then call the available tools.\n        if choice['message'].get('tool_calls'):\n            for tool_call in choice['message']['tool_calls']:\n                tool_name = tool_call['function']['name']\n                function_to_call = self.available_tools.get(tool_name)\n                if function_to_call is None:\n                    continue\n                make_function_call = True\n                function_params = json.loads(tool_call['function']['arguments'])\n                function_response = function_to_call.run(\n                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?\n                    {'data' : json.dumps(function_params)}\n                )\n                messages.append({\n                    \"role\": \"tool\",\n                    \"content\": str(function_response),\n                    \"tool_call_id\": tool_call['id']\n                })\n        # If no functions were available for the tools, simply return the response\n        if not make_function_call:\n            return json.loads(json.dumps(response))\n        # Else, utilize the function response to query the OpenAI API.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n\n        response['conversation'] = messages[1:]\n        return json.loads(json.dumps(response))\n    \n    def openai_response_get_message(self, response_choice):\n        \"\"\"\n        Process the response from OpenAI's chat.completions.create API call, \n        returning the message that should be appended to the conversation.\n\n        Args:\n            response_choice: The response from OpenAI's chat.completions.create API call\n        \n        Returns:\n            A dictionary containing the message to be appended to the conversation\n        \"\"\"\n        message = {\"role\": \"\"}\n        #response_choice = response.choices[0]\n        message['role'] = response_choice[\"message\"][\"role\"]\n        if response_choice[\"message\"]['content']:\n            message['content'] = response_choice[\"message\"][\"content\"]\n        if response_choice[\"message\"]['tool_calls']:\n            message['tool_calls'] = response_choice[\"message\"][\"tool_calls\"]\n        return message\n        \n        \n    \n    def create_payload_from_run_config(self) -> dict:\n\n        model = self.run_config.get('model', 'gpt-4o-mini')\n        self.model = model\n        \n        prompt_template = self.run_config.get('prompt_template')\n        self.prompt_template = prompt_template\n            \n        # Process any tools available\n        tools = self.run_config.get('tools')\n        if tools is not None:\n            self.tools = []\n            for tool in tools:\n                openai_tool = OpenAITool()\n                tool_schema = openai_tool.process_tool(tool)\n                self.tools.append(tool_schema)\n                self.available_tools[ tool['name'] ] = openai_tool.implements\n    \n    def insert_system_message(self):\n        system_message = self.run_config.get('system')\n        return {\"role\": \"system\", \"content\": system_message}\n        \n        ",
-                  "source_hash": "03737e91d3a4be88ada87da6628f6ad529e23b41",
-                  "source_path": "/Users/farhanishraq/Downloads/No_Code_AI/no-code-ai/lib/otto_backend/implementations/tasks/openai/openai_chat.py"
+                  "reference_core_block_type": "openai_chat"
                 },
                 "type": "process",
                 "measured": {
                   "width": 150,
-                  "height": 96
+                  "height": 108
                 },
                 "selected": true,
                 "dragging": false
@@ -95,17 +236,17 @@
               },
               {
                 "source": "1",
-                "target": "xwms3",
+                "target": "es32z",
                 "targetHandle": "a",
                 "animated": true,
-                "id": "xy-edge__1-xwms3a"
+                "id": "xy-edge__1-es32za"
               },
               {
-                "source": "xwms3",
+                "source": "es32z",
                 "sourceHandle": "b",
                 "target": "3",
                 "animated": true,
-                "id": "xy-edge__xwms3b-3"
+                "id": "xy-edge__es32zb-3"
               }
             ]
         },
@@ -115,160 +256,382 @@
             "description": "Parse pdfs using Langchain and pass them to a chatbot.",
             "reference_template_id": null,
             "nodes": [
-                {
+              {
                 "id": "1",
+                "position": {
+                  "x": 303.64824120603015,
+                  "y": 240.8793969849246
+                },
+                "data": {
+                  "label": "Input Block",
+                  "sidebar_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "input_type",
+                      "display_name": "Input Type",
+                      "default_value": "text",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "block_ui_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "input_type",
+                      "display_name": "Input Type",
+                      "default_value": "text",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "custom_name": "user_input",
+                  "source_code": "",
+                  "source_path": "",
+                  "source_hash": "",
+                  "process_type": "task",
+                  "core_block_type": "text_input",
+                  "input_type": "text"
+                },
                 "type": "input",
-                "position": {
-                    "x": 300,
-                    "y": 150
-                },
-                "data": {
-                    "label": "Input Block",
-                    "input_type": "text",
-                    "custom_name": "user_input",
-                    "core_block_type": "text_input",
-                    "process_type": "task"
-                },
-                "sourcePosition": "right",
-                "deletable": true,
-                "measured": {
-                    "width": 150,
-                    "height": 40
-                }
-                },
-                {
-                "id": "3",
-                "type": "output",
-                "position": {
-                    "x": 700,
-                    "y": 150
-                },
-                "data": {
-                    "label": "Output Block"
-                },
                 "sourcePosition": "right",
                 "targetPosition": "left",
                 "measured": {
-                    "width": 150,
-                    "height": 40
-                }
+                  "width": 150,
+                  "height": 40
                 },
-                {
-                "id": "sv2te",
+                "selected": false,
+                "dragging": false
+              },
+              {
+                "id": "3",
                 "position": {
-                    "x": 499,
-                    "y": 122.5
+                  "x": 700.7416047624685,
+                  "y": 243.88475803976627
                 },
                 "data": {
-                    "label": "fbca9797-49e4-43c3-9c1a-119882565a31",
-                    "custom_name": "",
-                    "model": "gpt-4o-mini",
-                    "core_block_type": "openai_chat",
-                    "reference_core_block_type": "openai_chat",
-                    "process_type": "task",
-                    "logo": {
-                    "src": "/assets/openai.png",
-                    "height": "40%",
-                    "width": "40%"
-                    },
-                    "system": "You are a helpful assistant.",
-                    "prompt": "Given a pdf:\\n{pdf}\\nanswer the user query:\\n{user_input}",
-                    "openai_api_key": "",
-                    "tools": [],
-                    "pass_input_to_output": false,
-                    "source_code": "import requests\nimport json\n\nfrom openai import OpenAI\n\n\nfrom implementations.base import BaseImplementation\nfrom extensions.llm_tools.openai_tool import OpenAITool\nfrom core.input_parser.prompt_template import PromptTemplate\n\n\nclass OpenAIChat(BaseImplementation):\n    \"\"\"Task definition of the OpenAI Chat Completion.\"\"\"\n    display_name = 'OpenAI Chat Completion'\n    \n    def __init__(self, run_config:dict) -> None:\n        super().__init__()\n        self.run_config = run_config\n        if not self.run_config.get('openai_api_key'):\n            raise Exception(\"OpenAI API key is not specified in the run config\")\n        self.openAI_client = OpenAI(\n            api_key=self.run_config.get('openai_api_key'),\n        ) \n        self.messages = []\n        self.available_tools = {}\n        self.model = 'gpt-4o-mini'\n        self.tools = None\n        self.prompt_template = None\n        self.create_payload_from_run_config()\n    \n    def run(self, input_:dict) -> dict:\n        messages = []\n        messages.append(self.insert_system_message())\n        \n        # Create prompt\n        parse_input = PromptTemplate(\n            input_=input_, \n            template=self.prompt_template\n        )\n        prompt_template = parse_input()\n        \n        # Flag to determine if a function is available to be called\n        make_function_call = False\n        messages.append({\"role\": \"user\", \"content\": prompt_template})\n\n        # Make the first call.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        response['conversation'] = messages[1:]\n        # If model chose not to call any tools, return the response\n        if not choice['message'].get('tool_calls'):\n            return json.loads(json.dumps(response))\n        \n        # If model chose to call tools, then call the available tools.\n        if choice['message'].get('tool_calls'):\n            for tool_call in choice['message']['tool_calls']:\n                tool_name = tool_call['function']['name']\n                function_to_call = self.available_tools.get(tool_name)\n                if function_to_call is None:\n                    continue\n                make_function_call = True\n                function_params = json.loads(tool_call['function']['arguments'])\n                function_response = function_to_call.run(\n                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?\n                    {'data' : json.dumps(function_params)}\n                )\n                messages.append({\n                    \"role\": \"tool\",\n                    \"content\": str(function_response),\n                    \"tool_call_id\": tool_call['id']\n                })\n        # If no functions were available for the tools, simply return the response\n        if not make_function_call:\n            return json.loads(json.dumps(response))\n        # Else, utilize the function response to query the OpenAI API.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n\n        response['conversation'] = messages[1:]\n        return json.loads(json.dumps(response))\n    \n    def openai_response_get_message(self, response_choice):\n        \"\"\"\n        Process the response from OpenAI's chat.completions.create API call, \n        returning the message that should be appended to the conversation.\n\n        Args:\n            response_choice: The response from OpenAI's chat.completions.create API call\n        \n        Returns:\n            A dictionary containing the message to be appended to the conversation\n        \"\"\"\n        message = {\"role\": \"\"}\n        #response_choice = response.choices[0]\n        message['role'] = response_choice[\"message\"][\"role\"]\n        if response_choice[\"message\"]['content']:\n            message['content'] = response_choice[\"message\"][\"content\"]\n        if response_choice[\"message\"]['tool_calls']:\n            message['tool_calls'] = response_choice[\"message\"][\"tool_calls\"]\n        return message\n        \n        \n    \n    def create_payload_from_run_config(self) -> dict:\n\n        model = self.run_config.get('model', 'gpt-4o-mini')\n        self.model = model\n        \n        prompt_template = self.run_config.get('prompt_template')\n        self.prompt_template = prompt_template\n            \n        # Process any tools available\n        tools = self.run_config.get('tools')\n        if tools is not None:\n            self.tools = []\n            for tool in tools:\n                openai_tool = OpenAITool()\n                tool_schema = openai_tool.process_tool(tool)\n                self.tools.append(tool_schema)\n                self.available_tools[ tool['name'] ] = openai_tool.implements\n    \n    def insert_system_message(self):\n        system_message = self.run_config.get('system')\n        return {\"role\": \"system\", \"content\": system_message}\n        \n        ",
-                    "source_hash": "03737e91d3a4be88ada87da6628f6ad529e23b41",
-                    "source_path": "/Users/farhanishraq/Downloads/No_Code_AI/no-code-ai/lib/otto_backend/implementations/tasks/openai/openai_chat.py"
+                  "label": "Output Block",
+                  "sidebar_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "block_ui_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "custom_name": "",
+                  "source_code": "",
+                  "source_path": "",
+                  "source_hash": "",
+                  "process_type": "",
+                  "core_block_type": "output"
                 },
-                "type": "process",
+                "type": "output",
+                "sourcePosition": "right",
+                "targetPosition": "left",
                 "measured": {
-                    "width": 150,
-                    "height": 96
+                  "width": 150,
+                  "height": 40
                 },
                 "selected": true,
                 "dragging": false
-                },
-                {
-                "id": "v4g5f",
-                "type": "input",
+              },
+              {
+                "id": "es32z",
                 "position": {
-                    "x": 300,
-                    "y": 50
+                  "x": 502.4321608040201,
+                  "y": 118.3819095477387
                 },
                 "data": {
-                    "label": "Langchain PDF Parser",
-                    "custom_name": "pdf",
-                    "input_type": "file",
-                    "core_block_type": "langchain_pdf_loader",
-                    "process_type": "task",
-                    "files_to_accept": "application/pdf",
-                    "button_text": "Upload PDF"
+                  "label": "220c4692-eb4d-4ab8-9ce8-c1e9d89673b2",
+                  "sidebar_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "model",
+                      "display_name": "Model",
+                      "default_value": "gpt-4o-mini",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "openai_api_key",
+                      "display_name": "API Key",
+                      "default_value": "",
+                      "type": "password",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": false
+                    },
+                    {
+                      "name": "system",
+                      "display_name": "System Message",
+                      "default_value": "",
+                      "type": "textarea",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": false
+                    },
+                    {
+                      "name": "prompt_template",
+                      "display_name": "Prompt Template",
+                      "default_value": "",
+                      "type": "prompt_template",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": false
+                    },
+                    {
+                      "name": "tools",
+                      "display_name": "Tools",
+                      "default_value": [],
+                      "type": "tool_list",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": false
+                    }
+                  ],
+                  "block_ui_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "model",
+                      "display_name": "Model",
+                      "default_value": "gpt-4o-mini",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "custom_name": "",
+                  "source_code": "import requests\nimport json\n\nfrom openai import OpenAI\n\n\nfrom implementations.base import (\n    BaseImplementation,\n    BlockMetadata,\n    Field,\n    FieldType\n)\nfrom extensions.llm_tools.openai_tool import OpenAITool\nfrom core.input_parser.prompt_template import PromptTemplate\n\n\nclass OpenAIChat(BaseImplementation):\n    \"\"\"Task definition of the OpenAI Chat Completion.\"\"\"\n    display_name = 'OpenAI Chat Completion'\n    block_type = 'process'\n    block_metadata = BlockMetadata([\n        Field(name=\"model\", display_name=\"Model\", is_run_config=True, default_value='gpt-4o-mini'),\n        Field(name=\"openai_api_key\", display_name=\"API Key\", is_run_config=True, show_in_ui=False, type=FieldType.PASSWORD.value),\n        Field(name=\"system\", display_name=\"System Message\", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),\n        Field(name=\"prompt_template\", display_name=\"Prompt Template\", is_run_config=True, show_in_ui=False, type=FieldType.PROMPT_TEMPLATE.value),\n        Field(name=\"tools\", display_name=\"Tools\", is_run_config=True, default_value=[], show_in_ui=False, type=FieldType.TOOL_LIST.value),\n    ])\n    \n    def __init__(self, run_config:dict) -> None:\n        super().__init__()\n        self.run_config = run_config\n        if not self.run_config.get('openai_api_key'):\n            raise Exception(\"OpenAI API key is not specified in the run config\")\n        self.openAI_client = OpenAI(\n            api_key=self.run_config.get('openai_api_key'),\n        ) \n        self.messages = []\n        self.available_tools = {}\n        self.model = 'gpt-4o-mini'\n        self.tools = None\n        self.prompt_template = None\n        self.create_payload_from_run_config()\n    \n    def run(self, input_:dict) -> dict:\n        messages = []\n        messages.append(self.insert_system_message())\n        \n        # Create prompt\n        parse_input = PromptTemplate(\n            input_=input_, \n            template=self.prompt_template\n        )\n        prompt_template = parse_input()\n        \n        # Flag to determine if a function is available to be called\n        make_function_call = False\n        messages.append({\"role\": \"user\", \"content\": prompt_template})\n\n        # Make the first call.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        response['conversation'] = messages[1:]\n        # If model chose not to call any tools, return the response\n        if not choice['message'].get('tool_calls'):\n            return json.loads(json.dumps(response))\n        \n        # If model chose to call tools, then call the available tools.\n        if choice['message'].get('tool_calls'):\n            for tool_call in choice['message']['tool_calls']:\n                tool_name = tool_call['function']['name']\n                function_to_call = self.available_tools.get(tool_name)\n                if function_to_call is None:\n                    continue\n                make_function_call = True\n                function_params = json.loads(tool_call['function']['arguments'])\n                function_response = function_to_call.run(\n                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?\n                    {'data' : json.dumps(function_params)}\n                )\n                messages.append({\n                    \"role\": \"tool\",\n                    \"content\": str(function_response),\n                    \"tool_call_id\": tool_call['id']\n                })\n        # If no functions were available for the tools, simply return the response\n        if not make_function_call:\n            return json.loads(json.dumps(response))\n        # Else, utilize the function response to query the OpenAI API.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n\n        response['conversation'] = messages[1:]\n        return json.loads(json.dumps(response))\n    \n    def openai_response_get_message(self, response_choice):\n        \"\"\"\n        Process the response from OpenAI's chat.completions.create API call, \n        returning the message that should be appended to the conversation.\n\n        Args:\n            response_choice: The response from OpenAI's chat.completions.create API call\n        \n        Returns:\n            A dictionary containing the message to be appended to the conversation\n        \"\"\"\n        message = {\"role\": \"\"}\n        #response_choice = response.choices[0]\n        message['role'] = response_choice[\"message\"][\"role\"]\n        if response_choice[\"message\"]['content']:\n            message['content'] = response_choice[\"message\"][\"content\"]\n        if response_choice[\"message\"]['tool_calls']:\n            message['tool_calls'] = response_choice[\"message\"][\"tool_calls\"]\n        return message\n        \n        \n    \n    def create_payload_from_run_config(self) -> dict:\n\n        model = self.run_config.get('model', 'gpt-4o-mini')\n        self.model = model\n        \n        prompt_template = self.run_config.get('prompt_template')\n        self.prompt_template = prompt_template\n            \n        # Process any tools available\n        tools = self.run_config.get('tools')\n        if tools:\n            self.tools = []\n            for tool in tools:\n                openai_tool = OpenAITool()\n                tool_schema = openai_tool.process_tool(tool)\n                self.tools.append(tool_schema)\n                self.available_tools[ tool['name'] ] = openai_tool.implements\n    \n    def insert_system_message(self):\n        system_message = self.run_config.get('system')\n        return {\"role\": \"system\", \"content\": system_message}\n        \n        ",
+                  "source_path": "implementations/tasks/openai/openai_chat.py",
+                  "source_hash": "eaa7e645b75b13086d63f9b258476ae7f4bf8ea1",
+                  "process_type": "task",
+                  "core_block_type": "openai_chat",
+                  "model": "gpt-4o-mini",
+                  "openai_api_key": "",
+                  "system": "You are a helpful assistant",
+                  "prompt_template": "Given a pdf\n{pdf}\nAnswer the user query\n{user_input}",
+                  "tools": [],
+                  "reference_core_block_type": "openai_chat"
                 },
+                "type": "process",
+                "measured": {
+                  "width": 150,
+                  "height": 108
+                },
+                "selected": false,
+                "dragging": false
+              },
+              {
+                "id": "w23tc",
+                "position": {
+                  "x": 298.73869346733676,
+                  "y": 51.824120603015075
+                },
+                "data": {
+                  "label": "Langchain PDF Loader",
+                  "sidebar_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    },
+                    {
+                      "name": "input_type",
+                      "display_name": "Input Type",
+                      "default_value": "file",
+                      "type": "static_dropdown",
+                      "dropdown_options": [
+                        {
+                          "value": "file",
+                          "label": "File"
+                        },
+                        {
+                          "value": "url",
+                          "label": "URL"
+                        }
+                      ],
+                      "is_run_config": true,
+                      "show_in_ui": false
+                    }
+                  ],
+                  "block_ui_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "custom_name": "pdf",
+                  "source_code": "import base64\nimport tempfile\n\nfrom integrations.langchain.pdf_loader import PDFLoader\nfrom core.types import InputType\nfrom implementations.base import (\n    BaseImplementation,\n    BlockMetadata,\n    Field,\n    FieldType,\n    StaticDropdownOption\n)\n\nclass LangchainPDFLoader(BaseImplementation):\n    display_name = 'PDF Loader'\n    block_type = 'process'\n    block_metadata = BlockMetadata([\n        Field(name=\"button_text\", is_run_config=False, default_value=\"Upload PDF\", show_in_ui=False),\n        Field(name=\"files_to_accept\", is_run_config=False, default_value=\"application/pdf\", show_in_ui=False),\n        Field(name=\"input_type\", display_name=\"Input Type\", is_run_config=True, show_in_ui=False,\n              type=FieldType.STATIC_DROPDOWN.value,\n              default_value=InputType.FILE.value,\n              dropdown_options=[\n                  StaticDropdownOption(value=InputType.FILE.value, label=\"File\").__dict__,\n                  StaticDropdownOption(value=InputType.URL.value, label=\"URL\").__dict__,\n            ]\n        ),\n    ])\n    \n    def __init__(self, run_config:dict=None) -> None:\n        pass\n    \n    def run(self, input_ = None):\n        input_ = base64.b64decode(input_)\n        doc = None\n        with tempfile.NamedTemporaryFile(delete=True) as f:\n            f.write(input_)\n            f.flush()\n            doc_pages = PDFLoader(f.name).parse()\n            doc = ' '.join(doc_pages)\n\n        return doc",
+                  "source_path": "implementations/tasks/pdf_loader/langchain_pdf_loader.py",
+                  "source_hash": "d6606427dd775d9d3446e7a352115ba70b7c9c44",
+                  "process_type": "task",
+                  "core_block_type": "langchain_pdf_loader",
+                  "button_text": "Upload PDF",
+                  "files_to_accept": "application/pdf",
+                  "input_type": "file",
+                  "reference_core_block_type": "langchain_pdf_loader"
+                },
+                "type": "input",
                 "sourcePosition": "right",
                 "measured": {
-                    "width": 150,
-                    "height": 40
-                }
+                  "width": 150,
+                  "height": 58
                 },
-                {
-                "id": "pikj6",
-                "type": "output",
+                "selected": false,
+                "dragging": false
+              },
+              {
+                "id": "8js9v",
                 "position": {
-                    "x": 700,
-                    "y": 50
+                  "x": 701.21608040201,
+                  "y": 67.91457286432161
                 },
                 "data": {
-                    "label": "Chat Output"
+                  "label": "Chat Output",
+                  "sidebar_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "block_ui_fields": [
+                    {
+                      "name": "custom_name",
+                      "display_name": "Block Name",
+                      "default_value": "",
+                      "type": "text",
+                      "dropdown_options": [],
+                      "is_run_config": true,
+                      "show_in_ui": true
+                    }
+                  ],
+                  "custom_name": "",
+                  "source_code": "",
+                  "source_path": "",
+                  "source_hash": "",
+                  "process_type": "task",
+                  "core_block_type": "chat_output",
+                  "reference_core_block_type": "chat_output"
                 },
+                "type": "output",
                 "sourcePosition": "right",
                 "targetPosition": "left",
                 "measured": {
-                    "width": 150,
-                    "height": 40
-                }
-                }
+                  "width": 150,
+                  "height": 40
+                },
+                "selected": false,
+                "dragging": false
+              }
             ],
             "edges": [
-                {
+              {
                 "id": "e1-2",
                 "source": "1",
                 "target": "2",
                 "animated": true
-                },
-                {
+              },
+              {
                 "id": "e2-3",
                 "source": "2",
                 "target": "3",
                 "animated": true
-                },
-                {
+              },
+              {
                 "source": "1",
-                "target": "sv2te",
+                "target": "es32z",
                 "targetHandle": "a",
                 "animated": true,
-                "id": "xy-edge__1-sv2tea"
-                },
-                {
-                "source": "sv2te",
+                "id": "xy-edge__1-es32za"
+              },
+              {
+                "source": "es32z",
                 "sourceHandle": "b",
                 "target": "3",
                 "animated": true,
-                "id": "xy-edge__sv2teb-3"
-                },
-                {
-                "source": "v4g5f",
-                "target": "sv2te",
+                "id": "xy-edge__es32zb-3"
+              },
+              {
+                "source": "w23tc",
+                "target": "es32z",
                 "targetHandle": "a",
                 "animated": true,
-                "id": "xy-edge__v4g5f-sv2tea"
-                },
-                {
-                "source": "sv2te",
+                "id": "xy-edge__w23tc-es32za"
+              },
+              {
+                "source": "es32z",
                 "sourceHandle": "b",
-                "target": "pikj6",
+                "target": "8js9v",
                 "animated": true,
-                "id": "xy-edge__sv2teb-pikj6"
-                }
+                "id": "xy-edge__es32zb-8js9v"
+              }
             ]
         }
     ]

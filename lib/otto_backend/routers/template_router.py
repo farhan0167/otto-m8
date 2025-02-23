@@ -13,7 +13,7 @@ from routers.dependency import get_current_user
 router = APIRouter()
 
 @router.get("/templates", tags=["Templates"])
-def get_templates(
+async def get_templates(
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)
 ):
@@ -28,7 +28,7 @@ def get_templates(
     return templates
 
 @router.get("/templates/{template_id}", tags=["Templates"])
-def get_template(
+async def get_template(
     template_id: int, 
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)

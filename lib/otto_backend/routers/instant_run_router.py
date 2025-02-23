@@ -26,7 +26,7 @@ class TestWorkflowPayload(BaseModel):
     data: dict
 
 @router.post("/instant_run", tags=["Instant Runs"])
-def instant_run(request: InstantRunPayload):
+async def instant_run(request: InstantRunPayload):
     """
     Router for users to test instant runs. Should initialize
     an Implementer, and then run and return the results back.
@@ -51,7 +51,7 @@ def instant_run(request: InstantRunPayload):
     return response
 
 @router.post("/test_workflow", tags=["Instant Runs"])
-def test_workflow(request: TestWorkflowPayload):
+async def test_workflow(request: TestWorkflowPayload):
 
     backend_template = request.backend_template
     backend_template = {

@@ -126,7 +126,7 @@ async def update_workflow(
     }
     
 @router.get("/pause_workflow/{template_id}", tags=["Workflows"])
-def pause_workflow(
+async def pause_workflow(
     template_id: int, 
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)
@@ -152,7 +152,7 @@ def pause_workflow(
         raise HTTPException(status_code=404, detail="Template not found")
 
 @router.get("/resume_workflow/{template_id}", tags=["Workflows"])
-def resume_workflow(
+async def resume_workflow(
     template_id: int, 
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)
@@ -181,7 +181,7 @@ def resume_workflow(
         raise HTTPException(status_code=404, detail="Template not found")
     
 @router.get("/delete_workflow/{template_id}", tags=["Workflows"])
-def delete_workflow(
+async def delete_workflow(
     template_id: int, 
     db_session: Session = Depends(get_db),
     current_user: Users = Depends(get_current_user)

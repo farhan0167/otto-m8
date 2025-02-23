@@ -1,11 +1,24 @@
 import requests
 import json
 
-from implementations.base import BaseImplementation
+from implementations.base import (
+    BaseImplementation,
+    BlockMetadata,
+    Field,
+    FieldType
+)
 from core.input_parser.integration_inp_parser import BasicIntegrationInputParser
 
 class LambdaFunction(BaseImplementation):
     display_name = 'Lambda Function'
+    block_type = 'process'
+    block_metadata = BlockMetadata([
+        Field(
+            name="lambda_function_name", display_name="Lambda Function", 
+            is_run_config=True, default_value=None, show_in_ui=False,
+            type=FieldType.LAMBDAS_DROPDOWN.value,
+        ),
+    ])
     
     def __init__(self, run_config: dict) -> None:
         self.run_config = run_config

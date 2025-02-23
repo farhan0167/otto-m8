@@ -8,13 +8,22 @@
 
 ## ♾️ Wait, what is Otto-m8?
 
-otto-m8 (automate) is a low code platform that allows users to build AI/ML workflows through a flowchart like UI. To be more specific, its a platform that aims to abstract away the code needed to launch deep learning based workflows, where a workflow could mean just using an AI model by itself, or integrating with other third party API's. 
+otto-m8 (automate) is a low code platform that allows users to build AI/ML workflows through a flowchart like UI. In other words, you can visually declare how you build AI workflows or agents. Its low code because you are still in control over the implementation of a block(yes you can not only add custom blocks but also modify out of the box blocks), and more importantly, its a platform that isn't specifically built on top of an existing AI framework like Langchain. What this means is that, you can build you workflows with any framework you see fit, whether it is Langchain, Llama Index or the AI providers sdk themselves.
 
-Imagine the following scenario: you have trained a deep learning model and pushed the model to Huggingface Hub. While you could potentially host your model using their Inference API, you want to integrate your model with a LLM or some other function to make your model useful. This is where otto-m8 comes in by:
-1) Allowing you to chain your model with other models and integrations visually, which we'll call a workflow.
-2) Serve that workflow as a REST API that other users could consume from.
+At its core, otto-m8 views the problem of building any AI workflow as a graph problem. As developers, we mostly build modular components where each components are responsible for a specific task (consider them as nodes), and each component sends data between each other (the edges). Together you get a workflow which consists of inputs, some transformations of the inputs(we'll call them processes), and an output.
 
-To take it a step further, consider otto-m8 as a visual infrastructure platform that creates a deployable docker container hosting your ML model and business logic. 
+This project is still in its early phase. What will make this platform successful is the number of integrations we can provide, but more than that, what will make this project successful is if we can circumvent the limitations of low code platforms, which is-they don't scale. To overcome this, otto-m8 is released as a fully open source platform and community contributions will be greatly appreciated. For contributions, see the [CONTRIBUTION.md](CONTRIBUTING.md) for guidelines.
+
+### Key Features
+- Build AI/ML workflows visually through out of the box blocks and by interconnecting them.
+- Build custom blocks or extend existing ones through code.
+- Incrementally build your workflows with instant feedback loops before deploying.
+- Deploy your workflows to get a Docker container that serves your workflow as a REST API.
+- Keep a trace of every workflow run of your deployed workflows.
+
+> [!IMPORTANT]
+> Breaking changes:
+> - This project is still in its early development phase and as a result changes will be pushed that can break your existing workflows. 
 
 ## 🚀 Getting Started
 
@@ -190,7 +199,7 @@ Huggingface's pipeline abstraction. Below is a simple demo of the `Salesforce/bl
 - [x] Observability for every block's output like a Logger
 - [ ] Memory for Chatbot and RAG. Goal is to not clutter the drawing board.
 - [x] Streamline workflow creation, edits and redeployment. Some form of version control
-- [ ] Apart from Lambdas that deploy seperate docker containers for custom code, build a custom code block which is deployed within the workflow container.
+- [x] Apart from Lambdas that deploy seperate docker containers for custom code, build a custom code block which is deployed within the workflow container.
 - [ ] ML Model Training via UI?
 
 
