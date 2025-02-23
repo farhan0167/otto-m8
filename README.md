@@ -21,6 +21,10 @@ This project is still in its early phase. What will make this platform successfu
 - Deploy your workflows to get a Docker container that serves your workflow as a REST API.
 - Keep a trace of every workflow run of your deployed workflows.
 
+> [!IMPORTANT]
+> Breaking changes:
+> - This project is still in its early development phase and as a result changes will be pushed that can break your existing workflows. 
+
 ## 🚀 Getting Started
 
 ### Prerequisite: 
