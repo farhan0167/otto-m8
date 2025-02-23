@@ -124,7 +124,7 @@ TaskRegistry.add_block_to_registry_by_vendor(
     vendor="Langchain",
     task=TaskCatalog.LANGCHAIN_PDF_LOADER,
     ui_block_type="input",
-    source_path="implementations/tasks/langchain/langchain_pdf_loader.py"
+    source_path="implementations/tasks/pdf_loader/langchain_pdf_loader.py"
 )
 
 TaskRegistry.add_vendor("Input Blocks")

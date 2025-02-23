@@ -31,8 +31,8 @@ class BaseImplementation(ABC):
         """Return the initial data for a block."""
         position_map = {
             "input": {"x": 300, "y": 150},
-            "output": {"x": 700, "y": 100},
-            "process": {"x": 500, "y": 100}
+            "output": {"x": 700, "y": 150},
+            "process": {"x": 500, "y": 150}
         }
         initial_data = {
             'id': '',
