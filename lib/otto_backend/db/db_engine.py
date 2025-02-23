@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String
 
-DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_HOST = os.getenv("DB_HOST", "postgres")
 SQLALCHEMY_DATABASE_URL = f"postgresql://postgres:123456@{DB_HOST}:5432/postgres"
 
 engine = create_engine(

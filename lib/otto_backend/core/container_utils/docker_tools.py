@@ -145,10 +145,11 @@ class DockerTools:
         Returns:
             docker.models.containers.Container: The started container.
         """
-        volumes = {
-            f'{mount_dir}/.cache': {'bind': '/root/.cache', 'mode': 'rw'},
-            f'{mount_dir}/implementations': {'bind': '/app/implementations', 'mode': 'rw'}
-        } if mount_dir else None
+        # volumes = {
+        #     f'{mount_dir}/.cache': {'bind': '/root/.cache', 'mode': 'rw'},
+        #     f'{mount_dir}/implementations': {'bind': '/app/implementations', 'mode': 'rw'}
+        # } if mount_dir else None
+        volumes = None
         client = docker.from_env()
         container = client.containers.run(
                 image=image_id,
