@@ -28,6 +28,7 @@ services:
     image: farhan0167/otto-m8-dashboard:latest
     volumes:
       - ./dashboard:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
     networks:
