@@ -28,26 +28,70 @@ This project is still in its early phase. What will make this platform successfu
 ## 🚀 Getting Started
 
 ### Prerequisite: 
-1. Make sure to have Docker or Docker Desktop Installed on your computer.
-2. In order to run Ollama blocks, make sure you have the Ollama server running in the background. 
-3. Ensure you have poetry installed in your system:
-```
-curl -sSL https://install.python-poetry.org | python3 -
-```
-Once installation is complete, make sure to export poetry to PATH. This instruction should appear once you install poetry via the command above.
-
-4. This project was built using Python `3.11.4`, and it is recommended that you run it on the same version but you can also run this with versions `>=3.10,<3.13`. In case of any hiccups, please raise an [issue](https://github.com/farhan0167/otto-m8/issues).
+1. Clone the repository
+    ```bash
+    git clone https://github.com/farhan0167/otto-m8.git
+    cd otto-m8/
+    ```
+2. Make sure to have Docker or Docker Desktop Installed on your computer.
+3. In order to run Ollama blocks, make sure you have the Ollama server running in the background. 
 
 ### Run the project
 1. Run the following command to make `run.sh` executable
-```bash
-chmod +x run.sh
-```
-2. Then launch the application:
-```bash
-./run.sh
-```
-This should launch both the dashboard and the server. To access the dashboard, head over to `http://localhost:3000/`. Use the default login credentials to access the dashboard, and get started on your first workflow.
+   ```bash
+   chmod +x run.sh
+   ```
+2. **Lauching the application**
+    Once the script has the right permissions, you'll then need to run the `run.sh` script. This script will build all the necessary docker containers, including that of the frontend and backend. Since the server is hosted on a docker container, in order to deploy workflow containers, you'll need to mount your docker daemon to the server container which will allow the server to launch containers. You will therefore have two ways to launch:
+
+    1. **Without mounting** the docker daemon. This will mean that you won't be able to deploy your workflows as a docker container but you can still interact with it(build workflows and testing them). Similarly, you won't be able to launch Lambdas but you should still be able to modify or create custom blocks. To run:
+        ```bash
+        ./run.sh
+        ```
+    2. **Mounting** the docker daemon. This will mean that you will be able to deploy your workflows as docker containers and similarly be able to launch Lambdas. To run:
+        ```bash
+        ./run.sh --launch-containers
+        ```
+3. This script should launch all the containers necessary to get started with otto-m8. You can start interacting with the platform by heading to `http://localhost:3000`, once the FastAPI server started completely. You should look at something like this in your logs:
+      ```
+      Otto Dashboard URL: http://localhost:3000
+      Otto Server URL: http://localhost:8000
+      INFO:     Will watch for changes in these directories: ['/app']
+      INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+      INFO:     Started reloader process [1] using StatReload
+      INFO:     Started server process [13]
+      INFO:     Waiting for application startup.
+      INFO:     Application startup complete.
+      ```
+4. **Debugging common issues**:
+    <details>
+    <summary>Error getting credentials</summary>
+    <p>This error is typically related to Docker credentials, and would look something like this:<p>
+
+    ```
+    error getting credentials - err: exit status 1, out: ``
+    Building slim base image...
+    [+] Building 0.2s (1/2)                                    docker:desktop-linux
+    [+] Building 0.2s (2/2) FINISHED                           docker:desktop-linux
+    => [internal] load build definition from slim-base.Dockerfile             0.0s
+    => => transferring dockerfile: 95B                                        0.0s
+    => ERROR [internal] load metadata for docker.io/library/python:3.11.4-sl  0.2st
+    ------
+    > [internal] load metadata for docker.io/library/python:3.11.4-slim:
+    ------
+    slim-base.Dockerfile:1
+    --------------------
+      1 | >>> FROM python:3.11.4-slim
+      2 |
+      3 |     RUN pip install otto-m8
+    --------------------
+    ERROR: failed to solve: python:3.11.4-slim: failed to resolve source metadata for docker.io/library/python:3.11.4-slim: error getting credentials - err: exit status 1, out: ``
+        
+    ```
+
+    To solve this simply run `rm ~/.docker/config.json` as mention in this [post](https://stackoverflow.com/questions/71770693/error-saving-credentials-error-storing-credentials-err-exit-status-1-out).
+    </details>
+
 
 ## 🛠️ Documentation
 Please see [here](https://otto-m8.com/) for full documentation, including:

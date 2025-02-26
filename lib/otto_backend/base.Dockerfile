@@ -6,6 +6,6 @@ COPY . /app
 
 RUN pip install poetry
 
-RUN poetry config virtualenvs.in-project true
+#RUN poetry config virtualenvs.in-project true
 
 RUN poetry install

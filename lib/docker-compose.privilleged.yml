@@ -42,6 +42,7 @@ services:
     working_dir: /app
     volumes:
       - ./otto_backend:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 8000:8000
     networks:
