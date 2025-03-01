@@ -139,7 +139,7 @@ TaskRegistry.add_block_to_registry_by_vendor(
     vendor="Input Blocks",
     task=TaskCatalog.IMAGE_INPUT,
     ui_block_type="input",
-    source_path="implementations/tasks/input_blocks/image_input_block.py"
+    source_path="implementations/tasks/input_blocks/image_input/image.py"
 )
 
 TaskRegistry.add_vendor("Custom Blocks")
