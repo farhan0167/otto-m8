@@ -16,6 +16,7 @@ class TaskCatalog(Enum):
     TEXT_INPUT = 'implementations.tasks.input_blocks.text_input.text_input.TextInput'
     IMAGE_INPUT = 'implementations.tasks.input_blocks.image_input.image.ImageInput'
     CUSTOM_BLOCK = 'implementations.tasks.custom.basic_block.CustomBlock'
+    OPENAI_CHAT_VISION = 'implementations.tasks.experimental.openai_chat_vision.OpenAIChatVision'
     #### Catalog for Tasks ####
 
     def get_class(self):
@@ -149,3 +150,14 @@ TaskRegistry.add_block_to_registry_by_vendor(
     ui_block_type="process",
     source_path="implementations/tasks/custom/basic_block.py"
 )
+TaskRegistry.add_vendor("Experimental")
+try:
+    TaskRegistry.add_block_to_registry_by_vendor(
+                    vendor="Experimental",
+                    task=TaskCatalog.OPENAI_CHAT_VISION,
+                    ui_block_type="process",
+                    source_path="implementations/tasks/experimental/openai_chat_vision.py",
+                    reference_core_block_type="openai_chat"
+)
+except Exception as e:
+    print(f"Error adding block to registry ", e)
