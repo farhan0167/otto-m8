@@ -1,0 +1,163 @@
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.featureContainer{
+  display: flex;
+  flex-direction: row;
+}
+.placeholderImages{
+  width: 50%;
+}
+.featureTextHeader{
+  font-size: 60px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landingContainer {
+  background-color: #F0F0F0;
+  padding: 50px;
+}
+
+.headerText{
+  font-size: 80px;
+  font-weight: 900;
+  margin-top: 50px;
+}
+.headerText2{
+  font-size: 80px;
+  font-weight: 900;
+  margin-top: 50px;
+  background: linear-gradient(135deg, #8454ec, #d11050);
+  -webkit-background-clip: text; 
+  color: transparent;
+}
+
+.headerTagline{
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.getStartedButton {
+  background: linear-gradient(135deg, #8454ec, #d11050);
+  border: none;
+  border-radius: 25px;
+  height: 50px;
+  width: 200px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  cursor: pointer;
+}
+.getStartedButton:hover{
+  background: #8454ec;
+  color: #fff;
+  cursor: pointer;
+}
+
+.secondButton {
+  background: rgb(36, 36, 36);
+  border: none;
+  border-radius: 25px;
+  height: 50px;
+  width: 290px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  box-shadow: rgba(34, 34, 34, 0.35) 0px 5px 15px;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.secondButton:hover{
+  background: #999999;
+  color: #fff;
+  cursor: pointer;
+}
+
+.deployListText{
+  font-size: 20px;
+}
+
+
+/* For smaller screens, stack everything vertically */
+@media (max-width: 768px) {
+  .starterButtons{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .starterButtons button{
+    margin: 10px;
+  }
+  .headerText{
+    font-size: 50px;
+  }
+  .headerText2{
+    font-size: 50px;
+  }
+  .featureContainer{
+    display: flex;
+    flex-direction: column;
+  }
+  .featureTextHeader{
+    font-size: 40px;
+  }
+  .placeholderImages{
+    margin: 10px;
+    width: 90%;
+  }
+}
+
+
+
+[data-theme='dark'] {
+  .getStartedButton {
+    background: linear-gradient(135deg, #4f1bbebc, #cd1894);
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  }
+  .getStartedButton:hover{
+    background: #4f1bbebc;
+    color: #fff;
+    cursor: pointer;
+  }
+  .landingContainer {
+    background: linear-gradient(155deg, #530080, #ee1490, #6c0101);
+  }
+  .headerText2{
+    background: rgb(230, 230, 230);
+    -webkit-background-clip: text; 
+    color: transparent;
+  }
+  .secondButton{
+    box-shadow: rgba(129, 128, 128, 0.35) 0px 5px 15px;
+  }
+
+  .placeholderImages {
+    box-shadow: rgba(250, 159, 244, 0.628) 0px 7px 29px 0px;
+    
+    
+  }
+}
