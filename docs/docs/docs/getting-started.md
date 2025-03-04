@@ -22,19 +22,42 @@ commands.
 - Docker Desktop: https://docs.docker.com/desktop/
 
 ## Launch Otto-m8
-With Docker running in the background, you can do the following:
-1. Clone the Github repository:
-```bash
-git clone https://github.com/farhan0167/otto-m8.git
-```
-2. Launch the application
-```bash
-cd otto-m8
-chmod +x run.sh
-./run.sh
-```
-The command will launch all the necessary containers and the main server needed to get
-everything working. To go to the dashboard, go to `http://localhost:3000`
+### Prerequisite: 
+1. Clone the repository
+    ```bash
+    git clone https://github.com/farhan0167/otto-m8.git
+    cd otto-m8/
+    ```
+2. Make sure to have Docker or Docker Desktop Installed on your computer.
+3. In order to run Ollama blocks, make sure you have the Ollama server running in the background. 
+
+### Run the project
+1. Run the following command to make `run.sh` executable
+   ```bash
+   chmod +x run.sh
+   ```
+2. **Lauching the application**
+    Once the script has the right permissions, you'll then need to run the `run.sh` script. This script will build all the necessary docker containers, including that of the frontend and backend. Since the server is hosted on a docker container, in order to deploy workflow containers, you'll need to mount your docker daemon to the server container which will allow the server to launch containers. You will therefore have two ways to launch:
+
+    1. **Without mounting** the docker daemon. This will mean that you won't be able to deploy your workflows as a docker container but you can still interact with it(build workflows and testing them). Similarly, you won't be able to launch Lambdas but you should still be able to modify or create custom blocks. To run:
+        ```bash
+        ./run.sh
+        ```
+    2. **Mounting** the docker daemon. This will mean that you will be able to deploy your workflows as docker containers and similarly be able to launch Lambdas. To run:
+        ```bash
+        ./run.sh --launch-containers
+        ```
+3. This script should launch all the containers necessary to get started with otto-m8. You can start interacting with the platform by heading to `http://localhost:3000`, once the FastAPI server started completely. You should look at something like this in your logs:
+      ```
+      Otto Dashboard URL: http://localhost:3000
+      Otto Server URL: http://localhost:8000
+      INFO:     Will watch for changes in these directories: ['/app']
+      INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+      INFO:     Started reloader process [1] using StatReload
+      INFO:     Started server process [13]
+      INFO:     Waiting for application startup.
+      INFO:     Application startup complete.
+      ```
 
 ### Ollama
 If you plan to run Ollama, make sure to have Ollama installed locally.
