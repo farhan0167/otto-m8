@@ -1,5 +1,5 @@
 ---
-title: Blocks
+id: Blocks–Basics
 sidebar_position: 1
 ---
 
@@ -15,7 +15,7 @@ There are three kinds of blocks, which are as follows:
 These blocks are split up in this fashion because in **otto-m8**, the project adheres to a [Input-Process-Output](https://en.wikipedia.org/wiki/IPO_model)
 (IPO) paradigm. Like any program, there is a input which goes through some process to produce an output. 
 
-![ipo-model](./imgs/ipo.png)
+![ipo-model](../imgs/ipo.png)
 
 
 ### Input Blocks
@@ -42,7 +42,8 @@ model in the last block prior to the Output*.
 ## Implementation
 
 Every block within the otto-m8 ecosystem implements a program or an integration with third party libraries. You can simply see it
-as an implementation of each block. For the purpose of this project, implementations are divided into two camps – Tasks and Integrations.
+as an implementation of each block. For the purpose of this project, implementations are divided into three camps – Tasks, Integrations
+and Custom.
 
 ### Tasks
 Tasks are mostly implementations of ML based workloads and blocks that are native to the platform – Input and Output Blocks.
@@ -57,6 +58,18 @@ library, OpenAI itself is an integration; but in the context of Blocks, the inte
 Now for function calling, when we use the HTTP Block to allow the OpenAI library to call some HTTPs endpoint for function calling, 
 the HTTP Block will be grouped under Integrations since it is integrating with a Task Block, which is the OpenAI block.
 
+:::warning Integration types to be deprecated.
+
+The branching of implementations into a task and integration bucket will be deprecated in a future release. Moving forward, all
+implementations will either be of task or custom type. 
+
+:::
+
+### Custom
+Custom implementation is a derived implementation of a task or integration. When a user modify a block's implementation, they are
+always saved as a custom implementation. This is so that we can preserve the blocks that are system built-ins vs blocks that are
+created by the user. To learn more about custom blocks and their implementations, head over to the [Intermediate](/docs/conceptual-guide/blocks/Blocks–Advanced) section.
+
 On a high level, a implementation looks as follows:
 ```python
 from abc import abstractmethod, ABC
@@ -64,6 +77,7 @@ from abc import abstractmethod, ABC
 class BaseImplementation(ABC):
     """Base class for all implementations. An implementation is a class that implements a
     library(third party integrations) for a Block."""
+    ...
     
     @abstractmethod
     def run(self):
@@ -108,7 +122,7 @@ class HuggingFaceModelCard(BaseImplementation):
 When interacting with Otto-m8 and its Templates, you'll notice the term `run_config` being used. A `run_config`,
 short for Run Configuration, is any user related configurations that dictate how a Block will run. For instance:
 
-![run-config-example](./imgs/run_config.png)
+![run-config-example](../imgs/run_config.png)
 
 For a OpenAI Block, when the user configures things such as the key, model, prompt template, etc. these make up a 
 Block's run configuration:
