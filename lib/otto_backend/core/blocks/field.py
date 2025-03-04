@@ -29,12 +29,19 @@ class Field(BaseModel):
     users to configure a block or see the block's configuration in the block.
     """
     name: str
+    """Name of the field used for programatic access to the block's metadata"""
     display_name: Union[str, None] = None
+    """The text that will be displayed on the UI to represent the block's metadata"""
     default_value: Any = ''
+    """Default value the field will hold"""
     type:str = FieldType.TEXT.value
+    """The type of field rendered"""
     dropdown_options: List[Dict] = []
+    """This holds value for when `Field.type == STATIC_DROPDOWN`"""
     is_run_config: bool = True
+    """Flag to determine whether the field is configurable by the user, or part of the `run_config`"""
     show_in_ui: bool = True
+    """Flag to determine whether this field will be rendered on the Reactflow node"""
     
 class MultimodalField:
     """Object to represent a field for a multimodal selector."""
