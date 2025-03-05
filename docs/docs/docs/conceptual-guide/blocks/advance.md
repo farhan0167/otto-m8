@@ -87,7 +87,7 @@ will need.
 
 ### `Block Metadata`
 
-```python
+```python title="lib/otto_backend/core/blocks/metadata.py"
 from typing import List
 from core.blocks.field import Field
 
@@ -113,7 +113,7 @@ class BlockMetadata:
 
 ### `Field`
 
-```python
+```python title="lib/otto_backend/core/blocks/field.py"
 from enum import Enum
 from typing import List, Union, Any, Dict
 from pydantic import BaseModel
@@ -140,7 +140,7 @@ class Field(BaseModel):
 
 ### `FieldType`
 
-```python
+```python title="lib/otto_backend/core/blocks/field.py"
 class FieldType(Enum):
     # Primitive html data types
     TEXT = 'text'
