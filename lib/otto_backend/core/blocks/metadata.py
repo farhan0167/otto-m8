@@ -16,4 +16,6 @@ class BlockMetadata:
             Field(name="process_type", display_name=None, is_run_config=False, show_in_ui=False),
             Field(name="core_block_type", display_name=None, is_run_config=False, show_in_ui=False),
         ]
+        """Default fields that are common across all blocks"""
+        
         self.fields = [*default_fields, *fields]

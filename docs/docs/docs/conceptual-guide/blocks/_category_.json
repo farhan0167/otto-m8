@@ -1,0 +1,9 @@
+{
+    "label": "Blocks",
+    "position": 1,
+    "link": {
+      "type": "generated-index",
+      "description": "Blocks are what the user sees when interacting with Otto-m8, which encapsulates the logic for running a unit of software. Use this section as a guide to understand Blocks."
+    }
+  }
+  

@@ -1,0 +1,69 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+
+:root {
+  /* A vibrant purple as the base */
+  --ifm-color-primary: #7f3dff;
+  /* Slightly darker purple */
+  --ifm-color-primary-dark: #6f34e0;
+  /* More saturation and deeper tone */
+  --ifm-color-primary-darker: #5f2cbf;
+  /* Darkest of the set */
+  --ifm-color-primary-darkest: #4f2380;
+  /* Slightly lighter than the base */
+  --ifm-color-primary-light: #8f61ff;
+  /* Even lighter */
+  --ifm-color-primary-lighter: #a47aff;
+  /* Lightest shade in the palette */
+  --ifm-color-primary-lightest: #c09eff;
+
+  /* Keeping the code font size the same */
+  --ifm-code-font-size: 95%;
+
+  /* Subtle purple tint for highlighted code lines */
+  --docusaurus-highlighted-code-line-bg: rgba(127, 61, 255, 0.1);
+}
+
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+   /* Base purple */
+   --ifm-color-primary: #7f3dff;
+   /* Slightly darker purple */
+   --ifm-color-primary-dark: #6f34e0;
+   /* More saturated/deeper tone */
+   --ifm-color-primary-darker: #5f2cbf;
+   /* Darkest of the set */
+   --ifm-color-primary-darkest: #4f2380;
+   /* Slightly lighter than the base */
+   --ifm-color-primary-light: #8f61ff;
+   /* Even lighter */
+   --ifm-color-primary-lighter: #a47aff;
+   /* Lightest shade in the palette */
+   --ifm-color-primary-lightest: #c09eff;
+ 
+   /* Subtle purple tint for highlighted code lines in dark theme */
+   --docusaurus-highlighted-code-line-bg: rgba(127, 61, 255, 0.3);
+}
+
+.otto-main-display{
+  border-radius: "2%";
+  overflow: "hidden"; 
+  display: "flex";
+  justify-content: "center";
+  align-items: "center";
+  border: "2px solid #ccc"; 
+  box-shadow: "4px 4px 8px rgba(0; 0; 0; 0.2)"; 
+  background-color: "#000";
+}
+
+.custom-font{
+  font-family: 'Inter', sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
