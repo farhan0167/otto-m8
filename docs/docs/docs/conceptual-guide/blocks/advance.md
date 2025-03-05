@@ -29,17 +29,17 @@ class OpenAIChat(BaseImplementation):
     block_type = 'process'
     block_metadata = BlockMetadata([
         Field(
-            name="model", 
-            display_name="Model", 
-            is_run_config=True, 
-            default_value='gpt-4o-mini'
-        ),
-        Field(
             name="openai_api_key", 
             display_name="OpenAI API Key", 
             is_run_config=True, 
             show_in_ui=False, 
             type=FieldType.PASSWORD.value
+        ),
+        Field(
+            name="model", 
+            display_name="Model", 
+            is_run_config=True, 
+            default_value='gpt-4o-mini'
         ),
         Field(
             name="system", 
@@ -75,7 +75,8 @@ which should render the following on the dashboard:
 ![run-config-example](../imgs/run_config.png)
 
 As you'll notice in the `Fields` within `BlockMetadata`, anything where `is_run_config==True` is rendered on the block configuration sidebar. And
-similarly for anything `show_in_ui==True` shows up on the Reactflow node
+similarly for anything `show_in_ui==True` shows up on the Reactflow node. Furthermore, the order in which the `Field`s are placed determines the 
+order in which they'll appear on the dashboard.
 
 To break things down, an implementation would generally be made of the following:
 
@@ -152,4 +153,83 @@ class FieldType(Enum):
     TOOL_LIST = 'tool_list'
     PROMPT_TEMPLATE = 'prompt_template'
     MULTIMODAL_SELECTOR = 'multimodal_selector'
+```
+
+### `StaticDropdownOption`
+
+Use the `StaticDropdownOption` when using FieldType of `STATIC_DROPDOWN` and you want to render
+a dropdown with a pre-determined set of options.
+
+```python title="lib/otto_backend/core/blocks/field.py"
+class StaticDropdownOption(BaseModel):
+    """Object to represent a dropdown option for a static dropdown."""
+    value: str
+    label: str
+    
+    def __dict__(self):
+        return {
+            'value': self.value,
+            'label': self.label
+        }
+```
+
+An example usage of `StaticDropdownOption`:
+
+```python title="lib/otto_backend/implementations/tasks/pdf_loader/langchain_pdf_loader.py"
+...
+
+class LangchainPDFLoader(BaseImplementation):
+    display_name = 'PDF Loader'
+    block_type = 'process'
+    block_metadata = BlockMetadata([
+        ...,
+        Field(name="input_type", display_name="Input Type", is_run_config=True, show_in_ui=False,
+              type=FieldType.STATIC_DROPDOWN.value,
+              default_value=InputType.FILE.value,
+              dropdown_options=[
+                  StaticDropdownOption(value=InputType.FILE.value, label="File").__dict__,
+                  StaticDropdownOption(value=InputType.URL.value, label="URL").__dict__,
+            ]
+        ),
+    ])
+    ...
+```
+This renders the following:
+
+![static-dropdown-ex](../imgs/static-dropdown.png)
+
+### `MultimodalField`
+
+```python title="lib/otto_backend/core/blocks/field.py"
+class MultimodalField:
+    """Object to represent a field for a multimodal selector."""
+    def __init__(
+        self,
+        image:Field,
+        text:Field,
+        name: Union[str, None] = None,
+        display_name: Union[str, None] = None,
+        is_run_config: bool = True,
+        show_in_ui: bool = False
+    ) -> None:
+        self.name = name
+        self.display_name = display_name
+        self.image = image
+        self.text = text
+        self.type = FieldType.MULTIMODAL_SELECTOR.value
+        self.show_in_ui = show_in_ui
+        self.is_run_config = is_run_config
+        
+    def __dict__(self):
+        result = {
+            'name': self.name,
+            'display_name': self.display_name,
+            'type': self.type,
+            'image': self.image.__dict__,
+            'text': self.text.__dict__,
+            'is_run_config': self.is_run_config,
+            'show_in_ui': self.show_in_ui,
+        }
+        
+        return result
 ```
