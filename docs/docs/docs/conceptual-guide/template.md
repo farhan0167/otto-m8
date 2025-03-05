@@ -90,7 +90,7 @@ and, the template will look as follows:
 ```
 
 ## Building Blocks
-To sum up concepts from the previous section on [Blocks](/docs/conceptual-guide/blocks), and 
+To sum up concepts from the previous section on [Blocks](/docs/conceptual-guide/blocks/Blocks–Basics), and 
 [Workflows](/docs/conceptual-guide/workflow), a Template is a textual representation of all
 the resources needed to run a workflow.
 
