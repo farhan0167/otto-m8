@@ -12,12 +12,12 @@ from routers import (
     template_router, 
     workflow_router, 
     block_types_router,
-    function_call_router,
     auth_router,
     lambdas_router,
     instant_run_router,
     tracer_router,
-    draft_router
+    draft_router,
+    experimental
 )
 
 # TODO Refactor code so that things that do not need to be here, arent here.
@@ -74,12 +74,12 @@ app.add_middleware(
 app.include_router(template_router.router)
 app.include_router(workflow_router.router)
 app.include_router(block_types_router.router)
-app.include_router(function_call_router.router)
 app.include_router(auth_router.router)
 app.include_router(lambdas_router.router)
 app.include_router(instant_run_router.router)
 app.include_router(tracer_router.router)
 app.include_router(draft_router.router)
+app.include_router(experimental.router)
 
 @app.get("/health_check", tags=["Health Check"])
 async def health_check():
