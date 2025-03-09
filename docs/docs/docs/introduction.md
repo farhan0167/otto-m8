@@ -28,4 +28,5 @@ At its core, otto-m8 views the problem of building any AI workflow as a graph pr
 - [ ]  Memory for Chatbot and RAG. Goal is to not clutter the drawing board.
 - [x]  Streamline workflow creation, edits and redeployment.
 - [x]   Apart from Lambdas that deploy seperate docker containers for custom code, build a custom code block which is deployed within the workflow container.
+- [ ] Creating other Block types: Conditionals, Aggregators, Loops. This will require change to how workflow runs and introducing handle types in the dashboard.
 - [ ]  **Got ideas for other integrations you think will be useful? Create a Github [Issue](https://github.com/farhan0167/otto-m8/issues)**

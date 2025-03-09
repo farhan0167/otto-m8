@@ -238,13 +238,13 @@ Huggingface's pipeline abstraction. Below is a simple demo of the `Salesforce/bl
 - [x] Function Calling
 - [x] Lambda Functions/ Custom Code blocks
 - [x] Multimodality for Huggingface
-- [ ] Multimodality for OpenAI
+- [x] Multimodality for OpenAI (Experimental)
 - [x] SDK for interacting with deployed workflows
 - [x] Observability for every block's output like a Logger
 - [ ] Memory for Chatbot and RAG. Goal is to not clutter the drawing board.
 - [x] Streamline workflow creation, edits and redeployment. Some form of version control
 - [x] Apart from Lambdas that deploy seperate docker containers for custom code, build a custom code block which is deployed within the workflow container.
-- [ ] ML Model Training via UI?
+- [ ] Creating other Block types: Conditionals, Aggregators, Loops. This will require change to how workflow runs and introducing handle types in the dashboard.
 
 
 ## License
