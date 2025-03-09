@@ -148,7 +148,7 @@ class DockerTools:
         """
         mount_dir = os.getenv("MOUNT_PATH", None)
         volumes = {
-            f'{mount_dir}/.cache': {'bind': '/root/.cache', 'mode': 'rw'},
+            f'{mount_dir}/.cache/huggingface': {'bind': '/root/.cache/huggingface', 'mode': 'rw'},
             f'{mount_dir}/implementations': {'bind': '/app/implementations', 'mode': 'rw'}
         } if mount_dir else None
 
