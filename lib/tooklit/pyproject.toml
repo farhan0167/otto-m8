@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "otto-m8"
-version = "0.0.1"
+version = "0.0.2"
 description = "Python SDK for otto-m8, a low code tool to build and deploy AI/ML workloads."
 authors = ["farhan0167 <afi225@nyu.edu>"]
 license = "Apache-2.0"
@@ -11,8 +11,8 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "3.11.4"
-otto-m8-backend = "^0.0.7"
+python = ">=3.11,<3.13"
+otto-m8-backend = "0.1.0"
 
 
 [build-system]

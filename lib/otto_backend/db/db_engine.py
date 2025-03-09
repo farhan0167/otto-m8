@@ -23,3 +23,14 @@ def get_db():
         
 def get_session():
     return SessionLocal()
+
+def toolkit_get_session(db_host):
+    SQLALCHEMY_DATABASE_URL = f"postgresql://postgres:123456@{db_host}:5432/postgres"
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_URL, 
+        pool_size=20, 
+        max_overflow=0
+    )
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    return SessionLocal()
+    

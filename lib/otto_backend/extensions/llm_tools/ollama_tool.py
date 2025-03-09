@@ -15,6 +15,10 @@ class OllamaTool(Tool):
                 "type": param.get('type', 'string'),
                 "description": param['description'],
             }
+            if param['type'] == 'array':
+                self.tool_schema['function']['parameters']['properties'][ param['name'] ]['items'] = {
+                    "type": "string"
+                }
             if param.get('required', True):
                 self.tool_schema['function']['parameters']['required'].append(param['name'])
         

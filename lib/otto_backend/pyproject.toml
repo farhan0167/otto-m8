@@ -30,6 +30,7 @@ torchvision = "^0.20.1"
 passlib = "^1.7.4"
 python-multipart = "^0.0.20"
 bcrypt = "^4.2.1"
+websockets = "^15.0.1"
 
 
 [build-system]
