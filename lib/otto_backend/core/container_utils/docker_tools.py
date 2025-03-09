@@ -63,7 +63,7 @@ class DockerTools:
             
         host_port = DockerTools.find_available_port(8001, 9000)
         # Run the container
-        container = DockerTools.start_docker_container(image_id=image.id, host_port=host_port, mount_dir=source_dir)
+        container = DockerTools.start_docker_container(image_id=image.id, host_port=host_port)
         end = time.time()
         print(f"Time taken to create workflow: {end - begin}s")
         print(f"Container started with ID: {container.short_id}")
@@ -135,7 +135,7 @@ class DockerTools:
             print(f"Failed to remove image: {e}")
     
     @staticmethod
-    def start_docker_container(image_id:str, host_port:int=8001, mount_dir=None):
+    def start_docker_container(image_id:str, host_port:int=8001):
         """
         Start a docker container given an image id. The container will be started detached and bind the port 8000 to the given host port.
 
@@ -146,11 +146,12 @@ class DockerTools:
         Returns:
             docker.models.containers.Container: The started container.
         """
-        # volumes = {
-        #     f'{mount_dir}/.cache': {'bind': '/root/.cache', 'mode': 'rw'},
-        #     f'{mount_dir}/implementations': {'bind': '/app/implementations', 'mode': 'rw'}
-        # } if mount_dir else None
-        volumes = None
+        mount_dir = os.getenv("MOUNT_PATH", None)
+        volumes = {
+            f'{mount_dir}/.cache': {'bind': '/root/.cache', 'mode': 'rw'},
+            f'{mount_dir}/implementations': {'bind': '/app/implementations', 'mode': 'rw'}
+        } if mount_dir else None
+
         client = docker.from_env()
         container = client.containers.run(
                 image=image_id,
