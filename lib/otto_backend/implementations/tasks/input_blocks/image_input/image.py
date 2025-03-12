@@ -17,10 +17,11 @@ class ImageInput(BaseImplementation):
         Field(name="input_type", display_name="Input Type", is_run_config=True, show_in_ui=False,
               type=FieldType.STATIC_DROPDOWN.value,
               default_value=InputType.FILE.value,
-              dropdown_options=[
-                  StaticDropdownOption(value=InputType.FILE.value, label="File").__dict__,
-                  StaticDropdownOption(value=InputType.URL.value, label="URL").__dict__,
-            ]
+              metadata={
+                  'dropdown_options':[
+                    StaticDropdownOption(value=InputType.FILE.value, label="File").__dict__,
+                    StaticDropdownOption(value=InputType.URL.value, label="URL").__dict__,
+              ]}
         ),
     ])
     def __init__(self, run_config:dict) -> None:

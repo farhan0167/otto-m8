@@ -38,8 +38,8 @@ class Field(BaseModel):
     """Default value the field will hold"""
     type:str = FieldType.TEXT.value
     """The type of field rendered"""
-    dropdown_options: List[Dict] = []
-    """This holds value for when `Field.type == STATIC_DROPDOWN`"""
+    metadata: Dict[str, Any] = {}
+    """Any additional metadata for the field"""
     is_run_config: bool = True
     """Flag to determine whether the field is configurable by the user, or part of the `run_config`"""
     show_in_ui: bool = True
