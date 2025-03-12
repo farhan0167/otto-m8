@@ -12,6 +12,7 @@ class FieldType(Enum):
     TOOL_LIST = 'tool_list'
     PROMPT_TEMPLATE = 'prompt_template'
     MULTIMODAL_SELECTOR = 'multimodal_selector'
+    GCLOUD_AUTH = 'gcloud_auth'
     
 class StaticDropdownOption(BaseModel):
     """Object to represent a dropdown option for a static dropdown."""

@@ -31,6 +31,9 @@ passlib = "^1.7.4"
 python-multipart = "^0.0.20"
 bcrypt = "^4.2.1"
 websockets = "^15.0.1"
+google-api-python-client = "^2.163.0"
+google-auth-httplib2 = "^0.2.0"
+google-auth-oauthlib = "^1.2.1"
 
 
 [build-system]
