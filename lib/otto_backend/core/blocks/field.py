@@ -7,6 +7,7 @@ class FieldType(Enum):
     TEXT = 'text'
     PASSWORD = 'password'
     TEXTAREA = 'textarea'
+    NUMBER = 'number'
     STATIC_DROPDOWN = 'static_dropdown'
     LAMBDAS_DROPDOWN = 'lambdas_dropdown'
     TOOL_LIST = 'tool_list'
