@@ -18,6 +18,8 @@ class TaskCatalog(Enum):
     CUSTOM_BLOCK = 'implementations.tasks.custom.basic_block.CustomBlock'
     OPENAI_CHAT_VISION = 'implementations.tasks.experimental.openai_chat_vision.OpenAIChatVision'
     GMAIL_READ_EMAILS = 'implementations.tasks.gcloud.gmail.read_emails.GmailReadEmails'
+    GMAIL_CREATE_DRAFT = 'implementations.tasks.gcloud.gmail.create_draft.GmailCreateDraft'
+    GMAIL_SEND_EMAIL = 'implementations.tasks.gcloud.gmail.send_email.GmailSendEmail'
     #### Catalog for Tasks ####
 
     def get_class(self):
@@ -158,6 +160,18 @@ TaskRegistry.add_block_to_registry_by_vendor(
     task=TaskCatalog.GMAIL_READ_EMAILS,
     ui_block_type="process",
     source_path="implementations/tasks/gcloud/gmail/read_emails.py"
+)
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Gmail",
+    task=TaskCatalog.GMAIL_CREATE_DRAFT,
+    ui_block_type="process",
+    source_path="implementations/tasks/gcloud/gmail/create_draft.py"
+)
+TaskRegistry.add_block_to_registry_by_vendor(
+    vendor="Gmail",
+    task=TaskCatalog.GMAIL_SEND_EMAIL,
+    ui_block_type="process",
+    source_path="implementations/tasks/gcloud/gmail/send_email.py"
 )
 
 TaskRegistry.add_vendor("Experimental")
