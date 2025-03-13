@@ -1,31 +1,35 @@
 import os
 import json
+import uuid
 
+from typing import List, Optional
+from pydantic import BaseModel
 from fastapi import APIRouter
 from fastapi import Request, Depends, HTTPException, Response
 from fastapi.responses import RedirectResponse, HTMLResponse
 
+from routers.dependency import token_store
 from google_auth_oauthlib.flow import Flow
-
 from integrations.gcloud.auth_flow import get_credentials
 
 
 router = APIRouter()
 
-# Define OAuth Scopes
-SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
 # Google OAuth Client Secrets File (Must be in project root)
 CLIENT_SECRET_FILE = "./.cache/gcloud/credentials.json"
+GCLOUD_PATH = "./.cache/gcloud"
 
-# Store token.json persistently
-TOKEN_FILE = "./.cache/gcloud/token.json"
+class GCloudLoginRequest(BaseModel):
+    scopes: List[str]
+    service: str
 
-
-@router.get("/gcloud/auth/is_logged_in", tags=["Google Cloud"])
-async def is_logged_in():
+@router.post("/gcloud/auth/is_logged_in", tags=["Google Cloud"])
+async def is_logged_in(request: GCloudLoginRequest):
     """Checks if user is logged in."""
-    creds = get_credentials(token_path=TOKEN_FILE)
+    scopes, service = request.scopes, request.service
+    token_path = f"{GCLOUD_PATH}/{service}_token.json"
+    creds = get_credentials(scopes, token_path)
     return Response(
         status_code=200,
         content=json.dumps({
@@ -33,11 +37,26 @@ async def is_logged_in():
         })
     )
 
-@router.get("/gcloud/auth/login", tags=["Google Cloud"])
-async def login():
+@router.post("/gcloud/auth/login", tags=["Google Cloud"])
+async def login(request: GCloudLoginRequest):
     """Redirects user to Google OAuth login page."""
-    flow = Flow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES, redirect_uri="http://localhost:8000/gcloud/auth/callback")
-    auth_url, _ = flow.authorization_url(prompt="consent")
+    scopes, service = request.scopes, request.service
+    
+    # Generate a random state token
+    state_token = str(uuid.uuid4())
+    redis_key = f"tokens:{state_token}"
+    # Store in redis
+    token_store.hset(
+        name=redis_key, 
+        mapping={
+            "service": service,
+            "scopes": json.dumps(scopes)
+        }
+    )
+    token_store.expire(redis_key, 3600)
+    
+    flow = Flow.from_client_secrets_file(CLIENT_SECRET_FILE, scopes, redirect_uri="http://localhost:8000/gcloud/auth/callback")
+    auth_url, _ = flow.authorization_url(prompt="consent", state=redis_key)
     print(auth_url)
     #return RedirectResponse(auth_url)
     return Response(
@@ -48,14 +67,21 @@ async def login():
     )
 
 @router.get("/gcloud/auth/callback", tags=["Google Cloud"])
-async def auth_callback(code: str):
+async def auth_callback(code: str, state: Optional[str] = None):
     """Handles OAuth2 callback and stores tokens."""
-    flow = Flow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES, redirect_uri="http://localhost:8000/gcloud/auth/callback")
+    if not state:
+        raise HTTPException(status_code=400, detail="Missing state parameter")
+
+    # Get tokens
+    auth_state = token_store.hgetall(state)
+    service, scopes = auth_state["service"], json.loads(auth_state["scopes"])
+    
+    flow = Flow.from_client_secrets_file(CLIENT_SECRET_FILE, scopes, redirect_uri="http://localhost:8000/gcloud/auth/callback")
     flow.fetch_token(code=code)
 
     # Save credentials
     creds = flow.credentials
-    with open(TOKEN_FILE, "w") as token:
+    with open(f"{GCLOUD_PATH}/{service}_token.json", "w") as token:
         token.write(creds.to_json())
 
     html_content = """

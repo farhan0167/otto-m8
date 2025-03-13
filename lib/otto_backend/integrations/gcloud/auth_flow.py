@@ -1,16 +1,17 @@
 import os
-
+from typing import List
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 
 def get_credentials(
+    scopes: List[str],
     token_path: str = "./.cache/gcloud/token.json"
 ):
     """Loads credentials from token.json or starts OAuth flow."""
     creds = None
 
     if os.path.exists(token_path):
-        creds = Credentials.from_authorized_user_file(token_path)
+        creds = Credentials.from_authorized_user_file(token_path, scopes=scopes)
 
     # If no valid credentials exist, user must log in again
     if not creds or not creds.valid:
