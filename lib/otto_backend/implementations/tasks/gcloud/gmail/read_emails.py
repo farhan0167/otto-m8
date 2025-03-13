@@ -13,6 +13,9 @@ from implementations.base import (
 )
 from integrations.gcloud.auth_flow import get_credentials
 
+SERVICE = "gmail"
+DEFAULT_SCOPE = "https://www.googleapis.com/auth/gmail.readonly"
+
 class GmailReadEmails(BaseImplementation):
     display_name = "Gmail Read Emails"
     block_type = 'process'
@@ -25,7 +28,7 @@ class GmailReadEmails(BaseImplementation):
             show_in_ui=False,
             type=FieldType.GCLOUD_AUTH.value,
             metadata={
-                'service': 'gmail',
+                'service': SERVICE,
                 'options': [
                     StaticDropdownOption(
                         label='Read Only',
@@ -48,8 +51,11 @@ class GmailReadEmails(BaseImplementation):
         
         
     def run(self, input_:dict=None):
-        
-        creds = get_credentials()
+        scopes = self.run_config.get('scopes', [DEFAULT_SCOPE])
+        creds = get_credentials(
+            scopes=scopes,
+            service=SERVICE
+        )
         # Call the Gmail API
         service = build("gmail", "v1", credentials=creds)
         results = service.users().messages().list(

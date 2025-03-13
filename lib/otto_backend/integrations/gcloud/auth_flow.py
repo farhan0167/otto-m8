@@ -3,12 +3,15 @@ from typing import List
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 
+GCLOUD_PATH = "./.cache/gcloud"
+
 def get_credentials(
     scopes: List[str],
-    token_path: str = "./.cache/gcloud/token.json"
+    service: str,
 ):
     """Loads credentials from token.json or starts OAuth flow."""
     creds = None
+    token_path = f"{GCLOUD_PATH}/{service}_token.json"
 
     if os.path.exists(token_path):
         creds = Credentials.from_authorized_user_file(token_path, scopes=scopes)
@@ -25,3 +28,8 @@ def get_credentials(
             return None  # Or redirect to login
 
     return creds
+
+def create_credential_file(service: str, creds: Credentials):
+    token_path = f"{GCLOUD_PATH}/{service}_token.json"
+    with open(token_path, "w") as token:
+        token.write(creds.to_json())

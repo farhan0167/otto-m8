@@ -10,7 +10,7 @@ from fastapi.responses import RedirectResponse, HTMLResponse
 
 from routers.dependency import token_store
 from google_auth_oauthlib.flow import Flow
-from integrations.gcloud.auth_flow import get_credentials
+from integrations.gcloud.auth_flow import get_credentials, create_credential_file
 
 
 router = APIRouter()
@@ -28,8 +28,7 @@ class GCloudLoginRequest(BaseModel):
 async def is_logged_in(request: GCloudLoginRequest):
     """Checks if user is logged in."""
     scopes, service = request.scopes, request.service
-    token_path = f"{GCLOUD_PATH}/{service}_token.json"
-    creds = get_credentials(scopes, token_path)
+    creds = get_credentials(scopes=scopes, service=service)
     return Response(
         status_code=200,
         content=json.dumps({
@@ -81,8 +80,7 @@ async def auth_callback(code: str, state: Optional[str] = None):
 
     # Save credentials
     creds = flow.credentials
-    with open(f"{GCLOUD_PATH}/{service}_token.json", "w") as token:
-        token.write(creds.to_json())
+    create_credential_file(service, creds)
 
     html_content = """
     <!DOCTYPE html>
