@@ -8,7 +8,8 @@ from implementations.base import (
     BaseImplementation,
     BlockMetadata,
     Field,
-    FieldType
+    FieldType,
+    StaticDropdownOption
 )
 from integrations.gcloud.auth_flow import get_credentials
 
@@ -22,7 +23,21 @@ class GmailReadEmails(BaseImplementation):
             is_run_config=True,
             default_value=None,
             show_in_ui=False,
-            type=FieldType.GCLOUD_AUTH.value
+            type=FieldType.GCLOUD_AUTH.value,
+            metadata={
+                'service': 'gmail',
+                'options': [
+                    StaticDropdownOption(
+                        label='Read Only',
+                        value='https://www.googleapis.com/auth/gmail.readonly'
+                    ).__dict__,
+                    StaticDropdownOption(
+                        label='Modify',
+                        value='https://www.googleapis.com/auth/gmail.modify'
+                    ).__dict__,
+                ],
+                "selected_options": []
+            }
         ),
         Field(name='num_emails', display_name="Limit", is_run_config=True, show_in_ui=False, type=FieldType.NUMBER.value, default_value=10),
     ])
