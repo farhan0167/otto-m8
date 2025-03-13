@@ -1,4 +1,5 @@
 from extensions.llm_tools.tool import Tool
+from implementations.tasks.implementer import Implementer
 from implementations.integrations.implementer import IntegrationImplementer
 from implementations.custom.implementer import CustomBlockImplementer
 
@@ -31,8 +32,14 @@ class OpenAITool(Tool):
                     run_config=tool_integration['run_config']
                 )
             except Exception as e:
-                self.implements = IntegrationImplementer().create_integration(
-                    integration_type=tool_integration['core_block_type'],
-                    run_config=tool_integration['run_config']
-                )
+                try:
+                    self.implements = Implementer().create_task(
+                        task_type=tool_integration['core_block_type'],
+                        run_config=tool_integration['run_config']
+                    )
+                except Exception as e:
+                    self.implements = IntegrationImplementer().create_integration(
+                        integration_type=tool_integration['core_block_type'],
+                        run_config=tool_integration['run_config']
+                    )
         return self.tool_schema
