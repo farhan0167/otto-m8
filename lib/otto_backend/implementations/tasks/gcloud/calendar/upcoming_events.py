@@ -82,7 +82,7 @@ class GoogleCalendarUpcomingEvents(BaseImplementation):
         self.order_by = run_config.get('order_by')
         
         
-    def run(self, input_:dict=None):
+    def run(self, input_:dict={}):
         scopes = self.run_config.get('scopes', [DEFAULT_SCOPE])
         creds = get_credentials(
             scopes=scopes,
