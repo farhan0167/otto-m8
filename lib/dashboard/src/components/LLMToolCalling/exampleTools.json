@@ -1,0 +1,229 @@
+[
+    {
+        "name": "create_event",
+        "description": "Tool to create a google calendar event",
+        "params": [
+            {
+                "name": "summary",
+                "description": "A summary of the event.",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "description",
+                "description": "A description of the event.",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "start_time",
+                "description": "The time the event will start. The format should be in ISO Format. E.g. \"2025-03-20T10:00:00-07:00\"",
+                "type": "string",
+                "required": false
+            },
+            {
+                "name": "end_time",
+                "description": "The time the event will end. The format should be in ISO Format. E.g. \"2025-03-20T10:00:00-07:00\"",
+                "type": "string",
+                "required": false
+            },
+            {
+                "name": "location",
+                "description": "The location of the event. Leave it as None if none is provided.",
+                "type": "string",
+                "required": false
+            }
+        ],
+        "integrated_with": {
+            "label": "",
+            "sidebar_fields": [
+                {
+                    "name": "custom_name",
+                    "display_name": "Block Name",
+                    "default_value": "",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                },
+                {
+                    "name": "gcloud_auth_flow",
+                    "display_name": "Sign in with Google",
+                    "default_value": null,
+                    "type": "gcloud_auth",
+                    "metadata": {
+                        "service": "calendar",
+                        "options": [
+                            {
+                                "value": "https://www.googleapis.com/auth/calendar.readonly",
+                                "label": "Read Only"
+                            },
+                            {
+                                "value": "https://www.googleapis.com/auth/calendar",
+                                "label": "Full Access"
+                            }
+                        ],
+                        "selected_options": [
+                            "https://www.googleapis.com/auth/calendar"
+                        ]
+                    },
+                    "is_run_config": true,
+                    "show_in_ui": false
+                },
+                {
+                    "name": "timezone",
+                    "display_name": "Timezone",
+                    "default_value": "America/New_York",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                }
+            ],
+            "block_ui_fields": [
+                {
+                    "name": "custom_name",
+                    "display_name": "Block Name",
+                    "default_value": "",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                },
+                {
+                    "name": "timezone",
+                    "display_name": "Timezone",
+                    "default_value": "America/New_York",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                }
+            ],
+            "custom_name": "",
+            "source_code": "",
+            "source_path": "",
+            "source_hash": "",
+            "process_type": "",
+            "core_block_type": "google_calendar_create_event",
+            "gcloud_auth_flow": null,
+            "timezone": "America/New_York",
+            "run_config": {
+                "custom_name": "",
+                "scopes": [
+                    "https://www.googleapis.com/auth/calendar"
+                ],
+                "timezone": "America/New_York"
+            }
+        },
+        "selectedBlockDisplayName": "Create Event"
+    },
+    {
+        "name": "get_events",
+        "description": "A tool to get a list of all the upcoming events",
+        "params": [],
+        "integrated_with": {
+            "label": "",
+            "sidebar_fields": [
+                {
+                    "name": "custom_name",
+                    "display_name": "Block Name",
+                    "default_value": "",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                },
+                {
+                    "name": "gcloud_auth_flow",
+                    "display_name": "Sign in with Google",
+                    "default_value": null,
+                    "type": "gcloud_auth",
+                    "metadata": {
+                        "service": "calendar",
+                        "options": [
+                            {
+                                "value": "https://www.googleapis.com/auth/calendar.readonly",
+                                "label": "Read Only"
+                            },
+                            {
+                                "value": "https://www.googleapis.com/auth/calendar",
+                                "label": "Full Access"
+                            }
+                        ],
+                        "selected_options": []
+                    },
+                    "is_run_config": true,
+                    "show_in_ui": false
+                },
+                {
+                    "name": "max_results",
+                    "display_name": "Max Results",
+                    "default_value": 10,
+                    "type": "number",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": false
+                },
+                {
+                    "name": "time_min",
+                    "display_name": "Time Min",
+                    "default_value": "2025-01-01T00:00:00Z",
+                    "type": "datetime",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": false
+                },
+                {
+                    "name": "order_by",
+                    "display_name": "Order By",
+                    "default_value": "startTime",
+                    "type": "static_dropdown",
+                    "metadata": {
+                        "dropdown_options": [
+                            {
+                                "value": "startTime",
+                                "label": "Start Time"
+                            },
+                            {
+                                "value": "updated",
+                                "label": "Last Updated"
+                            }
+                        ]
+                    },
+                    "is_run_config": true,
+                    "show_in_ui": false
+                }
+            ],
+            "block_ui_fields": [
+                {
+                    "name": "custom_name",
+                    "display_name": "Block Name",
+                    "default_value": "",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                }
+            ],
+            "custom_name": "",
+            "source_code": "",
+            "source_path": "",
+            "source_hash": "",
+            "process_type": "",
+            "core_block_type": "google_calendar_upcoming_events",
+            "gcloud_auth_flow": null,
+            "max_results": 10,
+            "time_min": "2025-03-13T23:00:00.000Z",
+            "order_by": "startTime",
+            "run_config": {
+                "custom_name": "",
+                "scopes": [],
+                "max_results": 10,
+                "time_min": "2025-03-13T23:00:00.000Z",
+                "order_by": "startTime"
+            }
+        },
+        "selectedBlockDisplayName": "Get Upcoming Events"
+    }
+]
