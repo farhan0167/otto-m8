@@ -35,8 +35,8 @@ class GmailReadEmails(BaseImplementation):
                         value='https://www.googleapis.com/auth/gmail.readonly'
                     ).__dict__,
                     StaticDropdownOption(
-                        label='Modify',
-                        value='https://www.googleapis.com/auth/gmail.modify'
+                        label='Full Access',
+                        value='https://mail.google.com/'
                     ).__dict__,
                 ],
                 "selected_options": []
