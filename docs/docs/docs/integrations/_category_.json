@@ -1,0 +1,9 @@
+{
+    "label": "Integrations",
+    "position": 5,
+    "link": {
+      "type": "generated-index",
+      "description": "Guide on all the available integrations in otto-m8."
+    }
+  }
+  

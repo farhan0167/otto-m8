@@ -497,16 +497,12 @@
                       "display_name": "Input Type",
                       "default_value": "file",
                       "type": "static_dropdown",
-                      "dropdown_options": [
-                        {
-                          "value": "file",
-                          "label": "File"
-                        },
-                        {
-                          "value": "url",
-                          "label": "URL"
-                        }
-                      ],
+                      "metadata": {
+                            "dropdown_options": [
+                                {"value": "file", "label": "File"},
+                                {"value": "url", "label": "URL"}
+                            ]
+                      },
                       "is_run_config": true,
                       "show_in_ui": false
                     }
@@ -523,7 +519,7 @@
                     }
                   ],
                   "custom_name": "pdf",
-                  "source_code": "import base64\nimport tempfile\n\nfrom integrations.langchain.pdf_loader import PDFLoader\nfrom core.types import InputType\nfrom implementations.base import (\n    BaseImplementation,\n    BlockMetadata,\n    Field,\n    FieldType,\n    StaticDropdownOption\n)\n\nclass LangchainPDFLoader(BaseImplementation):\n    display_name = 'PDF Loader'\n    block_type = 'process'\n    block_metadata = BlockMetadata([\n        Field(name=\"button_text\", is_run_config=False, default_value=\"Upload PDF\", show_in_ui=False),\n        Field(name=\"files_to_accept\", is_run_config=False, default_value=\"application/pdf\", show_in_ui=False),\n        Field(name=\"input_type\", display_name=\"Input Type\", is_run_config=True, show_in_ui=False,\n              type=FieldType.STATIC_DROPDOWN.value,\n              default_value=InputType.FILE.value,\n              dropdown_options=[\n                  StaticDropdownOption(value=InputType.FILE.value, label=\"File\").__dict__,\n                  StaticDropdownOption(value=InputType.URL.value, label=\"URL\").__dict__,\n            ]\n        ),\n    ])\n    \n    def __init__(self, run_config:dict=None) -> None:\n        pass\n    \n    def run(self, input_ = None):\n        input_ = base64.b64decode(input_)\n        doc = None\n        with tempfile.NamedTemporaryFile(delete=True) as f:\n            f.write(input_)\n            f.flush()\n            doc_pages = PDFLoader(f.name).parse()\n            doc = ' '.join(doc_pages)\n\n        return doc",
+                  "source_code": "import base64\nimport tempfile\n\nfrom integrations.langchain.pdf_loader import PDFLoader\nfrom core.types import InputType\nfrom implementations.base import (\n    BaseImplementation,\n    BlockMetadata,\n    Field,\n    FieldType,\n    StaticDropdownOption\n)\n\nclass LangchainPDFLoader(BaseImplementation):\n    display_name = 'PDF Loader'\n    block_type = 'process'\n    block_metadata = BlockMetadata([\n        Field(name=\"button_text\", is_run_config=False, default_value=\"Upload PDF\", show_in_ui=False),\n        Field(name=\"files_to_accept\", is_run_config=False, default_value=\"application/pdf\", show_in_ui=False),\n        Field(name=\"input_type\", display_name=\"Input Type\", is_run_config=True, show_in_ui=False,\n              type=FieldType.STATIC_DROPDOWN.value,\n              default_value=InputType.FILE.value,\n              metadata={\n                  'dropdown_options': [\n                      StaticDropdownOption(value=InputType.FILE.value, label=\"File\").__dict__,\n                      StaticDropdownOption(value=InputType.URL.value, label=\"URL\").__dict__,\n              ]}\n        ),\n    ])\n    \n    def __init__(self, run_config:dict=None) -> None:\n        pass\n    \n    def run(self, input_ = None):\n        input_ = base64.b64decode(input_)\n        doc = None\n        with tempfile.NamedTemporaryFile(delete=True) as f:\n            f.write(input_)\n            f.flush()\n            doc_pages = PDFLoader(f.name).parse()\n            doc = ' '.join(doc_pages)\n\n        return doc",
                   "source_path": "implementations/tasks/pdf_loader/langchain_pdf_loader.py",
                   "source_hash": "d6606427dd775d9d3446e7a352115ba70b7c9c44",
                   "process_type": "task",

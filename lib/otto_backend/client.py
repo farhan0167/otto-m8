@@ -17,7 +17,8 @@ from routers import (
     instant_run_router,
     tracer_router,
     draft_router,
-    experimental
+    experimental,
+    gcloud_router
 )
 
 # TODO Refactor code so that things that do not need to be here, arent here.
@@ -80,6 +81,7 @@ app.include_router(instant_run_router.router)
 app.include_router(tracer_router.router)
 app.include_router(draft_router.router)
 app.include_router(experimental.router)
+app.include_router(gcloud_router.router)
 
 @app.get("/health_check", tags=["Health Check"])
 async def health_check():

@@ -7,11 +7,14 @@ class FieldType(Enum):
     TEXT = 'text'
     PASSWORD = 'password'
     TEXTAREA = 'textarea'
+    NUMBER = 'number'
+    DATETIME = 'datetime'
     STATIC_DROPDOWN = 'static_dropdown'
     LAMBDAS_DROPDOWN = 'lambdas_dropdown'
     TOOL_LIST = 'tool_list'
     PROMPT_TEMPLATE = 'prompt_template'
     MULTIMODAL_SELECTOR = 'multimodal_selector'
+    GCLOUD_AUTH = 'gcloud_auth'
     
 class StaticDropdownOption(BaseModel):
     """Object to represent a dropdown option for a static dropdown."""
@@ -36,8 +39,8 @@ class Field(BaseModel):
     """Default value the field will hold"""
     type:str = FieldType.TEXT.value
     """The type of field rendered"""
-    dropdown_options: List[Dict] = []
-    """This holds value for when `Field.type == STATIC_DROPDOWN`"""
+    metadata: Dict[str, Any] = {}
+    """Any additional metadata for the field"""
     is_run_config: bool = True
     """Flag to determine whether the field is configurable by the user, or part of the `run_config`"""
     show_in_ui: bool = True

@@ -149,7 +149,9 @@ class DockerTools:
         mount_dir = os.getenv("MOUNT_PATH", None)
         volumes = {
             f'{mount_dir}/.cache/huggingface': {'bind': '/root/.cache/huggingface', 'mode': 'rw'},
-            f'{mount_dir}/implementations': {'bind': '/app/implementations', 'mode': 'rw'}
+            f'{mount_dir}/.cache/gcloud': {'bind': '/app/.cache/gcloud', 'mode': 'rw'},
+            f'{mount_dir}/implementations': {'bind': '/app/implementations', 'mode': 'rw'},
+            f'{mount_dir}/integrations': {'bind': '/app/integrations', 'mode': 'rw'}
         } if mount_dir else None
 
         client = docker.from_env()

@@ -131,8 +131,8 @@ class Field(BaseModel):
     """Default value the field will hold"""
     type:str = FieldType.TEXT.value
     """The type of field rendered"""
-    dropdown_options: List[Dict] = []
-    """This holds value for when `Field.type == STATIC_DROPDOWN`"""
+    metadata: Dict[str, Any] = {}
+    """Any additional metadata for the field"""
     is_run_config: bool = True
     """Flag to determine whether the field is configurable by the user, or part of the `run_config`"""
     show_in_ui: bool = True
@@ -143,16 +143,16 @@ class Field(BaseModel):
 
 ```python title="lib/otto_backend/core/blocks/field.py"
 class FieldType(Enum):
-    # Primitive html data types
     TEXT = 'text'
     PASSWORD = 'password'
     TEXTAREA = 'textarea'
-    # Otto-m8 data types. Each type has its own component
+    NUMBER = 'number'
     STATIC_DROPDOWN = 'static_dropdown'
     LAMBDAS_DROPDOWN = 'lambdas_dropdown'
     TOOL_LIST = 'tool_list'
     PROMPT_TEMPLATE = 'prompt_template'
     MULTIMODAL_SELECTOR = 'multimodal_selector'
+    GCLOUD_AUTH = 'gcloud_auth'
 ```
 
 ### `StaticDropdownOption`
@@ -186,10 +186,11 @@ class LangchainPDFLoader(BaseImplementation):
         Field(name="input_type", display_name="Input Type", is_run_config=True, show_in_ui=False,
               type=FieldType.STATIC_DROPDOWN.value,
               default_value=InputType.FILE.value,
-              dropdown_options=[
-                  StaticDropdownOption(value=InputType.FILE.value, label="File").__dict__,
-                  StaticDropdownOption(value=InputType.URL.value, label="URL").__dict__,
-            ]
+              metadata={
+                  'dropdown_options': [
+                      StaticDropdownOption(value=InputType.FILE.value, label="File").__dict__,
+                      StaticDropdownOption(value=InputType.URL.value, label="URL").__dict__,
+              ]}
         ),
     ])
     ...
