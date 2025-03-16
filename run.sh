@@ -35,6 +35,7 @@ trap cleanup SIGINT
 # Navigate to the FastAPI directory (update this path to the correct one)
 cd "./otto_backend/" || exit
 mkdir .cache
+mkdir .cache/gcloud
 
 
 echo "Building slim base image..."
