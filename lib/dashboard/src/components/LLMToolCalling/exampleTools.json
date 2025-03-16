@@ -225,5 +225,163 @@
             }
         },
         "selectedBlockDisplayName": "Get Upcoming Events"
+    },
+    {
+        "name": "get_emails",
+        "description": "Tool to get emails from the inbox",
+        "params": [],
+        "integrated_with": {
+            "label": "",
+            "sidebar_fields": [
+                {
+                    "name": "custom_name",
+                    "display_name": "Block Name",
+                    "default_value": "",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                },
+                {
+                    "name": "gcloud_auth_flow",
+                    "display_name": "Sign in with Google",
+                    "default_value": null,
+                    "type": "gcloud_auth",
+                    "metadata": {
+                        "service": "gmail",
+                        "options": [
+                            {
+                                "value": "https://www.googleapis.com/auth/gmail.readonly",
+                                "label": "Read Only"
+                            },
+                            {
+                                "value": "https://www.googleapis.com/auth/gmail.modify",
+                                "label": "Modify"
+                            }
+                        ],
+                        "selected_options": []
+                    },
+                    "is_run_config": true,
+                    "show_in_ui": false
+                },
+                {
+                    "name": "num_emails",
+                    "display_name": "Limit",
+                    "default_value": 10,
+                    "type": "number",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": false
+                }
+            ],
+            "block_ui_fields": [
+                {
+                    "name": "custom_name",
+                    "display_name": "Block Name",
+                    "default_value": "",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                }
+            ],
+            "custom_name": "",
+            "source_code": "",
+            "source_path": "",
+            "source_hash": "",
+            "process_type": "",
+            "core_block_type": "gmail_read_emails",
+            "gcloud_auth_flow": null,
+            "num_emails": 10,
+            "run_config": {
+                "custom_name": "",
+                "scopes": [],
+                "num_emails": 10
+            }
+        },
+        "selectedBlockDisplayName": "Gmail Read Emails"
+    },
+    {
+        "name": "create_draft",
+        "description": "Tool to create a draft email",
+        "params": [
+            {
+                "name": "subject",
+                "description": "The subject of the email",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "body",
+                "description": "The main body of the email",
+                "type": "string",
+                "required": true
+            },
+            {
+                "name": "to",
+                "description": "The recipient of the email",
+                "type": "string",
+                "required": true
+            }
+        ],
+        "integrated_with": {
+            "label": "",
+            "sidebar_fields": [
+                {
+                    "name": "custom_name",
+                    "display_name": "Block Name",
+                    "default_value": "",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                },
+                {
+                    "name": "gcloud_auth_flow",
+                    "display_name": "Sign in with Google",
+                    "default_value": null,
+                    "type": "gcloud_auth",
+                    "metadata": {
+                        "service": "gmail",
+                        "options": [
+                            {
+                                "value": "https://www.googleapis.com/auth/gmail.readonly",
+                                "label": "Read Only"
+                            },
+                            {
+                                "value": "https://mail.google.com/",
+                                "label": "Full Access"
+                            }
+                        ],
+                        "selected_options": []
+                    },
+                    "is_run_config": true,
+                    "show_in_ui": false
+                }
+            ],
+            "block_ui_fields": [
+                {
+                    "name": "custom_name",
+                    "display_name": "Block Name",
+                    "default_value": "",
+                    "type": "text",
+                    "metadata": {},
+                    "is_run_config": true,
+                    "show_in_ui": true
+                }
+            ],
+            "custom_name": "",
+            "source_code": "",
+            "source_path": "",
+            "source_hash": "",
+            "process_type": "",
+            "core_block_type": "gmail_create_draft",
+            "gcloud_auth_flow": null,
+            "run_config": {
+                "custom_name": "",
+                "scopes": []
+            }
+        },
+        "selectedBlockDisplayName": "Gmail Create Draft"
     }
 ]
