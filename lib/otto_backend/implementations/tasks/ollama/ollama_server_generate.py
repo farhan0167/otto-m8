@@ -12,10 +12,30 @@ class OllamaServerGenarate(BaseImplementation):
     display_name = 'Ollama Generate'
     block_type = 'process'
     block_metadata = BlockMetadata([
-        Field(name="model", display_name="Model", is_run_config=True, default_value='llama3'),
-        Field(name="endpoint", display_name="Endpoint", is_run_config=True, show_in_ui=False),
-        Field(name="system", display_name="System Message", is_run_config=True, show_in_ui=False),
-        Field(name="prompt", display_name="Prompt Template", is_run_config=True, show_in_ui=False),
+        Field(
+            name="model", 
+            display_name="Model", 
+            is_run_config=True, 
+            default_value='llama3'
+        ),
+        Field(
+            name="endpoint", 
+            display_name="Endpoint", 
+            is_run_config=True, 
+            show_in_ui=False
+        ),
+        Field(
+            name="system", 
+            display_name="System Message", 
+            is_run_config=True, 
+            show_in_ui=False
+        ),
+        Field(
+            name="prompt", 
+            display_name="Prompt Template", 
+            is_run_config=True, 
+            show_in_ui=False
+        ),
     ])
     
     def __init__(self, run_config:dict) -> None:

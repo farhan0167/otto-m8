@@ -19,11 +19,41 @@ class OpenAIChat(BaseImplementation):
     display_name = 'OpenAI Chat Completion'
     block_type = 'process'
     block_metadata = BlockMetadata([
-        Field(name="model", display_name="Model", is_run_config=True, default_value='gpt-4o-mini'),
-        Field(name="openai_api_key", display_name="API Key", is_run_config=True, show_in_ui=False, type=FieldType.PASSWORD.value),
-        Field(name="system", display_name="System Message", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),
-        Field(name="prompt_template", display_name="Prompt Template", is_run_config=True, show_in_ui=False, type=FieldType.PROMPT_TEMPLATE.value),
-        Field(name="tools", display_name="Tools", is_run_config=True, default_value=[], show_in_ui=False, type=FieldType.TOOL_LIST.value),
+        Field(
+            name="model", 
+            display_name="Model", 
+            is_run_config=True, 
+            default_value='gpt-4o-mini'
+        ),
+        Field(
+            name="openai_api_key", 
+            display_name="API Key", 
+            is_run_config=True, 
+            show_in_ui=False, 
+            type=FieldType.PASSWORD.value
+        ),
+        Field(
+            name="system", 
+            display_name="System Message", 
+            is_run_config=True, 
+            show_in_ui=False, 
+            type=FieldType.TEXTAREA.value
+        ),
+        Field(
+            name="prompt_template", 
+            display_name="Prompt Template", 
+            is_run_config=True, 
+            show_in_ui=False, 
+            type=FieldType.PROMPT_TEMPLATE.value
+        ),
+        Field(
+            name="tools", 
+            display_name="Tools", 
+            is_run_config=True, 
+            default_value=[], 
+            show_in_ui=False, 
+            type=FieldType.TOOL_LIST.value
+        ),
     ])
     
     def __init__(self, run_config:dict) -> None:
