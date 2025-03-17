@@ -40,12 +40,12 @@ class OpenAIChat(BaseImplementation):
             display_name="Memory",
             is_run_config=True,
             show_in_ui=False,
-            default_value=None,
+            default_value='',
             type=FieldType.STATIC_DROPDOWN.value,
             metadata={
                 "dropdown_options": [
                     StaticDropdownOption(
-                        label="No Memory", value=None
+                        label="No Memory", value=''
                     ).__dict__,
                     StaticDropdownOption(
                         label="Basic Memory", value=LLMChatMemoryType.BASIC_MEMORY.value
