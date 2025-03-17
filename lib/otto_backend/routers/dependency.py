@@ -12,11 +12,11 @@ from db.models.users import Users
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 # Redis connection
-token_store = Redis(host="redis", port=6379, decode_responses=True)
+redis_client = Redis(host="redis", port=6379, decode_responses=True)
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> Users:
     """Retrieve the current user based on the token."""
-    data = token_store.hgetall(f"tokens:{token}")
+    data = redis_client.hgetall(f"tokens:{token}")
     if not data:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token")
     
