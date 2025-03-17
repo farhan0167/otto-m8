@@ -8,11 +8,10 @@ from redis import Redis
 from db.db_engine import get_db
 from db.models.users import Users
 
+from core.connections import redis_client
+
 # OAuth2 scheme for token-based authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
-# Redis connection
-redis_client = Redis(host="redis", port=6379, decode_responses=True)
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> Users:
     """Retrieve the current user based on the token."""

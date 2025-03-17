@@ -8,7 +8,7 @@ from fastapi import APIRouter
 from fastapi import Request, Depends, HTTPException, Response
 from fastapi.responses import RedirectResponse, HTMLResponse
 
-from routers.dependency import redis_client
+from core.connections import redis_client
 from google_auth_oauthlib.flow import Flow
 from integrations.gcloud.auth_flow import get_credentials, create_credential_file
 

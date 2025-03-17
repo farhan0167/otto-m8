@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from .db_engine import get_session
 from .models.users import Users
-from routers.dependency import redis_client
+from core.connections import redis_client
 
 # Password hashing configuration
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

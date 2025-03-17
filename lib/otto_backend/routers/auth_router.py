@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from db.db_engine import get_db
 from db.models.users import Users
 from db.auth import authenticate_user, hash_password, create_token
-from routers.dependency import redis_client, get_current_user
+from routers.dependency import get_current_user
 
 router = APIRouter()
 
