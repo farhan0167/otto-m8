@@ -8,9 +8,12 @@ from implementations.base import (
     BaseImplementation,
     BlockMetadata,
     Field,
-    FieldType
+    FieldType,
+    StaticDropdownOption
 )
 from extensions.llm_tools.openai_tool import OpenAITool
+from extensions.llm_memory.types import LLMChatMemoryType
+from extensions.llm_memory.chat_memory import ChatMemory
 from core.input_parser.prompt_template import PromptTemplate
 
 
@@ -31,6 +34,24 @@ class OpenAIChat(BaseImplementation):
             is_run_config=True, 
             show_in_ui=False, 
             type=FieldType.PASSWORD.value
+        ),
+        Field(
+            name="chat_memory",
+            display_name="Memory",
+            is_run_config=True,
+            show_in_ui=False,
+            default_value=None,
+            type=FieldType.STATIC_DROPDOWN.value,
+            metadata={
+                "dropdown_options": [
+                    StaticDropdownOption(
+                        label="No Memory", value=None
+                    ).__dict__,
+                    StaticDropdownOption(
+                        label="Basic Memory", value=LLMChatMemoryType.BASIC_MEMORY.value
+                    ).__dict__
+                ]
+            }
         ),
         Field(
             name="system", 
@@ -63,7 +84,11 @@ class OpenAIChat(BaseImplementation):
             raise Exception("OpenAI API key is not specified in the run config")
         self.openAI_client = OpenAI(
             api_key=self.run_config.get('openai_api_key'),
-        ) 
+        )
+        self.chat_memory = ChatMemory.initialize(
+            memory_type=run_config.get('chat_memory'),
+            block_uuid=run_config['block_uuid']
+        )
         self.messages = []
         self.available_tools = {}
         self.model = 'gpt-4o-mini'
