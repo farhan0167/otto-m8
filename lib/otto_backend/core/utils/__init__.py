@@ -68,7 +68,7 @@ def create_run_config_for_node(data):
     
     if not sidebar_fields:
         return run_config
-    
+    run_config['block_uuid'] = data.get('label')
     for field in sidebar_fields:
         if field['type'] == 'multimodal_selector':
             run_config[field['image']['name']] = data.get(field['image']['name'])

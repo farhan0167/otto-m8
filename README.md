@@ -109,7 +109,7 @@ Below is an example of a workflow that incorporates Langchain's PDF Parser to bu
 
 - Install the library:
 ```
-pip install otto-m8
+pip install -U otto-m8
 ```
 
 - And then run:
