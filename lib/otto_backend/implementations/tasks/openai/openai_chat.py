@@ -14,6 +14,7 @@ from implementations.base import (
 from extensions.llm_tools.openai_tool import OpenAITool
 from extensions.llm_memory.types import LLMChatMemoryType
 from extensions.llm_memory.chat_memory import ChatMemory
+from extensions.llm_memory.base import BaseMemory
 from core.input_parser.prompt_template import PromptTemplate
 
 
@@ -85,7 +86,7 @@ class OpenAIChat(BaseImplementation):
         self.openAI_client = OpenAI(
             api_key=self.run_config.get('openai_api_key'),
         )
-        self.chat_memory = ChatMemory.initialize(
+        self.chat_memory:BaseMemory = ChatMemory().initialize(
             memory_type=run_config.get('chat_memory'),
             block_uuid=run_config['block_uuid']
         )
@@ -98,7 +99,6 @@ class OpenAIChat(BaseImplementation):
     
     def run(self, input_:dict) -> dict:
         messages = []
-        messages.append(self.insert_system_message())
         
         # Create prompt
         parse_input = PromptTemplate(
@@ -109,7 +109,13 @@ class OpenAIChat(BaseImplementation):
         
         # Flag to determine if a function is available to be called
         make_function_call = False
-        messages.append({"role": "user", "content": prompt_template})
+        messages = self.chat_memory.get(
+            user_prompt={
+                'role': 'user',
+                'content': prompt_template
+            }
+        )
+        messages = [self.insert_system_message()] + messages
 
         # Make the first call.
         response = self.openAI_client.chat.completions.create(
@@ -124,6 +130,8 @@ class OpenAIChat(BaseImplementation):
                 response_choice=choice
             )
         )
+        self.chat_memory.put(messages)
+        
         response['conversation'] = messages[1:]
         # If model chose not to call any tools, return the response
         if not choice['message'].get('tool_calls'):
@@ -147,6 +155,7 @@ class OpenAIChat(BaseImplementation):
                     "content": str(function_response),
                     "tool_call_id": tool_call['id']
                 })
+                self.chat_memory.put(messages)
         # If no functions were available for the tools, simply return the response
         if not make_function_call:
             return json.loads(json.dumps(response))
@@ -163,6 +172,7 @@ class OpenAIChat(BaseImplementation):
                 response_choice=choice
             )
         )
+        self.chat_memory.put(messages)
 
         response['conversation'] = messages[1:]
         return json.loads(json.dumps(response))
