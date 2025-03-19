@@ -4,9 +4,13 @@ from implementations.base import (
     BaseImplementation,
     BlockMetadata,
     Field,
-    FieldType
+    FieldType,
+    StaticDropdownOption
 )
 from extensions.llm_tools.ollama_tool import OllamaTool
+from extensions.llm_memory.types import LLMChatMemoryType
+from extensions.llm_memory.chat_memory import ChatMemory
+from extensions.llm_memory.base import BaseMemory
 from core.input_parser.prompt_template import PromptTemplate
 
 
@@ -15,11 +19,55 @@ class OllamaServerChat(BaseImplementation):
     display_name = 'Ollama Chat'
     block_type = 'process'
     block_metadata = BlockMetadata([
-        Field(name="model", display_name="Model", is_run_config=True, default_value='llama3'),
-        Field(name="endpoint", display_name="Endpoint", is_run_config=True, show_in_ui=False),
-        Field(name="system", display_name="System Message", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),
-        Field(name="prompt_template", display_name="Prompt Template", is_run_config=True, show_in_ui=False, type=FieldType.PROMPT_TEMPLATE.value),
-        Field(name="tools", display_name="Tools", is_run_config=True, default_value=[], show_in_ui=False, type=FieldType.TOOL_LIST.value),
+        Field(
+            name="model", 
+            display_name="Model", 
+            is_run_config=True, default_value='llama3'
+        ),
+        Field(
+            name="endpoint", 
+            display_name="Endpoint",
+            default_value='http://localhost:11434/api/chat', 
+            is_run_config=True, show_in_ui=False
+        ),
+        Field(
+            name="chat_memory",
+            display_name="Memory",
+            is_run_config=True,
+            show_in_ui=False,
+            default_value='',
+            type=FieldType.STATIC_DROPDOWN.value,
+            metadata={
+                "dropdown_options": [
+                    StaticDropdownOption(
+                        label="No Memory", value=''
+                    ).__dict__,
+                    StaticDropdownOption(
+                        label="Basic Memory", value=LLMChatMemoryType.BASIC_MEMORY.value
+                    ).__dict__
+                ]
+            }
+        ),
+        Field(
+            name="system", 
+            display_name="System Message", 
+            is_run_config=True, show_in_ui=False, 
+            type=FieldType.TEXTAREA.value
+        ),
+        Field(
+            name="prompt_template", 
+            display_name="Prompt Template", 
+            is_run_config=True, show_in_ui=False, 
+            type=FieldType.PROMPT_TEMPLATE.value
+        ),
+        Field(
+            name="tools", 
+            display_name="Tools", 
+            is_run_config=True, 
+            default_value=[], 
+            show_in_ui=False, 
+            type=FieldType.TOOL_LIST.value
+        ),
     ])
     
     def __init__(self, run_config:dict) -> None:
@@ -30,12 +78,20 @@ class OllamaServerChat(BaseImplementation):
             if self.run_config.get('endpoint') is not None 
             else 'http://host.docker.internal:11434/api/chat'
         )
+        # TODO: identify fix for this. Refer Issue #38
+        if 'localhost' in self.ollama_server_endpoint:
+            self.ollama_server_endpoint = self.ollama_server_endpoint.replace(
+                'localhost', 'host.docker.internal'
+            )
+        self.chat_memory:BaseMemory = ChatMemory().initialize(
+            memory_type=self.run_config.get('chat_memory'),
+            block_uuid=run_config['block_uuid']
+        )
         self.available_tools = {}
         self.request_payload = self.create_payload_from_run_config()
     
     def run(self, input_:dict) -> dict:
         self.request_payload['messages'] = []
-        self.request_payload['messages'].append(self.insert_system_message())
         
         # Create prompt
         parse_input = PromptTemplate(
@@ -46,7 +102,18 @@ class OllamaServerChat(BaseImplementation):
         
         # Flag to determine if a function is available to be called
         make_function_call = False
-        self.request_payload['messages'].append({"role": "user", "content": prompt_template})
+        
+        self.request_payload['messages'] = self.chat_memory.get(
+            user_prompt={
+                'role': 'user',
+                'content': prompt_template
+            }
+        )
+        self.request_payload['messages'] = (
+            [self.insert_system_message()] + 
+            self.request_payload['messages']
+        )
+
         headers = {
             'Content-Type': 'application/json'
         }
@@ -58,6 +125,9 @@ class OllamaServerChat(BaseImplementation):
         )
         response = response.json()
         self.request_payload['messages'].append(response['message'])
+        self.chat_memory.put(
+            messages=self.request_payload['messages']
+        )
         
         messages = self.request_payload['messages'][1:]
         response['conversation'] = messages
@@ -83,6 +153,9 @@ class OllamaServerChat(BaseImplementation):
                     "role": "tool",
                     "content": str(function_response)
                 })
+                self.chat_memory.put(
+                    messages=self.request_payload['messages']
+                )
         # If no functions were available for the tools, simply return the response
         if not make_function_call:
             return json.loads(json.dumps(response))
@@ -93,6 +166,9 @@ class OllamaServerChat(BaseImplementation):
         )
         response = response.json()
         self.request_payload['messages'].append(response['message'])
+        self.chat_memory.put(
+            messages=self.request_payload['messages']
+        )
         
         messages = self.request_payload['messages'][1:]
         response['conversation'] = messages

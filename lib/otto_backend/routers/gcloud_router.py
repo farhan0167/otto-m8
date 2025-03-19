@@ -8,7 +8,7 @@ from fastapi import APIRouter
 from fastapi import Request, Depends, HTTPException, Response
 from fastapi.responses import RedirectResponse, HTMLResponse
 
-from routers.dependency import token_store
+from core.connections import redis_client
 from google_auth_oauthlib.flow import Flow
 from integrations.gcloud.auth_flow import get_credentials, create_credential_file
 
@@ -45,14 +45,14 @@ async def login(request: GCloudLoginRequest):
     state_token = str(uuid.uuid4())
     redis_key = f"tokens:{state_token}"
     # Store in redis
-    token_store.hset(
+    redis_client.hset(
         name=redis_key, 
         mapping={
             "service": service,
             "scopes": json.dumps(scopes)
         }
     )
-    token_store.expire(redis_key, 3600)
+    redis_client.expire(redis_key, 3600)
     
     flow = Flow.from_client_secrets_file(CLIENT_SECRET_FILE, scopes, redirect_uri="http://localhost:8000/gcloud/auth/callback")
     auth_url, _ = flow.authorization_url(prompt="consent", state=redis_key)
@@ -72,7 +72,7 @@ async def auth_callback(code: str, state: Optional[str] = None):
         raise HTTPException(status_code=400, detail="Missing state parameter")
 
     # Get tokens
-    auth_state = token_store.hgetall(state)
+    auth_state = redis_client.hgetall(state)
     service, scopes = auth_state["service"], json.loads(auth_state["scopes"])
     
     flow = Flow.from_client_secrets_file(CLIENT_SECRET_FILE, scopes, redirect_uri="http://localhost:8000/gcloud/auth/callback")

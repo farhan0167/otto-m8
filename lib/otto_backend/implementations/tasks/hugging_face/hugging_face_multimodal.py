@@ -23,7 +23,12 @@ class HuggingFaceMultimodalPipeline(BaseImplementation):
     block_type = 'process'
     block_metadata = BlockMetadata([
         Field(name="modelCard", display_name="Model Card", is_run_config=True),
-        Field(name="huggingface_task_type", display_name="Hugging Face Task Type", is_run_config=True, default_value=None),
+        Field(
+            name="huggingface_task_type", 
+            display_name="Hugging Face Task Type", 
+            is_run_config=True, 
+            default_value=None
+        ),
         MultimodalField(
             display_name="Configure Multimodal Input",
             image=Field(name="image_input", display_name="Image"),

@@ -124,60 +124,80 @@
                 "data": {
                   "label": "220c4692-eb4d-4ab8-9ce8-c1e9d89673b2",
                   "sidebar_fields": [
-                    {
-                      "name": "custom_name",
-                      "display_name": "Block Name",
-                      "default_value": "",
-                      "type": "text",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": true
-                    },
-                    {
-                      "name": "model",
-                      "display_name": "Model",
-                      "default_value": "gpt-4o-mini",
-                      "type": "text",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": true
-                    },
-                    {
-                      "name": "openai_api_key",
-                      "display_name": "API Key",
-                      "default_value": "",
-                      "type": "password",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": false
-                    },
-                    {
-                      "name": "system",
-                      "display_name": "System Message",
-                      "default_value": "",
-                      "type": "textarea",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": false
-                    },
-                    {
-                      "name": "prompt_template",
-                      "display_name": "Prompt Template",
-                      "default_value": "",
-                      "type": "prompt_template",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": false
-                    },
-                    {
-                      "name": "tools",
-                      "display_name": "Tools",
-                      "default_value": [],
-                      "type": "tool_list",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": false
-                    }
+          {
+            "name": "custom_name",
+            "display_name": "Block Name",
+            "default_value": "",
+            "type": "text",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": true
+          },
+          {
+            "name": "model",
+            "display_name": "Model",
+            "default_value": "gpt-4o-mini",
+            "type": "text",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": true
+          },
+          {
+            "name": "openai_api_key",
+            "display_name": "API Key",
+            "default_value": "",
+            "type": "password",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": false
+          },
+          {
+            "name": "chat_memory",
+            "display_name": "Memory",
+            "default_value": "",
+            "type": "static_dropdown",
+            "metadata": {
+              "dropdown_options": [
+                {
+                  "value": "",
+                  "label": "No Memory"
+                },
+                {
+                  "value": "basic_memory",
+                  "label": "Basic Memory"
+                }
+              ]
+            },
+            "is_run_config": true,
+            "show_in_ui": false
+          },
+          {
+            "name": "system",
+            "display_name": "System Message",
+            "default_value": "",
+            "type": "textarea",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": false
+          },
+          {
+            "name": "prompt_template",
+            "display_name": "Prompt Template",
+            "default_value": "",
+            "type": "prompt_template",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": false
+          },
+          {
+            "name": "tools",
+            "display_name": "Tools",
+            "default_value": [],
+            "type": "tool_list",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": false
+          }
                   ],
                   "block_ui_fields": [
                     {
@@ -185,7 +205,7 @@
                       "display_name": "Block Name",
                       "default_value": "",
                       "type": "text",
-                      "dropdown_options": [],
+                      "metadata": {},
                       "is_run_config": true,
                       "show_in_ui": true
                     },
@@ -194,13 +214,13 @@
                       "display_name": "Model",
                       "default_value": "gpt-4o-mini",
                       "type": "text",
-                      "dropdown_options": [],
+                      "metadata": {},
                       "is_run_config": true,
                       "show_in_ui": true
                     }
                   ],
                   "custom_name": "",
-                  "source_code": "import requests\nimport json\n\nfrom openai import OpenAI\n\n\nfrom implementations.base import (\n    BaseImplementation,\n    BlockMetadata,\n    Field,\n    FieldType\n)\nfrom extensions.llm_tools.openai_tool import OpenAITool\nfrom core.input_parser.prompt_template import PromptTemplate\n\n\nclass OpenAIChat(BaseImplementation):\n    \"\"\"Task definition of the OpenAI Chat Completion.\"\"\"\n    display_name = 'OpenAI Chat Completion'\n    block_type = 'process'\n    block_metadata = BlockMetadata([\n        Field(name=\"model\", display_name=\"Model\", is_run_config=True, default_value='gpt-4o-mini'),\n        Field(name=\"openai_api_key\", display_name=\"API Key\", is_run_config=True, show_in_ui=False, type=FieldType.PASSWORD.value),\n        Field(name=\"system\", display_name=\"System Message\", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),\n        Field(name=\"prompt_template\", display_name=\"Prompt Template\", is_run_config=True, show_in_ui=False, type=FieldType.PROMPT_TEMPLATE.value),\n        Field(name=\"tools\", display_name=\"Tools\", is_run_config=True, default_value=[], show_in_ui=False, type=FieldType.TOOL_LIST.value),\n    ])\n    \n    def __init__(self, run_config:dict) -> None:\n        super().__init__()\n        self.run_config = run_config\n        if not self.run_config.get('openai_api_key'):\n            raise Exception(\"OpenAI API key is not specified in the run config\")\n        self.openAI_client = OpenAI(\n            api_key=self.run_config.get('openai_api_key'),\n        ) \n        self.messages = []\n        self.available_tools = {}\n        self.model = 'gpt-4o-mini'\n        self.tools = None\n        self.prompt_template = None\n        self.create_payload_from_run_config()\n    \n    def run(self, input_:dict) -> dict:\n        messages = []\n        messages.append(self.insert_system_message())\n        \n        # Create prompt\n        parse_input = PromptTemplate(\n            input_=input_, \n            template=self.prompt_template\n        )\n        prompt_template = parse_input()\n        \n        # Flag to determine if a function is available to be called\n        make_function_call = False\n        messages.append({\"role\": \"user\", \"content\": prompt_template})\n\n        # Make the first call.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        response['conversation'] = messages[1:]\n        # If model chose not to call any tools, return the response\n        if not choice['message'].get('tool_calls'):\n            return json.loads(json.dumps(response))\n        \n        # If model chose to call tools, then call the available tools.\n        if choice['message'].get('tool_calls'):\n            for tool_call in choice['message']['tool_calls']:\n                tool_name = tool_call['function']['name']\n                function_to_call = self.available_tools.get(tool_name)\n                if function_to_call is None:\n                    continue\n                make_function_call = True\n                function_params = json.loads(tool_call['function']['arguments'])\n                function_response = function_to_call.run(\n                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?\n                    {'data' : json.dumps(function_params)}\n                )\n                messages.append({\n                    \"role\": \"tool\",\n                    \"content\": str(function_response),\n                    \"tool_call_id\": tool_call['id']\n                })\n        # If no functions were available for the tools, simply return the response\n        if not make_function_call:\n            return json.loads(json.dumps(response))\n        # Else, utilize the function response to query the OpenAI API.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n\n        response['conversation'] = messages[1:]\n        return json.loads(json.dumps(response))\n    \n    def openai_response_get_message(self, response_choice):\n        \"\"\"\n        Process the response from OpenAI's chat.completions.create API call, \n        returning the message that should be appended to the conversation.\n\n        Args:\n            response_choice: The response from OpenAI's chat.completions.create API call\n        \n        Returns:\n            A dictionary containing the message to be appended to the conversation\n        \"\"\"\n        message = {\"role\": \"\"}\n        #response_choice = response.choices[0]\n        message['role'] = response_choice[\"message\"][\"role\"]\n        if response_choice[\"message\"]['content']:\n            message['content'] = response_choice[\"message\"][\"content\"]\n        if response_choice[\"message\"]['tool_calls']:\n            message['tool_calls'] = response_choice[\"message\"][\"tool_calls\"]\n        return message\n        \n        \n    \n    def create_payload_from_run_config(self) -> dict:\n\n        model = self.run_config.get('model', 'gpt-4o-mini')\n        self.model = model\n        \n        prompt_template = self.run_config.get('prompt_template')\n        self.prompt_template = prompt_template\n            \n        # Process any tools available\n        tools = self.run_config.get('tools')\n        if tools:\n            self.tools = []\n            for tool in tools:\n                openai_tool = OpenAITool()\n                tool_schema = openai_tool.process_tool(tool)\n                self.tools.append(tool_schema)\n                self.available_tools[ tool['name'] ] = openai_tool.implements\n    \n    def insert_system_message(self):\n        system_message = self.run_config.get('system')\n        return {\"role\": \"system\", \"content\": system_message}\n        \n        ",
+                  "source_code": "import requests\nimport json\n\nfrom openai import OpenAI\n\n\nfrom implementations.base import (\n    BaseImplementation,\n    BlockMetadata,\n    Field,\n    FieldType,\n    StaticDropdownOption\n)\nfrom extensions.llm_tools.openai_tool import OpenAITool\nfrom extensions.llm_memory.types import LLMChatMemoryType\nfrom extensions.llm_memory.chat_memory import ChatMemory\nfrom extensions.llm_memory.base import BaseMemory\nfrom core.input_parser.prompt_template import PromptTemplate\n\n\nclass OpenAIChat(BaseImplementation):\n    \"\"\"Task definition of the OpenAI Chat Completion.\"\"\"\n    display_name = 'OpenAI Chat Completion'\n    block_type = 'process'\n    block_metadata = BlockMetadata([\n        Field(\n            name=\"model\", \n            display_name=\"Model\", \n            is_run_config=True, \n            default_value='gpt-4o-mini'\n        ),\n        Field(\n            name=\"openai_api_key\", \n            display_name=\"API Key\", \n            is_run_config=True, \n            show_in_ui=False, \n            type=FieldType.PASSWORD.value\n        ),\n        Field(\n            name=\"chat_memory\",\n            display_name=\"Memory\",\n            is_run_config=True,\n            show_in_ui=False,\n            default_value='',\n            type=FieldType.STATIC_DROPDOWN.value,\n            metadata={\n                \"dropdown_options\": [\n                    StaticDropdownOption(\n                        label=\"No Memory\", value=''\n                    ).__dict__,\n                    StaticDropdownOption(\n                        label=\"Basic Memory\", value=LLMChatMemoryType.BASIC_MEMORY.value\n                    ).__dict__\n                ]\n            }\n        ),\n        Field(\n            name=\"system\", \n            display_name=\"System Message\", \n            is_run_config=True, \n            show_in_ui=False, \n            type=FieldType.TEXTAREA.value\n        ),\n        Field(\n            name=\"prompt_template\", \n            display_name=\"Prompt Template\", \n            is_run_config=True, \n            show_in_ui=False, \n            type=FieldType.PROMPT_TEMPLATE.value\n        ),\n        Field(\n            name=\"tools\", \n            display_name=\"Tools\", \n            is_run_config=True, \n            default_value=[], \n            show_in_ui=False, \n            type=FieldType.TOOL_LIST.value\n        ),\n    ])\n    \n    def __init__(self, run_config:dict) -> None:\n        super().__init__()\n        self.run_config = run_config\n        if not self.run_config.get('openai_api_key'):\n            raise Exception(\"OpenAI API key is not specified in the run config\")\n        self.openAI_client = OpenAI(\n            api_key=self.run_config.get('openai_api_key'),\n        )\n        self.chat_memory:BaseMemory = ChatMemory().initialize(\n            memory_type=run_config.get('chat_memory'),\n            block_uuid=run_config['block_uuid']\n        )\n        self.messages = []\n        self.available_tools = {}\n        self.model = 'gpt-4o-mini'\n        self.tools = None\n        self.prompt_template = None\n        self.create_payload_from_run_config()\n    \n    def run(self, input_:dict) -> dict:\n        messages = []\n        \n        # Create prompt\n        parse_input = PromptTemplate(\n            input_=input_, \n            template=self.prompt_template\n        )\n        prompt_template = parse_input()\n        \n        # Flag to determine if a function is available to be called\n        make_function_call = False\n        messages = self.chat_memory.get(\n            user_prompt={\n                'role': 'user',\n                'content': prompt_template\n            }\n        )\n        messages = [self.insert_system_message()] + messages\n\n        # Make the first call.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        self.chat_memory.put(messages)\n        \n        response['conversation'] = messages[1:]\n        # If model chose not to call any tools, return the response\n        if not choice['message'].get('tool_calls'):\n            return json.loads(json.dumps(response))\n        \n        # If model chose to call tools, then call the available tools.\n        if choice['message'].get('tool_calls'):\n            for tool_call in choice['message']['tool_calls']:\n                tool_name = tool_call['function']['name']\n                function_to_call = self.available_tools.get(tool_name)\n                if function_to_call is None:\n                    continue\n                make_function_call = True\n                function_params = json.loads(tool_call['function']['arguments'])\n                function_response = function_to_call.run(\n                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?\n                    {'data' : json.dumps(function_params)}\n                )\n                messages.append({\n                    \"role\": \"tool\",\n                    \"content\": str(function_response),\n                    \"tool_call_id\": tool_call['id']\n                })\n                self.chat_memory.put(messages)\n        # If no functions were available for the tools, simply return the response\n        if not make_function_call:\n            return json.loads(json.dumps(response))\n        # Else, utilize the function response to query the OpenAI API.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        self.chat_memory.put(messages)\n\n        response['conversation'] = messages[1:]\n        return json.loads(json.dumps(response))\n    \n    def openai_response_get_message(self, response_choice):\n        \"\"\"\n        Process the response from OpenAI's chat.completions.create API call, \n        returning the message that should be appended to the conversation.\n\n        Args:\n            response_choice: The response from OpenAI's chat.completions.create API call\n        \n        Returns:\n            A dictionary containing the message to be appended to the conversation\n        \"\"\"\n        message = {\"role\": \"\"}\n        #response_choice = response.choices[0]\n        message['role'] = response_choice[\"message\"][\"role\"]\n        if response_choice[\"message\"]['content']:\n            message['content'] = response_choice[\"message\"][\"content\"]\n        if response_choice[\"message\"]['tool_calls']:\n            message['tool_calls'] = response_choice[\"message\"][\"tool_calls\"]\n        return message\n        \n        \n    \n    def create_payload_from_run_config(self) -> dict:\n\n        model = self.run_config.get('model', 'gpt-4o-mini')\n        self.model = model\n        \n        prompt_template = self.run_config.get('prompt_template')\n        self.prompt_template = prompt_template\n            \n        # Process any tools available\n        tools = self.run_config.get('tools')\n        if tools:\n            self.tools = []\n            for tool in tools:\n                openai_tool = OpenAITool()\n                tool_schema = openai_tool.process_tool(tool)\n                self.tools.append(tool_schema)\n                self.available_tools[ tool['name'] ] = openai_tool.implements\n    \n    def insert_system_message(self):\n        system_message = self.run_config.get('system')\n        return {\"role\": \"system\", \"content\": system_message}\n        \n        ",
                   "source_path": "implementations/tasks/openai/openai_chat.py",
                   "source_hash": "eaa7e645b75b13086d63f9b258476ae7f4bf8ea1",
                   "process_type": "task",
@@ -378,60 +398,80 @@
                 "data": {
                   "label": "220c4692-eb4d-4ab8-9ce8-c1e9d89673b2",
                   "sidebar_fields": [
-                    {
-                      "name": "custom_name",
-                      "display_name": "Block Name",
-                      "default_value": "",
-                      "type": "text",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": true
-                    },
-                    {
-                      "name": "model",
-                      "display_name": "Model",
-                      "default_value": "gpt-4o-mini",
-                      "type": "text",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": true
-                    },
-                    {
-                      "name": "openai_api_key",
-                      "display_name": "API Key",
-                      "default_value": "",
-                      "type": "password",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": false
-                    },
-                    {
-                      "name": "system",
-                      "display_name": "System Message",
-                      "default_value": "",
-                      "type": "textarea",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": false
-                    },
-                    {
-                      "name": "prompt_template",
-                      "display_name": "Prompt Template",
-                      "default_value": "",
-                      "type": "prompt_template",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": false
-                    },
-                    {
-                      "name": "tools",
-                      "display_name": "Tools",
-                      "default_value": [],
-                      "type": "tool_list",
-                      "dropdown_options": [],
-                      "is_run_config": true,
-                      "show_in_ui": false
-                    }
+          {
+            "name": "custom_name",
+            "display_name": "Block Name",
+            "default_value": "",
+            "type": "text",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": true
+          },
+          {
+            "name": "model",
+            "display_name": "Model",
+            "default_value": "gpt-4o-mini",
+            "type": "text",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": true
+          },
+          {
+            "name": "openai_api_key",
+            "display_name": "API Key",
+            "default_value": "",
+            "type": "password",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": false
+          },
+          {
+            "name": "chat_memory",
+            "display_name": "Memory",
+            "default_value": "",
+            "type": "static_dropdown",
+            "metadata": {
+              "dropdown_options": [
+                {
+                  "value": "",
+                  "label": "No Memory"
+                },
+                {
+                  "value": "basic_memory",
+                  "label": "Basic Memory"
+                }
+              ]
+            },
+            "is_run_config": true,
+            "show_in_ui": false
+          },
+          {
+            "name": "system",
+            "display_name": "System Message",
+            "default_value": "",
+            "type": "textarea",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": false
+          },
+          {
+            "name": "prompt_template",
+            "display_name": "Prompt Template",
+            "default_value": "",
+            "type": "prompt_template",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": false
+          },
+          {
+            "name": "tools",
+            "display_name": "Tools",
+            "default_value": [],
+            "type": "tool_list",
+            "metadata": {},
+            "is_run_config": true,
+            "show_in_ui": false
+          }
                   ],
                   "block_ui_fields": [
                     {
@@ -439,7 +479,7 @@
                       "display_name": "Block Name",
                       "default_value": "",
                       "type": "text",
-                      "dropdown_options": [],
+                      "metadata": {},
                       "is_run_config": true,
                       "show_in_ui": true
                     },
@@ -448,13 +488,13 @@
                       "display_name": "Model",
                       "default_value": "gpt-4o-mini",
                       "type": "text",
-                      "dropdown_options": [],
+                      "metadata": {},
                       "is_run_config": true,
                       "show_in_ui": true
                     }
                   ],
                   "custom_name": "",
-                  "source_code": "import requests\nimport json\n\nfrom openai import OpenAI\n\n\nfrom implementations.base import (\n    BaseImplementation,\n    BlockMetadata,\n    Field,\n    FieldType\n)\nfrom extensions.llm_tools.openai_tool import OpenAITool\nfrom core.input_parser.prompt_template import PromptTemplate\n\n\nclass OpenAIChat(BaseImplementation):\n    \"\"\"Task definition of the OpenAI Chat Completion.\"\"\"\n    display_name = 'OpenAI Chat Completion'\n    block_type = 'process'\n    block_metadata = BlockMetadata([\n        Field(name=\"model\", display_name=\"Model\", is_run_config=True, default_value='gpt-4o-mini'),\n        Field(name=\"openai_api_key\", display_name=\"API Key\", is_run_config=True, show_in_ui=False, type=FieldType.PASSWORD.value),\n        Field(name=\"system\", display_name=\"System Message\", is_run_config=True, show_in_ui=False, type=FieldType.TEXTAREA.value),\n        Field(name=\"prompt_template\", display_name=\"Prompt Template\", is_run_config=True, show_in_ui=False, type=FieldType.PROMPT_TEMPLATE.value),\n        Field(name=\"tools\", display_name=\"Tools\", is_run_config=True, default_value=[], show_in_ui=False, type=FieldType.TOOL_LIST.value),\n    ])\n    \n    def __init__(self, run_config:dict) -> None:\n        super().__init__()\n        self.run_config = run_config\n        if not self.run_config.get('openai_api_key'):\n            raise Exception(\"OpenAI API key is not specified in the run config\")\n        self.openAI_client = OpenAI(\n            api_key=self.run_config.get('openai_api_key'),\n        ) \n        self.messages = []\n        self.available_tools = {}\n        self.model = 'gpt-4o-mini'\n        self.tools = None\n        self.prompt_template = None\n        self.create_payload_from_run_config()\n    \n    def run(self, input_:dict) -> dict:\n        messages = []\n        messages.append(self.insert_system_message())\n        \n        # Create prompt\n        parse_input = PromptTemplate(\n            input_=input_, \n            template=self.prompt_template\n        )\n        prompt_template = parse_input()\n        \n        # Flag to determine if a function is available to be called\n        make_function_call = False\n        messages.append({\"role\": \"user\", \"content\": prompt_template})\n\n        # Make the first call.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        response['conversation'] = messages[1:]\n        # If model chose not to call any tools, return the response\n        if not choice['message'].get('tool_calls'):\n            return json.loads(json.dumps(response))\n        \n        # If model chose to call tools, then call the available tools.\n        if choice['message'].get('tool_calls'):\n            for tool_call in choice['message']['tool_calls']:\n                tool_name = tool_call['function']['name']\n                function_to_call = self.available_tools.get(tool_name)\n                if function_to_call is None:\n                    continue\n                make_function_call = True\n                function_params = json.loads(tool_call['function']['arguments'])\n                function_response = function_to_call.run(\n                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?\n                    {'data' : json.dumps(function_params)}\n                )\n                messages.append({\n                    \"role\": \"tool\",\n                    \"content\": str(function_response),\n                    \"tool_call_id\": tool_call['id']\n                })\n        # If no functions were available for the tools, simply return the response\n        if not make_function_call:\n            return json.loads(json.dumps(response))\n        # Else, utilize the function response to query the OpenAI API.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n\n        response['conversation'] = messages[1:]\n        return json.loads(json.dumps(response))\n    \n    def openai_response_get_message(self, response_choice):\n        \"\"\"\n        Process the response from OpenAI's chat.completions.create API call, \n        returning the message that should be appended to the conversation.\n\n        Args:\n            response_choice: The response from OpenAI's chat.completions.create API call\n        \n        Returns:\n            A dictionary containing the message to be appended to the conversation\n        \"\"\"\n        message = {\"role\": \"\"}\n        #response_choice = response.choices[0]\n        message['role'] = response_choice[\"message\"][\"role\"]\n        if response_choice[\"message\"]['content']:\n            message['content'] = response_choice[\"message\"][\"content\"]\n        if response_choice[\"message\"]['tool_calls']:\n            message['tool_calls'] = response_choice[\"message\"][\"tool_calls\"]\n        return message\n        \n        \n    \n    def create_payload_from_run_config(self) -> dict:\n\n        model = self.run_config.get('model', 'gpt-4o-mini')\n        self.model = model\n        \n        prompt_template = self.run_config.get('prompt_template')\n        self.prompt_template = prompt_template\n            \n        # Process any tools available\n        tools = self.run_config.get('tools')\n        if tools:\n            self.tools = []\n            for tool in tools:\n                openai_tool = OpenAITool()\n                tool_schema = openai_tool.process_tool(tool)\n                self.tools.append(tool_schema)\n                self.available_tools[ tool['name'] ] = openai_tool.implements\n    \n    def insert_system_message(self):\n        system_message = self.run_config.get('system')\n        return {\"role\": \"system\", \"content\": system_message}\n        \n        ",
+                  "source_code": "import requests\nimport json\n\nfrom openai import OpenAI\n\n\nfrom implementations.base import (\n    BaseImplementation,\n    BlockMetadata,\n    Field,\n    FieldType,\n    StaticDropdownOption\n)\nfrom extensions.llm_tools.openai_tool import OpenAITool\nfrom extensions.llm_memory.types import LLMChatMemoryType\nfrom extensions.llm_memory.chat_memory import ChatMemory\nfrom extensions.llm_memory.base import BaseMemory\nfrom core.input_parser.prompt_template import PromptTemplate\n\n\nclass OpenAIChat(BaseImplementation):\n    \"\"\"Task definition of the OpenAI Chat Completion.\"\"\"\n    display_name = 'OpenAI Chat Completion'\n    block_type = 'process'\n    block_metadata = BlockMetadata([\n        Field(\n            name=\"model\", \n            display_name=\"Model\", \n            is_run_config=True, \n            default_value='gpt-4o-mini'\n        ),\n        Field(\n            name=\"openai_api_key\", \n            display_name=\"API Key\", \n            is_run_config=True, \n            show_in_ui=False, \n            type=FieldType.PASSWORD.value\n        ),\n        Field(\n            name=\"chat_memory\",\n            display_name=\"Memory\",\n            is_run_config=True,\n            show_in_ui=False,\n            default_value='',\n            type=FieldType.STATIC_DROPDOWN.value,\n            metadata={\n                \"dropdown_options\": [\n                    StaticDropdownOption(\n                        label=\"No Memory\", value=''\n                    ).__dict__,\n                    StaticDropdownOption(\n                        label=\"Basic Memory\", value=LLMChatMemoryType.BASIC_MEMORY.value\n                    ).__dict__\n                ]\n            }\n        ),\n        Field(\n            name=\"system\", \n            display_name=\"System Message\", \n            is_run_config=True, \n            show_in_ui=False, \n            type=FieldType.TEXTAREA.value\n        ),\n        Field(\n            name=\"prompt_template\", \n            display_name=\"Prompt Template\", \n            is_run_config=True, \n            show_in_ui=False, \n            type=FieldType.PROMPT_TEMPLATE.value\n        ),\n        Field(\n            name=\"tools\", \n            display_name=\"Tools\", \n            is_run_config=True, \n            default_value=[], \n            show_in_ui=False, \n            type=FieldType.TOOL_LIST.value\n        ),\n    ])\n    \n    def __init__(self, run_config:dict) -> None:\n        super().__init__()\n        self.run_config = run_config\n        if not self.run_config.get('openai_api_key'):\n            raise Exception(\"OpenAI API key is not specified in the run config\")\n        self.openAI_client = OpenAI(\n            api_key=self.run_config.get('openai_api_key'),\n        )\n        self.chat_memory:BaseMemory = ChatMemory().initialize(\n            memory_type=run_config.get('chat_memory'),\n            block_uuid=run_config['block_uuid']\n        )\n        self.messages = []\n        self.available_tools = {}\n        self.model = 'gpt-4o-mini'\n        self.tools = None\n        self.prompt_template = None\n        self.create_payload_from_run_config()\n    \n    def run(self, input_:dict) -> dict:\n        messages = []\n        \n        # Create prompt\n        parse_input = PromptTemplate(\n            input_=input_, \n            template=self.prompt_template\n        )\n        prompt_template = parse_input()\n        \n        # Flag to determine if a function is available to be called\n        make_function_call = False\n        messages = self.chat_memory.get(\n            user_prompt={\n                'role': 'user',\n                'content': prompt_template\n            }\n        )\n        messages = [self.insert_system_message()] + messages\n\n        # Make the first call.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        self.chat_memory.put(messages)\n        \n        response['conversation'] = messages[1:]\n        # If model chose not to call any tools, return the response\n        if not choice['message'].get('tool_calls'):\n            return json.loads(json.dumps(response))\n        \n        # If model chose to call tools, then call the available tools.\n        if choice['message'].get('tool_calls'):\n            for tool_call in choice['message']['tool_calls']:\n                tool_name = tool_call['function']['name']\n                function_to_call = self.available_tools.get(tool_name)\n                if function_to_call is None:\n                    continue\n                make_function_call = True\n                function_params = json.loads(tool_call['function']['arguments'])\n                function_response = function_to_call.run(\n                    # TODO: By json.loads here, we are assuming that the input is json. Can we enforce that via some data structure?\n                    {'data' : json.dumps(function_params)}\n                )\n                messages.append({\n                    \"role\": \"tool\",\n                    \"content\": str(function_response),\n                    \"tool_call_id\": tool_call['id']\n                })\n                self.chat_memory.put(messages)\n        # If no functions were available for the tools, simply return the response\n        if not make_function_call:\n            return json.loads(json.dumps(response))\n        # Else, utilize the function response to query the OpenAI API.\n        response = self.openAI_client.chat.completions.create(\n            model=self.model,\n            messages=messages,\n            tools=self.tools\n        )\n        response = response.dict()\n        choice = response['choices'][0]\n        messages.append(\n            self.openai_response_get_message(\n                response_choice=choice\n            )\n        )\n        self.chat_memory.put(messages)\n\n        response['conversation'] = messages[1:]\n        return json.loads(json.dumps(response))\n    \n    def openai_response_get_message(self, response_choice):\n        \"\"\"\n        Process the response from OpenAI's chat.completions.create API call, \n        returning the message that should be appended to the conversation.\n\n        Args:\n            response_choice: The response from OpenAI's chat.completions.create API call\n        \n        Returns:\n            A dictionary containing the message to be appended to the conversation\n        \"\"\"\n        message = {\"role\": \"\"}\n        #response_choice = response.choices[0]\n        message['role'] = response_choice[\"message\"][\"role\"]\n        if response_choice[\"message\"]['content']:\n            message['content'] = response_choice[\"message\"][\"content\"]\n        if response_choice[\"message\"]['tool_calls']:\n            message['tool_calls'] = response_choice[\"message\"][\"tool_calls\"]\n        return message\n        \n        \n    \n    def create_payload_from_run_config(self) -> dict:\n\n        model = self.run_config.get('model', 'gpt-4o-mini')\n        self.model = model\n        \n        prompt_template = self.run_config.get('prompt_template')\n        self.prompt_template = prompt_template\n            \n        # Process any tools available\n        tools = self.run_config.get('tools')\n        if tools:\n            self.tools = []\n            for tool in tools:\n                openai_tool = OpenAITool()\n                tool_schema = openai_tool.process_tool(tool)\n                self.tools.append(tool_schema)\n                self.available_tools[ tool['name'] ] = openai_tool.implements\n    \n    def insert_system_message(self):\n        system_message = self.run_config.get('system')\n        return {\"role\": \"system\", \"content\": system_message}\n        \n        ",
                   "source_path": "implementations/tasks/openai/openai_chat.py",
                   "source_hash": "eaa7e645b75b13086d63f9b258476ae7f4bf8ea1",
                   "process_type": "task",

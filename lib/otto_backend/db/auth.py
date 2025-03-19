@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from .db_engine import get_session
 from .models.users import Users
-from routers.dependency import token_store
+from core.connections import redis_client
 
 # Password hashing configuration
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -29,14 +29,14 @@ def create_token(email: str) -> str:
     redis_key = f"tokens:{token}"
     
     # Store the token data as a hash
-    token_store.hset(
+    redis_client.hset(
         name=redis_key, 
         mapping={"email": email, "expires": expires}
     )
     
     # Set expiration for the token key
     expire_after = token_expiration_unit * token_expiration_hours
-    token_store.expire(redis_key, expire_after)  # Expires in 1 hour
+    redis_client.expire(redis_key, expire_after)  # Expires in 1 hour
     
     return token
 
