@@ -16,6 +16,7 @@ This project is still in its early phase. What will make this platform successfu
 
 [![demo](https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/thumbnail-demo.png)](https://youtu.be/W2arxlYvZdU)
 
+
 ### Key Features
 - Build AI/ML workflows visually through out of the box blocks and by interconnecting them.
 - Build custom blocks or extend existing ones through code.
