@@ -7,79 +7,9 @@ sidebar_position: 2
 
 With otto-m8, you can customize the code that implements a block. In the previous example,
 we implemented a simple chatbot with a chat interface. When using the SDK, you probably noticed
-a long return dictionary. What if you just wanted to see the LLM's message output? So instead of seeing all this:
+a long return dictionary. What if you just wanted to see the LLM's message output?
 
-```json
-Output:
-{
-  "f92cffae-14d2-43f4-a961-2fcd5829f1bc": {
-    "id": "chatcmpl-AgOrZExPgef0TzHVGNVJJr1vmrJyR",
-    "choices": [
-      {
-        "finish_reason": "stop",
-        "index": 0,
-        "logprobs": null,
-        "message": {
-          "content": "In the first quarter of 2024, Amazon's net sales increased by 13% to $143.3 billion, compared with $127.4 billion in the first quarter of 2023.",
-          "refusal": null,
-          "role": "assistant",
-          "function_call": null,
-          "tool_calls": null
-        }
-      }
-    ],
-    "created": 1734668713,
-    "model": "gpt-4o-mini-2024-07-18",
-    "object": "chat.completion",
-    "service_tier": null,
-    "system_fingerprint": "fp_0aa8d3e20b",
-    "usage": {
-      "completion_tokens": 42,
-      "prompt_tokens": 13945,
-      "total_tokens": 13987,
-      "completion_tokens_details": {
-        "audio_tokens": 0,
-        "reasoning_tokens": 0,
-        "accepted_prediction_tokens": 0,
-        "rejected_prediction_tokens": 0
-      },
-      "prompt_tokens_details": {
-        "audio_tokens": 0,
-        "cached_tokens": 13824
-      }
-    },
-    "conversation": [
-      {
-        "role": "user",
-        "content": "What was amazon's net sales?"
-      },
-      {
-        "role": "assistant",
-        "content": "In the first quarter .."
-      }
-    ]
-  }
-}
-```
-You just wanted to see this:
-
-```json
-Output:
-{
-  "f92cffae-14d2-43f4-a961-2fcd5829f1bc": {
-    "conversation": [
-      {
-        "role": "user",
-        "content": "What was amazon's net sales?"
-      },
-      {
-        "role": "assistant",
-        "content": "In the first quarter .."
-      }
-    ]
-  }
-}
-```
+![whatif](https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/tutorials/modify-chatbot/whatif.png)
 
 This is where custom code comes in. When configuring a block, you'll notice the following:
 
