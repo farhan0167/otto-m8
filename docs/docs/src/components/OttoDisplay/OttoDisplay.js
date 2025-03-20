@@ -20,7 +20,9 @@ const RoundGifContainer = ({ gifSrc, altText }) => {
 
   return (
     <div className={styles.ottoMainDisplay}>
-      <img src='https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/new_demo.gif' alt={altText} style={gifStyle} />
+      <video autoPlay loop muted style={gifStyle}>
+        <source src='https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/new_demp.mp4' type="video/mp4" />
+      </video>
     </div>
   );
 };
