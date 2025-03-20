@@ -15,14 +15,13 @@ const RoundGifContainer = ({ gifSrc, altText }) => {
 
   const gifStyle = {
     width: "1000px",
+    height: "600px",
     objectFit: "cover", // Ensures the GIF covers the container without distortion
   };
 
   return (
     <div className={styles.ottoMainDisplay}>
-      <video autoPlay loop muted style={gifStyle}>
-        <source src='https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/new_demp.mp4' type="video/mp4" />
-      </video>
+      <iframe style={gifStyle} src="https://www.youtube.com/embed/W2arxlYvZdU?si=BDmoaNJQr9H63tKI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
   );
 };
