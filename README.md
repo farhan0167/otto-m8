@@ -1,6 +1,6 @@
 <div>
     <div class='otto-logo-div' align="center" style="margin-bottom: 0px;">
-        <img class='otto-logo' width='980px' src='https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/new_demo.gif' style="border-radius: 5px;">
+        <img class='otto-logo' width='980px' src='docs/assets/otto-m8.png' style="border-radius: 5px;">
     </div>
     <h1 align="center">otto-m8</h1>
     <p align="center">An open source Flowchart based automation platform to run deep learning workloads with minimal to no code.</p>
@@ -13,6 +13,8 @@ otto-m8 (automate) is a low code platform that allows users to build AI/ML workf
 At its core, otto-m8 views the problem of building any AI workflow as a graph problem. As developers, we mostly build modular components where each components are responsible for a specific task (consider them as nodes), and each component sends data between each other (the edges). Together you get a workflow which consists of inputs, some transformations of the inputs(we'll call them processes), and an output.
 
 This project is still in its early phase. What will make this platform successful is the number of integrations we can provide, but more than that, what will make this project successful is if we can circumvent the limitations of low code platforms, which is-they don't scale. To overcome this, otto-m8 is released as a fully open source platform and community contributions will be greatly appreciated. For contributions, see the [CONTRIBUTION.md](CONTRIBUTING.md) for guidelines.
+
+![demo](https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/new_demo.gif)
 
 ### Key Features
 - Build AI/ML workflows visually through out of the box blocks and by interconnecting them.
