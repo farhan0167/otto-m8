@@ -14,14 +14,13 @@ const RoundGifContainer = ({ gifSrc, altText }) => {
   };
 
   const gifStyle = {
-    width: "100%",
-    height: "100%",
+    width: "1000px",
     objectFit: "cover", // Ensures the GIF covers the container without distortion
   };
 
   return (
     <div className={styles.ottoMainDisplay}>
-      <img src={gifSrc} alt={altText} style={gifStyle} />
+      <img src='https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/new_demo.gif' alt={altText} style={gifStyle} />
     </div>
   );
 };
