@@ -481,9 +481,9 @@ class OpenAIChat(BaseImplementation):
 
 </details>
 
-#### Few things to note:
+### Few things to note:
 
-- The order of the Field's within BlockMetadata determines the order in which it will render on screen:
+1. The order of the Field's within BlockMetadata determines the order in which it will render on screen:
 
     For example, if the order looks as follows:
 
@@ -551,6 +551,12 @@ class OpenAIChat(BaseImplementation):
     Then the UI will render as:
 
     ![rendering](https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/tutorials/modify-chatbot/orderoffields.gif)
+2. When writing code, make sure you are not introducing any error. One way to look for error is to monitor the terminal where
+you ran `./run.sh` in the beginning. Any error made will definitely show up there. Another way to know an error was made is if
+you notice that all the fields in the block disapeared when obviously that wasn't intended, and that you'll notice in Add Block that
+the particular custom block's display name shows up as the file name you saved it as(in all uppercase). Although this isn't really
+an ideal workflow since making mistakes during coding is pretty normal. Therefore, we're looking for contributors to add a Language server
+that the code editor could use to warn users ahead of time of any potential syntax errors. See [Issue #76](https://github.com/farhan0167/otto-m8/issues/76) on Github.
 
 Let's now run Test Workflow with the following prompt:
 
