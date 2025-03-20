@@ -1,6 +1,6 @@
 <div>
     <div class='otto-logo-div' align="center" style="margin-bottom: 0px;">
-        <img class='otto-logo' width='980px' src='docs/assets/otto-m8.png' style="border-radius: 5px;">
+        <img class='otto-logo' width='980px' src='https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/new_demo.gif' style="border-radius: 5px;">
     </div>
     <h1 align="center">otto-m8</h1>
     <p align="center">An open source Flowchart based automation platform to run deep learning workloads with minimal to no code.</p>
