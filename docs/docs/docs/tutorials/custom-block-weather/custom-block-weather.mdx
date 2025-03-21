@@ -1,0 +1,292 @@
+---
+title: "Custom Block: Weather"
+description: Create your own block.
+keywords: [chatbot, ai, openai, gpt4o-mini, gpt4, nocode]
+sidebar_position: 3
+---
+
+In the previous section, we saw how we can modify the implementation of an existing block. In this
+tutorial, we're going to see how we can create our own custom block that implements something that
+isn't yet provided by otto-m8.
+
+We will be building a weather block, which given the name of a city will then return its weather. More
+specifically, we will be integrating the [Open Weather Map](https://openweathermap.org/api) api to get this
+job done.
+
+### First Step: Ask Chat 
+
+For the best interest of time, we'll simply ask OpenAI's chat completion to give us the code on how to 
+implement it.
+
+![chat](https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/tutorials/weather/chatforweather.gif)
+
+Here is what otto-m8's assistant had to say:
+
+To integrate the OpenWeatherMap API and retrieve the temperature for a given city, follow these steps:
+
+#### Step 1: Sign Up for an API Key
+Go to the OpenWeatherMap website.
+Sign up for an account and log in.
+Navigate to the API section and subscribe to the plan that suits your needs (there's a free tier available).
+Once subscribed, you will receive an API key. Keep this key secure, as you'll need it for authentication.
+
+#### Step 2: Choose a Weather API Endpoint
+For current weather data, you can use the following endpoint:
+
+https://api.openweathermap.org/data/2.5/weather
+
+#### Step 3: Make a Request to the API
+You can make a request to the API using various methods (e.g., curl, Postman, or programming languages). Below is an example using Python.
+
+##### Example in Python
+
+You can use the requests library to make an API call. If you haven't installed it yet, you can do so via pip:
+
+pip install requests
+Here's a simple script to get the temperature for a given city:
+
+```python
+import requests
+
+def get_temperature(city_name, api_key):
+    # OpenWeatherMap API endpoint for current weather
+    base_url = "https://api.openweathermap.org/data/2.5/weather"
+    
+    # Defining parameters for the API call
+    params = {
+        'q': city_name,
+        'appid': api_key,
+        'units': 'metric'  # Use 'imperial' for Fahrenheit
+    }
+    
+    # Make the GET request
+    response = requests.get(base_url, params=params)
+    
+    # Check if the request was successful
+    if response.status_code == 200:
+        data = response.json()
+        # Extract temperature from the response data
+        temperature = data['main']['temp']
+        return temperature
+    else:
+        print(f"Error: {response.status_code} - {response.json().get('message')}")
+        return None
+
+if __name__ == "__main__":
+    city = input("Enter the city name: ")
+    api_key = "YOUR_API_KEY_HERE"  # Replace with your actual API key
+    temperature = get_temperature(city, api_key)
+    if temperature is not None:
+        print(f"The current temperature in {city} is: {temperature}°C")
+```
+
+#### Step 4: Run the Script
+Replace YOUR_API_KEY_HERE with your actual OpenWeatherMap API key.
+Run the script in a Python environment. You will be prompted to enter a city name.
+The script will output the current temperature for the specified city.
+
+### Select the Custom Code Block
+
+Now that we have a starter code, we can simply go ahead and create a new workflow. 
+
+#### Add Block
+
+From there, click on Add Block -> Custom Block as shown below:
+
+![select-block](https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/tutorials/weather/selectblock.gif)
+
+#### The starter code
+
+If you click on the View Code icon, you'll see a skeleton code that should help you get started with building
+your own block. The skeleton code looks as follows:
+
+```python
+import json
+from implementations.base import (
+    BaseImplementation,
+    BlockMetadata,
+    Field
+)
+
+class CustomBlock(BaseImplementation):
+    display_name = "Custom Block"
+    block_type = 'process'
+    block_metadata = BlockMetadata([])
+    
+    def __init__(self, run_config:dict=None) -> None:
+        super().__init__()
+        
+    def run(self, input_:dict=None):
+        return input_
+```
+
+#### Objective
+
+Our objective is to create a block that will query the OpenWeatherMaps API. As we see
+in the [example implementation](/docs/tutorials/custom-block-weather/#example-in-python),
+we have a few parameters that can be configurable:
+
+```python
+# Defining parameters for the API call
+params = {
+    'q': city_name,
+    'appid': api_key,
+    'units': 'metric'  # Use 'imperial' for Fahrenheit
+}
+```
+
+Therefore, we want to offer users the option to configure an API key and the units they want to use. The q, or city name, 
+is what we'll recieve as input. 
+
+#### Let's get coding
+
+In the custom block's implementation, simply go ahead and paste the below code snippet.
+
+
+<details>
+<summary>Custom code snippet to copy</summary>
+
+```python
+import json
+import requests
+
+from implementations.base import (
+    BaseImplementation,
+    BlockMetadata,
+    Field,
+    FieldType
+)
+
+class CustomBlock(BaseImplementation):
+    display_name = "Custom Weather Block"
+    block_type = 'process'
+    block_metadata = BlockMetadata([
+        Field(
+            name='api_key',
+            display_name='API Key',
+            type=FieldType.PASSWORD.value,
+            show_in_ui=False
+        ),
+        Field(
+            name='units',
+            display_name='Units',
+            type=FieldType.TEXT.value,
+            default_value='metric',
+            show_in_ui=False
+        ),
+    ])
+    
+    def __init__(self, run_config:dict=None) -> None:
+        super().__init__()
+        self.run_config = run_config
+        self.api_key = run_config.get('api_key')
+        self.units = run_config.get('units')
+        
+    def run(self, input_:dict=None):
+        input_ = list(input_.values())[0]
+        
+        base_url = "https://api.openweathermap.org/data/2.5/weather"
+        # Defining parameters for the API call
+        params = {
+            'q': input_,
+            'appid': self.api_key,
+            'units': self.units  # Use 'imperial' for Fahrenheit
+        }
+        
+        # Make the GET request
+        response = requests.get(base_url, params=params)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            data = response.json()
+            # Extract temperature from the response data
+            temperature = data['main']['temp']
+            return temperature
+        else:
+            print(f"Error: {response.status_code} - {response.json().get('message')}")
+            return None
+```
+</details>
+
+So let's break things up:
+
+1. First and foremost, we import the libraries that weren't imported.
+    ```python
+        import requests
+        from implementations.base import (
+            ...
+            FieldType
+        )
+    ```
+2. We give the block's display name to be `Custom Weather Block`. This is what will
+show up on the Add Block sidebar.
+
+3. We add the fields we want the users to be able to configure.
+    ```python
+        block_metadata = BlockMetadata([
+        Field(
+            name='api_key',
+            display_name='API Key',
+            type=FieldType.PASSWORD.value,
+            show_in_ui=False
+        ),
+        Field(
+            name='units',
+            display_name='Units',
+            type=FieldType.TEXT.value,
+            default_value='metric',
+            show_in_ui=False
+        ),
+    ])
+    ```
+
+4. Then we set up the logic for when the block will initialize. Our goal is to capture
+the user configurables through the `run_config`. So we have something like this:
+    ```python
+    def __init__(self, run_config:dict=None) -> None:
+        super().__init__()
+        self.run_config = run_config
+        self.api_key = run_config.get('api_key') # This has the same name as Field.name
+        self.units = run_config.get('units')
+    ```
+5. Then we write the logic that our Chat assistant, for implementing the API, gave us:
+    ```python
+    def run(self, input_:dict=None):
+        # This is essentially taking the first output from the previous block.
+        # We do [0] because we don't expect to have this block have more than 1 incoming connections.
+        input_ = list(input_.values())[0]
+        
+
+        base_url = "https://api.openweathermap.org/data/2.5/weather"
+        # Defining parameters for the API call
+        params = {
+            'q': input_, # swap out the city_name with the input
+            'appid': self.api_key, # swap out api_key for what we got from run_config
+            'units': self.units  # swap out units for what we got from run_config
+        }
+        # The rest of the code you'll notice stays the same.
+        # Make the GET request
+        response = requests.get(base_url, params=params)
+        
+        # Check if the request was successful
+        if response.status_code == 200:
+            data = response.json()
+            # Extract temperature from the response data
+            temperature = data['main']['temp']
+            return temperature
+        else:
+            print(f"Error: {response.status_code} - {response.json().get('message')}")
+            return None
+    ```
+
+### Overview
+
+![final](https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/tutorials/weather/final.gif)
+
+In this tutorial, we saw how we can create our own custom code blocks by building a weather API
+integration. It goes on to show that not only can you modify the implementation of blocks that otto-m8
+provide but also create your own implementations. 
+
+**Note**: Currently if there's a dependency that otto-m8 doesnt have installed, importing them while
+writing custom code can give you errors. One way to circumvent that is to go on `http://localhost:3000/terminal`
+and run `poetry add <package_name>`, which should install the dependency in the otto-m8 server.
