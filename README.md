@@ -14,8 +14,6 @@ At its core, otto-m8 views the problem of building any AI workflow as a graph pr
 
 This project is still in its early phase. What will make this platform successful is the number of integrations we can provide, but more than that, what will make this project successful is if we can circumvent the limitations of low code platforms, which is-they don't scale. To overcome this, otto-m8 is released as a fully open source platform and community contributions will be greatly appreciated. For contributions, see the [CONTRIBUTION.md](CONTRIBUTING.md) for guidelines.
 
-[![demo](https://farhan0167-otto-m8.s3.us-east-1.amazonaws.com/thumbnail-demo.png)](https://youtu.be/W2arxlYvZdU)
-
 
 ### Key Features
 - Build AI/ML workflows visually through out of the box blocks and by interconnecting them.
